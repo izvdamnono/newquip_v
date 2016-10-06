@@ -1,11 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:baselineAligned="false">
 
-    <TextView
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
-        android:text=""
-        android:id="@+id/tvTituloNota" />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvTituloNota"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            tools:text="Lorem"
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionMode.Title"
+            android:textAllCaps="true" />
+
+        <TextView
+            android:id="@+id/tvFecha"
+             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Fecha YYYY/MM/DD" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAllCaps="false"
+            tools:text="TextView"
+            android:fontFamily="casual" />
+    </LinearLayout>
+
 </LinearLayout>
