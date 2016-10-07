@@ -35,6 +35,9 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         mostrarNota(nota);
     }
 
+
+
+
     @Override
     protected void onPause() {
         saveNota();
