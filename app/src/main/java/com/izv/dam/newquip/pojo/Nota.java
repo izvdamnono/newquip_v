@@ -6,7 +6,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.izv.dam.newquip.contrato.ContratoBaseDatos;
-
+/*
+    Definimos las clases que van a afectar a la base de dato y las que usaremos de intermediario
+ */
 public class Nota implements Parcelable {
 
     private long id;

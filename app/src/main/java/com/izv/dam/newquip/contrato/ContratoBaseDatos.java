@@ -1,14 +1,15 @@
 package com.izv.dam.newquip.contrato;
 
-import android.content.ContentResolver;
-import android.net.Uri;
 import android.provider.BaseColumns;
 
+/**
+ * Generamos la clase abstracta de la base de datos
+ */
 public class ContratoBaseDatos {
 
     public final static String BASEDATOS = "quiip.sqlite";
 
-    private ContratoBaseDatos(){
+    private ContratoBaseDatos() {
     }
 
     public static abstract class TablaNota implements BaseColumns {
