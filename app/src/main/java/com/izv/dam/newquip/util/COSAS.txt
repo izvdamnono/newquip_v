@@ -75,3 +75,44 @@
     public void setNota(String nota) {
         this.nota = nota;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     protected Nota(Parcel in) {
+            id = in.readLong();
+            titulo = in.readString();
+            nota = in.readString();
+        }
+
+        public static final Creator<Nota> CREATOR = new Creator<Nota>() {
+            @Override
+            public Nota createFromParcel(Parcel in) {
+                return new Nota(in);
+            }
+
+            @Override
+            public Nota[] newArray(int size) {
+                return new Nota[size];
+            }
+        };

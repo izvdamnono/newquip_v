@@ -31,23 +31,6 @@ public class Nota implements Parcelable {
         this(0, null, null, null, null, null, null, null, null);
     }
 
-    protected Nota(Parcel in) {
-        id = in.readLong();
-        titulo = in.readString();
-        nota = in.readString();
-    }
-
-    public static final Creator<Nota> CREATOR = new Creator<Nota>() {
-        @Override
-        public Nota createFromParcel(Parcel in) {
-            return new Nota(in);
-        }
-
-        @Override
-        public Nota[] newArray(int size) {
-            return new Nota[size];
-        }
-    };
 
     public ContentValues getContentValues() {
         return this.getContentValues(false);
@@ -191,4 +174,28 @@ public class Nota implements Parcelable {
         dest.writeString(fecha_modificacion);
         dest.writeString(color);
     }
+
+    protected Nota(Parcel in) {
+        id = in.readLong();
+        titulo = in.readString();
+        nota = in.readString();
+        image = in.readString();
+        video = in.readString();
+        audio = in.readString();
+        fecha_creacion = in.readString();
+        fecha_modificacion = in.readString();
+        color = in.readString();
+    }
+
+    public static final Creator<Nota> CREATOR = new Creator<Nota>() {
+        @Override
+        public Nota createFromParcel(Parcel in) {
+            return new Nota(in);
+        }
+
+        @Override
+        public Nota[] newArray(int size) {
+            return new Nota[size];
+        }
+    };
 }

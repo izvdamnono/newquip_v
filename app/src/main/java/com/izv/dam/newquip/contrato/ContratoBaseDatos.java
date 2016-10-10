@@ -25,7 +25,17 @@ public class ContratoBaseDatos {
         public static final String FECHA_CREACION = "fecha_creacion";
         public static final String FECHA_MODIFICACION = "fecha_modificacion";
         public static final String COLOR = "color";
-        public static final String[] PROJECTION_ALL = {_ID, TITULO, NOTA, IMAGEN, VIDEO, AUDIO, FECHA_CREACION, FECHA_MODIFICACION};
+        public static final String[] PROJECTION_ALL = {_ID, TITULO, NOTA, IMAGEN, VIDEO, AUDIO, FECHA_CREACION, FECHA_MODIFICACION, COLOR};
+        public static final String SORT_ORDER_DEFAULT = _ID + " desc";
+    }
+
+    public static abstract class TablaLista implements BaseColumns {
+        //BaseColumns incluye de forma predeterminada el campo _id
+        public static final String TABLA = "lista";
+        public static final String ID_NOTA = "id_nota";
+        public static final String TEXTO_LISTA = "TEXTO_LISTA";
+        public static final String HECHO = "hecho";
+        public static final String[] PROJECTION_ALL = {_ID, ID_NOTA, TEXTO_LISTA, HECHO};
         public static final String SORT_ORDER_DEFAULT = _ID + " desc";
     }
 }

@@ -29,7 +29,7 @@ public class Ayudante extends SQLiteOpenHelper {
      */
     //trigger https://www.sqlite.org/lang_createtrigger.html
 
-    private static final int VERSION = 1;
+    private static final int VERSION = 2;
 
     public Ayudante(Context context) {
         super(context, ContratoBaseDatos.BASEDATOS, null, VERSION);
@@ -49,6 +49,7 @@ public class Ayudante extends SQLiteOpenHelper {
                 //ContratoBaseDatos.TablaNota.LISTA + " text, " +
                 ContratoBaseDatos.TablaNota.FECHA_CREACION + " datetime, " +
                 ContratoBaseDatos.TablaNota.FECHA_MODIFICACION + " datetime " +
+                ContratoBaseDatos.TablaNota.COLOR + " text " +
                 ")";
         Log.v("sql",sql_NOTA);
         db.execSQL(sql_NOTA);
