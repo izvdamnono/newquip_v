@@ -31,41 +31,6 @@ public class Nota implements Parcelable {
         this(0, null, null, null, null, null, null, null, null);
     }
 
-
-    public ContentValues getContentValues() {
-        return this.getContentValues(false);
-    }
-
-    public ContentValues getContentValues(boolean withId) {
-        ContentValues valores = new ContentValues();
-        if (withId) {
-            valores.put(ContratoBaseDatos.TablaNota._ID, this.getId());
-        }
-        valores.put(ContratoBaseDatos.TablaNota.TITULO, this.getTitulo());
-        valores.put(ContratoBaseDatos.TablaNota.NOTA, this.getNota());
-        valores.put(ContratoBaseDatos.TablaNota.IMAGEN, this.getImage());
-        valores.put(ContratoBaseDatos.TablaNota.VIDEO, this.getVideo());
-        valores.put(ContratoBaseDatos.TablaNota.AUDIO, this.getAudio());
-        valores.put(ContratoBaseDatos.TablaNota.FECHA_CREACION, this.getFecha_creacion());
-        valores.put(ContratoBaseDatos.TablaNota.FECHA_MODIFICACION, this.getFecha_modificacion());
-        valores.put(ContratoBaseDatos.TablaNota.COLOR, this.getColor());
-        return valores;
-    }
-
-    public static Nota getNota(Cursor c) {
-        Nota objeto = new Nota();
-        objeto.setId(c.getLong(c.getColumnIndex(ContratoBaseDatos.TablaNota._ID)));
-        objeto.setTitulo(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaNota.TITULO)));
-        objeto.setNota(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaNota.NOTA)));
-        objeto.setNota(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaNota.IMAGEN)));
-        objeto.setNota(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaNota.VIDEO)));
-        objeto.setNota(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaNota.AUDIO)));
-        objeto.setNota(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaNota.FECHA_CREACION)));
-        objeto.setNota(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaNota.FECHA_MODIFICACION)));
-        objeto.setNota(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaNota.COLOR)));
-        return objeto;
-    }
-
     public long getId() {
         return id;
     }
@@ -138,10 +103,6 @@ public class Nota implements Parcelable {
         this.color = color;
     }
 
-    public static Creator<Nota> getCREATOR() {
-        return CREATOR;
-    }
-
     @Override
     public String toString() {
         return "Nota{" +
@@ -157,10 +118,38 @@ public class Nota implements Parcelable {
                 '}';
     }
 
+    /*
+     * Metodos de ContentValues
+     */
+    public ContentValues getContentValues() {
+        return this.getContentValues(false);
+    }
+
+    public ContentValues getContentValues(boolean withId) {
+        ContentValues valores = new ContentValues();
+        if (withId) {
+            valores.put(ContratoBaseDatos.TablaNota._ID, this.getId());
+        }
+        valores.put(ContratoBaseDatos.TablaNota.TITULO, this.getTitulo());
+        valores.put(ContratoBaseDatos.TablaNota.NOTA, this.getNota());
+        valores.put(ContratoBaseDatos.TablaNota.IMAGEN, this.getImage());
+        valores.put(ContratoBaseDatos.TablaNota.VIDEO, this.getVideo());
+        valores.put(ContratoBaseDatos.TablaNota.AUDIO, this.getAudio());
+        valores.put(ContratoBaseDatos.TablaNota.FECHA_CREACION, this.getFecha_creacion());
+        valores.put(ContratoBaseDatos.TablaNota.FECHA_MODIFICACION, this.getFecha_modificacion());
+        valores.put(ContratoBaseDatos.TablaNota.COLOR, this.getColor());
+
+        return valores;
+    }
+
+    /*
+     * Metodos que la clase parcelable usa
+     */
     @Override
     public int describeContents() {
         return 0;
     }
+
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
@@ -170,11 +159,13 @@ public class Nota implements Parcelable {
         dest.writeString(image);
         dest.writeString(video);
         dest.writeString(audio);
-        dest.writeString(fecha_creacion);
-        dest.writeString(fecha_modificacion);
+        dest.writeString(fecha_creacion);//datetime
+        dest.writeString(fecha_modificacion);//datetime
         dest.writeString(color);
     }
-
+    /*
+     * Metodo de la clase parcelabre que necesita lista
+     */
     protected Nota(Parcel in) {
         id = in.readLong();
         titulo = in.readString();
@@ -182,10 +173,33 @@ public class Nota implements Parcelable {
         image = in.readString();
         video = in.readString();
         audio = in.readString();
-        fecha_creacion = in.readString();
-        fecha_modificacion = in.readString();
+        fecha_creacion = in.readString();//datetime
+        fecha_modificacion = in.readString();//datetime
         color = in.readString();
     }
+
+    /*
+     * Metodo del cursor
+     */
+    public static Nota getNota(Cursor c) {
+        Nota objeto = new Nota();
+        objeto.setId(c.getLong(c.getColumnIndex(ContratoBaseDatos.TablaNota._ID)));
+        objeto.setTitulo(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaNota.TITULO)));
+        objeto.setNota(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaNota.NOTA)));
+        objeto.setImage(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaNota.IMAGEN)));
+        objeto.setVideo(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaNota.VIDEO)));
+        objeto.setAudio(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaNota.AUDIO)));
+        objeto.setFecha_creacion(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaNota.FECHA_CREACION)));
+        objeto.setFecha_modificacion(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaNota.FECHA_MODIFICACION)));
+        objeto.setColor(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaNota.COLOR)));
+        return objeto;
+    }
+
+
+    public static Creator<Nota> getCREATOR() {
+        return CREATOR;
+    }
+
 
     public static final Creator<Nota> CREATOR = new Creator<Nota>() {
         @Override

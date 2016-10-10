@@ -2,6 +2,7 @@ package com.izv.dam.newquip.pojo;
 
 import android.content.ContentValues;
 
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -24,22 +25,6 @@ public class Lista implements Parcelable {
         this.hecho = hecho;
     }
 
-    public ContentValues getContentValues() {
-        return this.getContentValues(false);
-    }
-
-    public ContentValues getContentValues(boolean withId) {
-        ContentValues valores = new ContentValues();
-        if (withId) {
-            valores.put(ContratoBaseDatos.TablaLista._ID, this.getId_lista());
-        }
-        valores.put(ContratoBaseDatos.TablaLista.ID_NOTA, this.getId_nota());
-        valores.put(ContratoBaseDatos.TablaLista.TEXTO_LISTA, this.getTexto_lista());
-        valores.put(ContratoBaseDatos.TablaLista.HECHO, this.isHecho());
-
-        return valores;
-    }
-
     public Lista() {
         this(0, 0, null, false);
     }
@@ -52,15 +37,6 @@ public class Lista implements Parcelable {
         this.id_lista = id_lista;
     }
 
-    @Override
-    public String toString() {
-        return "Lista{" +
-                "id_lista=" + id_lista +
-                ", id_nota=" + id_nota +
-                ", texto_lista='" + texto_lista + '\'' +
-                ", hecho=" + hecho +
-                '}';
-    }
 
     public long getId_nota() {
         return id_nota;
@@ -86,6 +62,34 @@ public class Lista implements Parcelable {
         this.hecho = hecho;
     }
 
+    @Override
+    public String toString() {
+        return "Lista{" +
+                "id_lista=" + id_lista +
+                ", id_nota=" + id_nota +
+                ", texto_lista='" + texto_lista + '\'' +
+                ", hecho=" + hecho +
+                '}';
+    }
+
+    /*
+     * Metodos de ContentValues
+     */
+    public ContentValues getContentValues() {
+        return this.getContentValues(false);
+    }
+
+    public ContentValues getContentValues(boolean withId) {
+        ContentValues valores = new ContentValues();
+        if (withId) {
+            valores.put(ContratoBaseDatos.TablaLista._ID, this.getId_lista());
+        }
+        valores.put(ContratoBaseDatos.TablaLista.ID_NOTA, this.getId_nota());
+        valores.put(ContratoBaseDatos.TablaLista.TEXTO_LISTA, this.getTexto_lista());
+        valores.put(ContratoBaseDatos.TablaLista.HECHO, this.isHecho());
+
+        return valores;
+    }
 
     /*
      * Metodos que la clase parcelable usa
@@ -100,7 +104,11 @@ public class Lista implements Parcelable {
         dest.writeLong(id_lista);
         dest.writeLong(id_nota);
         dest.writeString(texto_lista);
-        //        dest.writeBooleanArray(hecho); //no hay metodo  writeBoolean()
+        /*
+         * No existe el metodo  writeBoolean() pero si el writeByte, con el operador ternario
+         * transformo el boolean en byte
+         */
+        dest.writeByte((byte) (hecho ? 1 : 0));
     }
 
     /*
@@ -113,6 +121,21 @@ public class Lista implements Parcelable {
         hecho = in.readByte() != 0;
     }
 
+    public static Lista getLista(Cursor c) {
+        Lista objeto = new Lista();
+        objeto.setId_lista(c.getLong(c.getColumnIndex(ContratoBaseDatos.TablaLista._ID)));
+        objeto.setId_nota(c.getLong(c.getColumnIndex(ContratoBaseDatos.TablaLista.ID_NOTA)));
+        objeto.setTexto_lista(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaLista.TEXTO_LISTA)));
+
+        /*
+         * ¿Correcto?
+         */
+        objeto.setHecho(c.getInt(c.getColumnIndex(ContratoBaseDatos.TablaLista.HECHO)) > 0);
+
+        return objeto;
+    }
+
+
     public static final Creator<Lista> CREATOR = new Creator<Lista>() {
         @Override
         public Lista createFromParcel(Parcel in) {
@@ -124,4 +147,5 @@ public class Lista implements Parcelable {
             return new Lista[size];
         }
     };
+
 }
