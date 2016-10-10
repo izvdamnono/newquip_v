@@ -1,4 +1,5 @@
 package com.izv.dam.newquip.pojo;
+
 import android.content.ContentValues;
 
 import android.os.Parcel;
@@ -8,12 +9,40 @@ import com.izv.dam.newquip.contrato.ContratoBaseDatos;
 
 /**
  * Created by Nono on 10/10/2016.
+ * TERMINADA
  */
 
 public class Lista implements Parcelable {
     private long id_lista, id_nota;
     private String texto_lista;
     private boolean hecho;
+
+    public Lista(long id_lista, long id_nota, String texto_lista, boolean hecho) {
+        this.id_lista = id_lista;
+        this.id_nota = id_nota;
+        this.texto_lista = texto_lista;
+        this.hecho = hecho;
+    }
+
+    public ContentValues getContentValues() {
+        return this.getContentValues(false);
+    }
+
+    public ContentValues getContentValues(boolean withId) {
+        ContentValues valores = new ContentValues();
+        if (withId) {
+            valores.put(ContratoBaseDatos.TablaLista._ID, this.getId_lista());
+        }
+        valores.put(ContratoBaseDatos.TablaLista.ID_NOTA, this.getId_nota());
+        valores.put(ContratoBaseDatos.TablaLista.TEXTO_LISTA, this.getTexto_lista());
+        valores.put(ContratoBaseDatos.TablaLista.HECHO, this.isHecho());
+
+        return valores;
+    }
+
+    public Lista() {
+        this(0, 0, null, false);
+    }
 
     public long getId_lista() {
         return id_lista;
@@ -57,16 +86,6 @@ public class Lista implements Parcelable {
         this.hecho = hecho;
     }
 
-    public Lista(long id_lista, long id_nota, String texto_lista, boolean hecho) {
-        this.id_lista = id_lista;
-        this.id_nota = id_nota;
-        this.texto_lista = texto_lista;
-        this.hecho = hecho;
-    }
-
-    public Lista() {
-        this(0, 0, null, false);
-    }
 
     /*
      * Metodos que la clase parcelable usa

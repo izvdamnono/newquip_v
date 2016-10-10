@@ -12,22 +12,12 @@ public class Ayudante extends SQLiteOpenHelper {
     //sqlite
     //tipos de datos https://www.sqlite.org/datatype3.html
     //fechas https://www.sqlite.org/lang_datefunc.html
-    /**
-     %d		day of month: 00
-     %f		fractional seconds: SS.SSS
-     %H		hour: 00-24
-     %j		day of year: 001-366
-     %J		Julian day number
-     %m		month: 01-12
-     %M		minute: 00-59
-     %s		seconds since 1970-01-01
-     %S		seconds: 00-59
-     %w		day of week 0-6 with Sunday==0
-     %W		week of year: 00-53
-     %Y		year: 0000-9999
-     %%		%
-     */
     //trigger https://www.sqlite.org/lang_createtrigger.html
+
+    /**
+     * Created by Nono on 10/10/2016.
+     * TERMINADA la nueva base de datos
+     */
 
     private static final int VERSION = 2;
 
@@ -37,8 +27,8 @@ public class Ayudante extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql_NOTA;
-        sql_NOTA="create table if not exists " + ContratoBaseDatos.TablaNota.TABLA +
+        String sql_NOTA, sql_LISTA;
+        sql_NOTA = "create table if not exists " + ContratoBaseDatos.TablaNota.TABLA +
                 " (" +
                 ContratoBaseDatos.TablaNota._ID + " integer primary key autoincrement , " +
                 ContratoBaseDatos.TablaNota.TITULO + " text, " +
@@ -48,17 +38,30 @@ public class Ayudante extends SQLiteOpenHelper {
                 ContratoBaseDatos.TablaNota.AUDIO + " text, " +
                 //ContratoBaseDatos.TablaNota.LISTA + " text, " +
                 ContratoBaseDatos.TablaNota.FECHA_CREACION + " datetime, " +
-                ContratoBaseDatos.TablaNota.FECHA_MODIFICACION + " datetime " +
+                ContratoBaseDatos.TablaNota.FECHA_MODIFICACION + " datetime, " +
                 ContratoBaseDatos.TablaNota.COLOR + " text " +
                 ")";
-        Log.v("sql",sql_NOTA);
+        Log.v("sql_nota", sql_NOTA);
         db.execSQL(sql_NOTA);
+
+        sql_LISTA = "create table if not exists " + ContratoBaseDatos.TablaLista.TABLA +
+                " (" +
+                ContratoBaseDatos.TablaLista._ID + " integer primary key autoincrement , " +
+                ContratoBaseDatos.TablaLista.ID_NOTA + " integer, " +
+                ContratoBaseDatos.TablaLista.TEXTO_LISTA + " text, " +
+                ContratoBaseDatos.TablaLista.HECHO + " boolean " +
+                ")";
+        Log.v("sql_lista", sql_LISTA);
+        db.execSQL(sql_LISTA);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String sql="drop table if exists " + ContratoBaseDatos.TablaNota.TABLA;
-        db.execSQL(sql);
-        Log.v("sql",sql);
+        String sql_nota = "drop table if exists " + ContratoBaseDatos.TablaNota.TABLA;
+        Log.v("sql_nota", sql_nota);
+        db.execSQL(sql_nota);
+        String sql_lista = "drop table if exists " + ContratoBaseDatos.TablaLista.TABLA;
+        Log.v("sql_lista", sql_lista);
+        db.execSQL(sql_lista);
     }
 }

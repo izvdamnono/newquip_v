@@ -1,5 +1,17 @@
 
 
+FALTA ADAPTADOR_LISTA
+FALTA LOS METODOS DE LISTA {InterfaceModelo, InterfacePresentador, InterfaceVista}
+
+
+
+
+
+
+
+
+
+
     public long getId() {
         return id;
     }

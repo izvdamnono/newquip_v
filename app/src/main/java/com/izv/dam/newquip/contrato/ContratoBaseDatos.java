@@ -17,11 +17,9 @@ public class ContratoBaseDatos {
         public static final String TABLA = "nota";
         public static final String TITULO = "titulo";
         public static final String NOTA = "nota";
-        //public static final String TEXTO = "texto";
         public static final String IMAGEN = "imagen";
         public static final String VIDEO = "video";
         public static final String AUDIO = "audio";
-        //public static final String LISTA = "LISTA";
         public static final String FECHA_CREACION = "fecha_creacion";
         public static final String FECHA_MODIFICACION = "fecha_modificacion";
         public static final String COLOR = "color";
