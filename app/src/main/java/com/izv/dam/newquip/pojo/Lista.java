@@ -121,20 +121,9 @@ public class Lista implements Parcelable {
         hecho = in.readByte() != 0;
     }
 
-    public static Lista getLista(Cursor c) {
-        Lista objeto = new Lista();
-        objeto.setId_lista(c.getLong(c.getColumnIndex(ContratoBaseDatos.TablaLista._ID)));
-        objeto.setId_nota(c.getLong(c.getColumnIndex(ContratoBaseDatos.TablaLista.ID_NOTA)));
-        objeto.setTexto_lista(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaLista.TEXTO_LISTA)));
-
-        /*
-         * ¿Correcto?
-         */
-        objeto.setHecho(c.getInt(c.getColumnIndex(ContratoBaseDatos.TablaLista.HECHO)) > 0);
-
-        return objeto;
+    public static Creator<Lista> getCREATOR() {
+        return CREATOR;
     }
-
 
     public static final Creator<Lista> CREATOR = new Creator<Lista>() {
         @Override
@@ -147,5 +136,18 @@ public class Lista implements Parcelable {
             return new Lista[size];
         }
     };
+
+    public static Lista getLista(Cursor c) {
+        Lista objeto = new Lista();
+        objeto.setId_lista(c.getLong(c.getColumnIndex(ContratoBaseDatos.TablaLista._ID)));
+        objeto.setId_nota(c.getLong(c.getColumnIndex(ContratoBaseDatos.TablaLista.ID_NOTA)));
+        objeto.setTexto_lista(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaLista.TEXTO_LISTA)));
+        /*
+         * ¿Correcto?
+         */
+        objeto.setHecho(c.getInt(c.getColumnIndex(ContratoBaseDatos.TablaLista.HECHO)) > 0);
+
+        return objeto;
+    }
 
 }

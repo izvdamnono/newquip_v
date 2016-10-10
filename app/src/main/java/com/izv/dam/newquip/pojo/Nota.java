@@ -163,6 +163,7 @@ public class Nota implements Parcelable {
         dest.writeString(fecha_modificacion);//datetime
         dest.writeString(color);
     }
+
     /*
      * Metodo de la clase parcelabre que necesita lista
      */
@@ -177,6 +178,22 @@ public class Nota implements Parcelable {
         fecha_modificacion = in.readString();//datetime
         color = in.readString();
     }
+
+    public static Creator<Nota> getCREATOR() {
+        return CREATOR;
+    }
+
+    public static final Creator<Nota> CREATOR = new Creator<Nota>() {
+        @Override
+        public Nota createFromParcel(Parcel in) {
+            return new Nota(in);
+        }
+
+        @Override
+        public Nota[] newArray(int size) {
+            return new Nota[size];
+        }
+    };
 
     /*
      * Metodo del cursor
@@ -195,21 +212,4 @@ public class Nota implements Parcelable {
         return objeto;
     }
 
-
-    public static Creator<Nota> getCREATOR() {
-        return CREATOR;
-    }
-
-
-    public static final Creator<Nota> CREATOR = new Creator<Nota>() {
-        @Override
-        public Nota createFromParcel(Parcel in) {
-            return new Nota(in);
-        }
-
-        @Override
-        public Nota[] newArray(int size) {
-            return new Nota[size];
-        }
-    };
 }
