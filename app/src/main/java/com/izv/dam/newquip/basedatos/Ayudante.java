@@ -37,15 +37,21 @@ public class Ayudante extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql;
-        sql="create table if not exists " + ContratoBaseDatos.TablaNota.TABLA +
+        String sql_NOTA;
+        sql_NOTA="create table if not exists " + ContratoBaseDatos.TablaNota.TABLA +
                 " (" +
                 ContratoBaseDatos.TablaNota._ID + " integer primary key autoincrement , " +
                 ContratoBaseDatos.TablaNota.TITULO + " text, " +
-                ContratoBaseDatos.TablaNota.NOTA + " text " +
+                ContratoBaseDatos.TablaNota.NOTA + " text, " +
+                ContratoBaseDatos.TablaNota.IMAGEN + " text, " +
+                ContratoBaseDatos.TablaNota.VIDEO + " text, " +
+                ContratoBaseDatos.TablaNota.AUDIO + " text, " +
+                //ContratoBaseDatos.TablaNota.LISTA + " text, " +
+                ContratoBaseDatos.TablaNota.FECHA_CREACION + " datetime, " +
+                ContratoBaseDatos.TablaNota.FECHA_MODIFICACION + " datetime " +
                 ")";
-        Log.v("sql",sql);
-        db.execSQL(sql);
+        Log.v("sql",sql_NOTA);
+        db.execSQL(sql_NOTA);
     }
 
     @Override
