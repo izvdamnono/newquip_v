@@ -1,46 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:baselineAligned="false">
+    android:baselineAligned="false"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin">
+
+    <ImageView
+        android:id="@+id/imageViewImagenNota"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/app_name"
+        app:srcCompat="@drawable/ic_stat_content_add" />
 
     <LinearLayout
-        android:layout_width="170dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:weightSum="1">
 
         <TextView
             android:id="@+id/tvTituloNota"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
-            tools:text="Lorem"
+            android:textAllCaps="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionMode.Title"
-            android:textAllCaps="true" />
+            tools:text="Lorem"
+            android:layout_weight="0.99" />
 
         <TextView
             android:id="@+id/tvFecha"
-             android:layout_width="match_parent"
+            android:layout_width="144dp"
             android:layout_height="wrap_content"
             tools:text="Fecha YYYY/MM/DD" />
-
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textAllCaps="false"
-            tools:text="TextView"
-            android:fontFamily="casual" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/tvTexoNota"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.37"
+        tools:text="TextView" />
+
 
 </LinearLayout>

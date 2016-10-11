@@ -20,9 +20,21 @@ public class AdaptadorNota extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        TextView tv = (TextView) view.findViewById(R.id.tvTituloNota);
+        /*
+         * Cargamos los elementos que vamos a usar, id, titulo, texto
+         */
+        TextView tv_titulo_nota = (TextView) view.findViewById(R.id.tvTituloNota);
+        TextView texo_nota = (TextView) view.findViewById(R.id.tvTexoNota);
+        TextView fecha_creacion = (TextView) view.findViewById(R.id.tvFecha);
+        //TextView fecha_modificacion = (TextView) view.findViewById(R.id.texoNota);
+
+        //Recogemos todos los datos del cursor de
         Nota n = Nota.getNota(cursor);
-        tv.setText(n.getTitulo());
+
+        //Le damos los datos a los items del listView
+        tv_titulo_nota.setText(n.getTitulo());
+        texo_nota.setText(n.getNota());
+        fecha_creacion.setText(n.getFecha_modificacion());
     }
 
     @Override

@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.izv.dam.newquip.R;
@@ -22,6 +23,8 @@ import java.io.InputStream;
 public class VistaNota extends AppCompatActivity implements ContratoNota.InterfaceVista {
 
     private EditText editTextTitulo, editTextNota;
+
+    private ImageButton id_imageButton;
     private Button btn_img;
     private ImageView img_view;
     private Nota nota = new Nota();
@@ -37,10 +40,10 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
         editTextTitulo = (EditText) findViewById(R.id.etTitulo);
         editTextNota = (EditText) findViewById(R.id.etNota);
-        btn_img = (Button) findViewById(R.id.id_imagen_btn);
-        img_view = (ImageView) findViewById(R.id.id_imagen);
 
-        btn_img.setOnClickListener(new View.OnClickListener() {
+        id_imageButton = (ImageButton) findViewById(R.id.id_imageButton);//Hace de imagen y de boton
+
+        id_imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 abrirGaleria(v);
@@ -59,8 +62,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     }
 
 
-
-
     @Override
     protected void onPause() {
         saveNota();
@@ -74,11 +75,36 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         super.onResume();
     }
 
+    /*
+     * Ejemplos de guardar y restaurar la actividad
+     */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable("nota", nota);
+        /*
+         * Ejemplso
+            savedInstanceState.putBoolean("MyBoolean", true);
+            savedInstanceState.putDouble("myDouble", 1.9);
+            savedInstanceState.putInt("MyInt", 1);
+            savedInstanceState.putString("MyString", "Welcome back to Android");
+         */
     }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        /*
+         * Ejemplos
+            boolean myBoolean = savedInstanceState.getBoolean("MyBoolean");
+            double myDouble = savedInstanceState.getDouble("myDouble");
+            int myInt = savedInstanceState.getInt("MyInt");
+            String myString = savedInstanceState.getString("MyString");
+        */
+
+    }
+
+
 
     @Override
     public void mostrarNota(Nota n) {
@@ -94,6 +120,11 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             nota.setId(r);
         }
     }
+
+
+    /*
+     * Metodos con los que se abre el selector de imagenes de la galeria
+     */
     public void abrirGaleria(View v) {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -114,22 +145,19 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
                     if (requestCode == SELECT_FILE) {
 
-                     //   if (selectedPath != null) {
-                            InputStream imageStream = null;
-                            try {
-                                imageStream = getContentResolver().openInputStream(
-                                        selectedImage);
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                            }
+                        InputStream imageStream = null;
+                        try {
+                            imageStream = getContentResolver().openInputStream(selectedImage);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
 
-                            // Transformamos la URI de la imagen a inputStream y este a un Bitmap
-                            Bitmap bmp = BitmapFactory.decodeStream(imageStream);
+                        // Transformamos la URI de la imagen a inputStream y este a un Bitmap
+                        Bitmap bmp = BitmapFactory.decodeStream(imageStream);
 
-                            // Ponemos nuestro bitmap en un ImageView que tengamos en la vista
-                            img_view.setImageBitmap(bmp);
+                        // Ponemos nuestro bitmap en un ImageView que tengamos en la vista
+                        id_imageButton.setImageBitmap(bmp);
 
-                     //   }
                     }
                 }
                 break;

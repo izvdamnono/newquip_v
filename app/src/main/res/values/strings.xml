@@ -13,4 +13,9 @@
     <string name="nota">Nota</string>
     <string name="titulo">Titulo</string>
     <string name="mas">+</string>
+
+    <!--image-->
+    <string name="etiqueta_dialogo_imagen">Añadir imagen: </string>
+    <string name="etiqueta_dialogo_foto">Hacer foto </string>
+    <string name="etiqueta_dialogo_galeria">Seleccionar imagen </string>
 </resources>
