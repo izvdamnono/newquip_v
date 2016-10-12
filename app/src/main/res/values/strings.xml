@@ -12,4 +12,5 @@
     <!--nota-->
     <string name="nota">Nota</string>
     <string name="titulo">Titulo</string>
+    <string name="mas">+</string>
 </resources>

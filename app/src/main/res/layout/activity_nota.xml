@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app2="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -33,7 +34,31 @@
                 android:id="@+id/etNota"
                 android:hint="@string/nota"/>
 
+            <Button
+                android:text="@string/mas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/id_imagen_btn"
+                android:layout_weight="1"
+                style="@style/Widget.AppCompat.Button.Small" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app2:srcCompat="@mipmap/ic_launcher"
+                android:id="@+id/id_imagen"
+                android:layout_weight="1"
+                android:cropToPadding="true" />
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="115dp"
+                app2:srcCompat="@drawable/ic_stat_content_add"
+                android:id="@+id/imageButton" />
+
+
         </LinearLayout>
+
 
     </ScrollView>
 

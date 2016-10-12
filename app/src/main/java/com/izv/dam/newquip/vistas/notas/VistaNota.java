@@ -1,18 +1,32 @@
 package com.izv.dam.newquip.vistas.notas;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.izv.dam.newquip.R;
 import com.izv.dam.newquip.contrato.ContratoNota;
 import com.izv.dam.newquip.pojo.Nota;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
 public class VistaNota extends AppCompatActivity implements ContratoNota.InterfaceVista {
 
     private EditText editTextTitulo, editTextNota;
+    private Button btn_img;
+    private ImageView img_view;
     private Nota nota = new Nota();
     private PresentadorNota presentador;
+    private static final int SELECT_FILE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,12 +37,21 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
         editTextTitulo = (EditText) findViewById(R.id.etTitulo);
         editTextNota = (EditText) findViewById(R.id.etNota);
+        btn_img = (Button) findViewById(R.id.id_imagen_btn);
+        img_view = (ImageView) findViewById(R.id.id_imagen);
+
+        btn_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                abrirGaleria(v);
+            }
+        });
 
         if (savedInstanceState != null) {
             nota = savedInstanceState.getParcelable("nota");
         } else {
             Bundle b = getIntent().getExtras();
-            if(b != null ) {
+            if (b != null) {
                 nota = b.getParcelable("nota");
             }
         }
@@ -67,8 +90,50 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         nota.setTitulo(editTextTitulo.getText().toString());
         nota.setNota(editTextNota.getText().toString());
         long r = presentador.onSaveNota(nota);
-        if(r > 0 & nota.getId() == 0){
+        if (r > 0 & nota.getId() == 0) {
             nota.setId(r);
         }
     }
+    public void abrirGaleria(View v) {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Seleccione una imagen"), SELECT_FILE);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+        Uri selectedImageUri = null;
+        Uri selectedImage;
+
+        String filePath = null;
+        switch (requestCode) {
+            case SELECT_FILE:
+                if (resultCode == Activity.RESULT_OK) {
+                    selectedImage = imageReturnedIntent.getData();
+
+                    if (requestCode == SELECT_FILE) {
+
+                     //   if (selectedPath != null) {
+                            InputStream imageStream = null;
+                            try {
+                                imageStream = getContentResolver().openInputStream(
+                                        selectedImage);
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            }
+
+                            // Transformamos la URI de la imagen a inputStream y este a un Bitmap
+                            Bitmap bmp = BitmapFactory.decodeStream(imageStream);
+
+                            // Ponemos nuestro bitmap en un ImageView que tengamos en la vista
+                            img_view.setImageBitmap(bmp);
+
+                     //   }
+                    }
+                }
+                break;
+        }
+    }
+
 }
