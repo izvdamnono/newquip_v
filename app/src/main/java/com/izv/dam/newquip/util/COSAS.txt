@@ -128,3 +128,40 @@ FALTA LOS METODOS DE LISTA {InterfaceModelo, InterfacePresentador, InterfaceVist
                 return new Nota[size];
             }
         };
+
+
+
+
+
+
+
+        <android.support.v7.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary"
+                android:theme="?attr/actionBarTheme"
+                android:minHeight="?attr/actionBarSize"
+                android:id="@+id/toolbar2"
+                android:gravity="bottom" >
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Departure"
+                    android:layout_gravity="left|center_vertical"
+                    />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Departure"
+                    android:layout_gravity="center|center_vertical"
+                    />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Departure"
+                    android:layout_gravity="center_vertical|right"
+                    />
+            </android.support.v7.widget.Toolbar>
