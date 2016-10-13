@@ -7,7 +7,7 @@ import android.database.Cursor;
 import com.izv.dam.newquip.contrato.ContratoBaseDatos;
 import com.izv.dam.newquip.pojo.Nota;
 
-public class GestionNota extends Gestion<Nota>{
+public class GestionNota extends Gestion<Nota> {
 
     public GestionNota(Context c) {
         super(c);
@@ -29,15 +29,22 @@ public class GestionNota extends Gestion<Nota>{
     @Override
     public int delete(Nota objeto) {
         String condicion = ContratoBaseDatos.TablaNota._ID + " = ?";
-        String[] argumentos = { objeto.getId() + "" };
+        String[] argumentos = {objeto.getId() + ""};
         return this.delete(ContratoBaseDatos.TablaNota.TABLA, condicion, argumentos);
     }
 
     public Nota get(long id) {
         String where = ContratoBaseDatos.TablaNota._ID + " = ? ";
         String[] parametros = {id + ""};
-        Cursor c = this.getCursor(ContratoBaseDatos.TablaNota.PROJECTION_ALL, where, parametros, null, null, ContratoBaseDatos.TablaNota.SORT_ORDER_DEFAULT);
-        if(c.getCount() > 0) {
+        Cursor c = this.getCursor(
+                ContratoBaseDatos.TablaNota.PROJECTION_ALL,
+                where,
+                parametros,
+                null,
+                null,
+                ContratoBaseDatos.TablaNota.SORT_ORDER_DEFAULT
+        );
+        if (c.getCount() > 0) {
             c.moveToFirst();
             Nota nota = Nota.getNota(c);
             return nota;
@@ -47,12 +54,24 @@ public class GestionNota extends Gestion<Nota>{
 
     @Override
     public Cursor getCursor() {
-        return this.getCursor(ContratoBaseDatos.TablaNota.TABLA, ContratoBaseDatos.TablaNota.PROJECTION_ALL, ContratoBaseDatos.TablaNota.SORT_ORDER_DEFAULT);
+        return this.getCursor(
+                ContratoBaseDatos.TablaNota.TABLA,
+                ContratoBaseDatos.TablaNota.PROJECTION_ALL,
+                ContratoBaseDatos.TablaNota.SORT_ORDER_DEFAULT
+        );
     }
 
     @Override
     public Cursor getCursor(String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy) {
-        return this.getCursor(ContratoBaseDatos.TablaNota.TABLA, columns, selection, selectionArgs, groupBy, having, orderBy);
+        return this.getCursor(
+                ContratoBaseDatos.TablaNota.TABLA,
+                columns,
+                selection,
+                selectionArgs,
+                groupBy,
+                having,
+                orderBy
+        );
     }
 
     @Override
@@ -66,7 +85,7 @@ public class GestionNota extends Gestion<Nota>{
     }
 
     @Override
-    public int update(ContentValues valores, String condicion, String[] argumentos){
+    public int update(ContentValues valores, String condicion, String[] argumentos) {
         return this.update(ContratoBaseDatos.TablaNota.TABLA, valores, condicion, argumentos);
     }
 
@@ -74,7 +93,7 @@ public class GestionNota extends Gestion<Nota>{
     public int update(Nota objeto) {
         ContentValues valores = objeto.getContentValues();
         String condicion = ContratoBaseDatos.TablaNota._ID + " = ?";
-        String[] argumentos = { objeto.getId() + "" };
+        String[] argumentos = {objeto.getId() + ""};
         return this.update(ContratoBaseDatos.TablaNota.TABLA, valores, condicion, argumentos);
     }
 

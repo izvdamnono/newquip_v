@@ -26,7 +26,7 @@ public class DialogoBorrar extends DialogFragment {
     public static DialogoBorrar newInstance(Nota n) {
         DialogoBorrar fragment = new DialogoBorrar();
         Bundle args = new Bundle();
-        args.putParcelable("nota",n);
+        args.putParcelable("nota", n);
         fragment.setArguments(args);
         return fragment;
     }
@@ -35,7 +35,7 @@ public class DialogoBorrar extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            n=getArguments().getParcelable("nota");
+            n = getArguments().getParcelable("nota");
         }
     }
 
@@ -44,38 +44,39 @@ public class DialogoBorrar extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         return createDialogBorrar();
     }
+
     public AlertDialog createDialogBorrar() {
-        String titulo_dialogo= String.format("%s %s", getString(R.string.etiqueta_dialogo_borrar),n.getTitulo());
+        String titulo_dialogo = String.format("%s %s", getString(R.string.etiqueta_dialogo_borrar), n.getTitulo());
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(titulo_dialogo);
         builder.setMessage(R.string.mensaje_confirm_borrar);
+
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-               listener.onBorrarPossitiveButtonClick(n);
+                listener.onBorrarPossitiveButtonClick(n);
             }
         });
+
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 listener.onBorrarNegativeButtonClick();
             }
         });
+
         AlertDialog alertBorrar = builder.create();
         return alertBorrar;
     }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
 
         try {
             listener = (OnBorrarDialogListener) context;
-
         } catch (ClassCastException e) {
-            throw new ClassCastException(
-                    context.toString() +
-                            " no implementó OnBorrarDialogListener");
-
+            throw new ClassCastException(context.toString() + " no implementó OnBorrarDialogListener");
         }
     }
 

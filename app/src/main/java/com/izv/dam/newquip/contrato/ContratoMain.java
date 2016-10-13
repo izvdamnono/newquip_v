@@ -4,6 +4,9 @@ import android.database.Cursor;
 
 import com.izv.dam.newquip.pojo.Nota;
 
+/**
+ * ¿Definimos los metodos del modelo vista presentador?
+ */
 public interface ContratoMain {
 
     interface InterfaceModelo {

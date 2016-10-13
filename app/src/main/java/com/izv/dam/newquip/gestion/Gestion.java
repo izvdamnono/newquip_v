@@ -7,6 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.izv.dam.newquip.basedatos.Ayudante;
 
+/*
+                        O_o ¿whaaat?
+ */
 public abstract class Gestion<T> {
 
     private Ayudante abd;
@@ -18,7 +21,7 @@ public abstract class Gestion<T> {
 
     public Gestion(Context c, boolean write) {
         abd = new Ayudante(c);
-        if(write) {
+        if (write) {
             this.open();
         } else {
             this.openRead();
@@ -55,7 +58,7 @@ public abstract class Gestion<T> {
 
     public abstract int deleteAll();
 
-    public int deleteAll(String tabla){
+    public int deleteAll(String tabla) {
         return this.delete(tabla, "1=1", null);
     }
 
@@ -73,7 +76,7 @@ public abstract class Gestion<T> {
         return bd.update(tabla, valores, condicion, argumentos);
     }
 
-    public Cursor getConsulta(String sql, String[] params){
+    public Cursor getConsulta(String sql, String[] params) {
         return bd.rawQuery(sql, params);
     }
 

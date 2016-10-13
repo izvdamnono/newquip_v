@@ -2,6 +2,9 @@ package com.izv.dam.newquip.contrato;
 
 import com.izv.dam.newquip.pojo.Nota;
 
+/**
+ * Declaramos la interfaces que vamos a usar en el modelo-vista-presentador.
+ */
 public interface ContratoNota {
 
     interface InterfaceModelo {

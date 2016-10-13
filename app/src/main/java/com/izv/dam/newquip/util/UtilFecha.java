@@ -4,6 +4,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Paquete de funciones sueltas que adaptan los datos.
+ */
 public class UtilFecha {
 
     public static long dateToLong(String date){
