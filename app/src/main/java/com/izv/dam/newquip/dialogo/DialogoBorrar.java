@@ -11,10 +11,6 @@ import android.support.v7.app.AlertDialog;
 import com.izv.dam.newquip.R;
 import com.izv.dam.newquip.pojo.Nota;
 
-/**
- * Created by Pilar on 26/09/2016.
- */
-
 public class DialogoBorrar extends DialogFragment {
     private Nota n;
     // Interfaz de comunicación

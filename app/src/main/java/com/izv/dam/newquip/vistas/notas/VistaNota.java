@@ -19,6 +19,8 @@ import com.izv.dam.newquip.pojo.Nota;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class VistaNota extends AppCompatActivity implements ContratoNota.InterfaceVista {
 
@@ -41,8 +43,8 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         editTextTitulo = (EditText) findViewById(R.id.etTitulo);
         editTextNota = (EditText) findViewById(R.id.etNota);
 
-        btn_img = (Button) findViewById(R.id.id_imagen_btn);//Hace de imagen y de boton
-        img_view = (ImageView) findViewById(R.id.id_imagen);//Hace de imagen y de boton
+        btn_img = (Button) findViewById(R.id.id_imagen_btn);//Boton
+        img_view = (ImageView) findViewById(R.id.id_imagen);//Imagen
 
         btn_img.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,7 +108,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     }
 
 
-
     @Override
     public void mostrarNota(Nota n) {
         editTextTitulo.setText(nota.getTitulo());
@@ -116,6 +117,18 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     private void saveNota() {
         nota.setTitulo(editTextTitulo.getText().toString());
         nota.setNota(editTextNota.getText().toString());
+
+        String fecha_actual = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss").format(new Date());
+
+        //Si no tiene fecha de creacion se la da
+        if (nota.getFecha_creacion() == null) {
+            nota.setFecha_creacion(fecha_actual);
+        }
+
+        //Fecha de modificacion se la cambia por la actual
+        nota.setFecha_modificacion(fecha_actual);
+
+
         long r = presentador.onSaveNota(nota);
         if (r > 0 & nota.getId() == 0) {
             nota.setId(r);
