@@ -19,7 +19,7 @@ public class Ayudante extends SQLiteOpenHelper {
      * TERMINADA la nueva base de datos
      */
 
-    private static final int VERSION = 2;
+    private static final int VERSION = 3;
 
     public Ayudante(Context context) {
         super(context, ContratoBaseDatos.BASEDATOS, null, VERSION);
@@ -39,6 +39,7 @@ public class Ayudante extends SQLiteOpenHelper {
                 //ContratoBaseDatos.TablaNota.LISTA + " text, " +
                 ContratoBaseDatos.TablaNota.FECHA_CREACION + " datetime, " +
                 ContratoBaseDatos.TablaNota.FECHA_MODIFICACION + " datetime, " +
+                ContratoBaseDatos.TablaNota.FECHA_RECORDATORIO + " datetime, " +
                 ContratoBaseDatos.TablaNota.COLOR + " text " +
                 ")";
         Log.v("sql_nota", sql_NOTA);

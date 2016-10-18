@@ -41,9 +41,10 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         editTextTitulo = (EditText) findViewById(R.id.etTitulo);
         editTextNota = (EditText) findViewById(R.id.etNota);
 
-        id_imageButton = (ImageButton) findViewById(R.id.id_imageButton);//Hace de imagen y de boton
+        btn_img = (Button) findViewById(R.id.id_imagen_btn);//Hace de imagen y de boton
+        img_view = (ImageView) findViewById(R.id.id_imagen);//Hace de imagen y de boton
 
-        id_imageButton.setOnClickListener(new View.OnClickListener() {
+        btn_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 abrirGaleria(v);
@@ -156,7 +157,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                         Bitmap bmp = BitmapFactory.decodeStream(imageStream);
 
                         // Ponemos nuestro bitmap en un ImageView que tengamos en la vista
-                        id_imageButton.setImageBitmap(bmp);
+                        img_view.setImageBitmap(bmp);
 
                     }
                 }

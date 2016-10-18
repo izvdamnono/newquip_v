@@ -33,7 +33,6 @@
                 android:ems="10"
                 android:hint="@string/nota"
                 android:inputType="textMultiLine" />
-            <!--
             <Button
                 android:text="@string/mas"
                 android:layout_width="wrap_content"
@@ -45,19 +44,11 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app2:srcCompat="@mipmap/ic_launcher"
+                app2:srcCompat="@drawable/ic_stat_content_add"
                 android:id="@+id/id_imagen"
                 android:layout_weight="1"
                 android:cropToPadding="true" />
-            -->
 
-            <ImageButton
-                android:id="@+id/id_imageButton"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:contentDescription="@string/app_name"
-                app2:srcCompat="@drawable/ic_stat_content_add" />
 
 
         </LinearLayout>

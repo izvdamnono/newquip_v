@@ -13,9 +13,11 @@ import com.izv.dam.newquip.contrato.ContratoBaseDatos;
 public class Nota implements Parcelable {
 
     private long id;
-    private String titulo, nota, image, video, audio, fecha_creacion, fecha_modificacion, color;
+    private String titulo, nota, image,
+            video, audio, fecha_creacion,
+            fecha_modificacion, fecha_recordatorio, color;
 
-    public Nota(long id, String titulo, String nota, String image, String video, String audio, String fecha_creacion, String fecha_modificacion, String color) {
+    public Nota(long id, String titulo, String nota, String image, String video, String audio, String fecha_creacion, String fecha_modificacion, String fecha_recordatorio, String color) {
         this.id = id;
         this.titulo = titulo;
         this.nota = nota;
@@ -24,11 +26,12 @@ public class Nota implements Parcelable {
         this.audio = audio;
         this.fecha_creacion = fecha_creacion;
         this.fecha_modificacion = fecha_modificacion;
+        this.fecha_recordatorio = fecha_recordatorio;
         this.color = color;
     }
 
     public Nota() {
-        this(0, null, null, null, null, null, null, null, null);
+        this(0, null, null, null, null, null, null, null, null, null);
     }
 
     public long getId() {
@@ -95,6 +98,14 @@ public class Nota implements Parcelable {
         this.fecha_modificacion = fecha_modificacion;
     }
 
+    public String getFecha_recordatorio() {
+        return fecha_recordatorio;
+    }
+
+    public void setFecha_recordatorio(String fecha_recordatorio) {
+        this.fecha_recordatorio = fecha_recordatorio;
+    }
+
     public String getColor() {
         return color;
     }
@@ -114,6 +125,7 @@ public class Nota implements Parcelable {
                 ", audio='" + audio + '\'' +
                 ", fecha_creacion='" + fecha_creacion + '\'' +
                 ", fecha_modificacion='" + fecha_modificacion + '\'' +
+                ", fecha_recordatorio='" + fecha_recordatorio + '\'' +
                 ", color='" + color + '\'' +
                 '}';
     }
@@ -137,6 +149,7 @@ public class Nota implements Parcelable {
         valores.put(ContratoBaseDatos.TablaNota.AUDIO, this.getAudio());
         valores.put(ContratoBaseDatos.TablaNota.FECHA_CREACION, this.getFecha_creacion());
         valores.put(ContratoBaseDatos.TablaNota.FECHA_MODIFICACION, this.getFecha_modificacion());
+        valores.put(ContratoBaseDatos.TablaNota.FECHA_RECORDATORIO, this.getFecha_recordatorio());
         valores.put(ContratoBaseDatos.TablaNota.COLOR, this.getColor());
 
         return valores;
@@ -161,6 +174,7 @@ public class Nota implements Parcelable {
         dest.writeString(audio);
         dest.writeString(fecha_creacion);//datetime
         dest.writeString(fecha_modificacion);//datetime
+        dest.writeString(fecha_recordatorio);//datetime
         dest.writeString(color);
     }
 
@@ -176,6 +190,7 @@ public class Nota implements Parcelable {
         audio = in.readString();
         fecha_creacion = in.readString();//datetime
         fecha_modificacion = in.readString();//datetime
+        fecha_recordatorio = in.readString();//datetime
         color = in.readString();
     }
 
@@ -208,6 +223,7 @@ public class Nota implements Parcelable {
         objeto.setAudio(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaNota.AUDIO)));
         objeto.setFecha_creacion(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaNota.FECHA_CREACION)));
         objeto.setFecha_modificacion(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaNota.FECHA_MODIFICACION)));
+        objeto.setFecha_recordatorio(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaNota.FECHA_RECORDATORIO)));
         objeto.setColor(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaNota.COLOR)));
         return objeto;
     }
