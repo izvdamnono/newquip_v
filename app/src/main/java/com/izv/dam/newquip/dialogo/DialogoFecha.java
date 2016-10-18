@@ -2,18 +2,20 @@ package com.izv.dam.newquip.dialogo;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.icu.util.Calendar;
-import android.os.Build;
+import android.app.DialogFragment;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.DialogFragment;
+import android.view.View;
 import android.widget.DatePicker;
+import android.widget.TextView;
 
+import java.util.Calendar;
 
 public class DialogoFecha extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
-    public DialogoFecha() {
+    TextView txtDate;
 
+    public DialogoFecha(View view) {
+        txtDate = (TextView) view;
     }
 
     @Override
@@ -21,7 +23,6 @@ public class DialogoFecha extends DialogFragment implements DatePickerDialog.OnD
         String date = year + "-" + month + "-" + dayOfMonth;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public Dialog onCreateDialog(Bundle saveInstanceState) {
         final Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -30,4 +31,5 @@ public class DialogoFecha extends DialogFragment implements DatePickerDialog.OnD
 
         return new DatePickerDialog(getActivity(), this, year, month, day);
     }
+
 }

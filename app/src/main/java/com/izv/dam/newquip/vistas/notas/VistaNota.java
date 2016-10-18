@@ -1,6 +1,7 @@
 package com.izv.dam.newquip.vistas.notas;
 
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,9 +13,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.izv.dam.newquip.R;
 import com.izv.dam.newquip.contrato.ContratoNota;
+import com.izv.dam.newquip.dialogo.DialogoFecha;
 import com.izv.dam.newquip.pojo.Nota;
 
 import java.io.FileNotFoundException;
@@ -25,6 +28,7 @@ import java.util.Date;
 public class VistaNota extends AppCompatActivity implements ContratoNota.InterfaceVista {
 
     private EditText editTextTitulo, editTextNota;
+    private TextView tvFechaRecordatorioDia, tvFechaRecordatorioHora;
 
     private ImageButton id_imageButton;
     private Button btn_img;
@@ -42,6 +46,26 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
         editTextTitulo = (EditText) findViewById(R.id.etTitulo);
         editTextNota = (EditText) findViewById(R.id.etNota);
+
+        // Fechas de recordatorio
+        // DIA: jue. 1 sept 2016
+        // HORA: 12:52:30
+        tvFechaRecordatorioDia = (TextView) findViewById(R.id.tvFechaRecordatorioDia);
+        tvFechaRecordatorioHora = (TextView) findViewById(R.id.tvFechaRecordatorioHora);
+
+        tvFechaRecordatorioDia.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus){
+                    DialogoFecha dialogFecha = new DialogoFecha(v);
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    dialogFecha.show(ft, "Fecha Recordatorio");
+                }
+            }
+        });
+
+
+
 
         btn_img = (Button) findViewById(R.id.id_imagen_btn);//Boton
         img_view = (ImageView) findViewById(R.id.id_imagen);//Imagen
@@ -114,6 +138,9 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         editTextNota.setText(nota.getNota());
     }
 
+    /*
+     * Con este metodo se guarda la nota
+     */
     private void saveNota() {
         nota.setTitulo(editTextTitulo.getText().toString());
         nota.setNota(editTextNota.getText().toString());
