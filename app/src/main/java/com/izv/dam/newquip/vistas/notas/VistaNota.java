@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -46,6 +47,10 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
         editTextTitulo = (EditText) findViewById(R.id.etTitulo);
         editTextNota = (EditText) findViewById(R.id.etNota);
+        //Boton
+        btn_img = (Button) findViewById(R.id.id_imagen_btn);
+        //Imagen
+        img_view = (ImageView) findViewById(R.id.id_imagen);
 
         // Fechas de recordatorio
         // DIA: jue. 1 sept 2016
@@ -53,30 +58,35 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         tvFechaRecordatorioDia = (TextView) findViewById(R.id.tvFechaRecordatorioDia);
         tvFechaRecordatorioHora = (TextView) findViewById(R.id.tvFechaRecordatorioHora);
 
-        tvFechaRecordatorioDia.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        tvFechaRecordatorioDia.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus){
-                    DialogoFecha dialogFecha = new DialogoFecha(v);
-                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    dialogFecha.show(ft, "Fecha Recordatorio");
-                }
+            public void onClick(View v) {
+                Log.v("Focus", "true");
+                DialogoFecha dialogFecha = new DialogoFecha(v);
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                dialogFecha.show(ft, "Fecha Recordatorio");
+            }
+        });
+        tvFechaRecordatorioHora.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v("Focus", "true");
+                DialogoFecha dialogFecha = new DialogoFecha(v);
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                dialogFecha.show(ft, "Fecha Recordatorio");
             }
         });
 
 
 
 
-        btn_img = (Button) findViewById(R.id.id_imagen_btn);//Boton
-        img_view = (ImageView) findViewById(R.id.id_imagen);//Imagen
-
-        btn_img.setOnClickListener(new View.OnClickListener() {
+       /* btn_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 abrirGaleria(v);
             }
         });
-
+*/
         if (savedInstanceState != null) {
             nota = savedInstanceState.getParcelable("nota");
         } else {

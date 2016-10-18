@@ -25,12 +25,14 @@
                 android:id="@+id/etTitulo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
                 android:hint="@string/titulo" />
 
             <EditText
                 android:id="@+id/etNota"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
                 android:ems="10"
                 android:hint="@string/nota"
                 android:inputType="textMultiLine" />

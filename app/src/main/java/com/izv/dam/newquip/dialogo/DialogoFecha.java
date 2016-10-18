@@ -12,15 +12,10 @@ import java.util.Calendar;
 
 public class DialogoFecha extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
-    TextView txtDate;
+    TextView tvFechaRecordatorioDia;
 
     public DialogoFecha(View view) {
-        txtDate = (TextView) view;
-    }
-
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        String date = year + "-" + month + "-" + dayOfMonth;
+        tvFechaRecordatorioDia = (TextView) view;
     }
 
     public Dialog onCreateDialog(Bundle saveInstanceState) {
@@ -32,4 +27,9 @@ public class DialogoFecha extends DialogFragment implements DatePickerDialog.OnD
         return new DatePickerDialog(getActivity(), this, year, month, day);
     }
 
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        String date = year + "-" + month + "-" + dayOfMonth;
+        tvFechaRecordatorioDia.setText(date);
+    }
 }
