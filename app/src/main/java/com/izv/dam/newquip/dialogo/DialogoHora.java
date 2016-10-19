@@ -1,6 +1,5 @@
 package com.izv.dam.newquip.dialogo;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
