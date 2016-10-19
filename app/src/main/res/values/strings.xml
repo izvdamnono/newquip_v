@@ -19,6 +19,10 @@
     <string name="etiqueta_dialogo_imagen">Añadir imagen: </string>
     <string name="etiqueta_dialogo_foto">Hacer foto </string>
     <string name="etiqueta_dialogo_galeria">Seleccionar imagen </string>
-    <string name="fecha_recordatorio_dia">Jue. 1 Sept 2016</string>
-    <string name="fecha_recordatorio_hora">12:52:30</string>
+    <string name="fecha_recordatorio_dia">mié., 19 oct. 2016</string>
+    <string name="fecha_recordatorio_hora">19:52:00</string>
+    <string name="add">Add</string>
+    <string name="delete">Delete</string>
+    <string name="save">Save</string>
+    <string name="alert">Alert</string>
 </resources>

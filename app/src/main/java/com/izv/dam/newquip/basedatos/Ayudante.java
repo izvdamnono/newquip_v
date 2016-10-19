@@ -19,7 +19,7 @@ public class Ayudante extends SQLiteOpenHelper {
      * TERMINADA la nueva base de datos
      */
 
-    private static final int VERSION = 3;
+    private static final int VERSION = 6;
 
     public Ayudante(Context context) {
         super(context, ContratoBaseDatos.BASEDATOS, null, VERSION);
@@ -59,10 +59,10 @@ public class Ayudante extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         String sql_nota = "drop table if exists " + ContratoBaseDatos.TablaNota.TABLA;
-        Log.v("sql_nota", sql_nota);
-        db.execSQL(sql_nota);
         String sql_lista = "drop table if exists " + ContratoBaseDatos.TablaLista.TABLA;
-        Log.v("sql_lista", sql_lista);
+        Log.v("sql_nota2", sql_nota);
+        Log.v("sql_lista2", sql_lista);
+        db.execSQL(sql_nota);
         db.execSQL(sql_lista);
     }
 }

@@ -2,19 +2,24 @@ package com.izv.dam.newquip.vistas.notas;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.izv.dam.newquip.R;
 import com.izv.dam.newquip.contrato.ContratoNota;
@@ -22,10 +27,14 @@ import com.izv.dam.newquip.dialogo.DialogoFecha;
 import com.izv.dam.newquip.dialogo.DialogoHora;
 import com.izv.dam.newquip.pojo.Nota;
 
+
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class VistaNota extends AppCompatActivity implements ContratoNota.InterfaceVista {
 
@@ -62,7 +71,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         tvFechaRecordatorioDia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v("Focus", "true");
                 DialogoFecha dialogFecha = new DialogoFecha(v);
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 dialogFecha.show(ft, "Fecha Recordatorio");
@@ -71,24 +79,20 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         tvFechaRecordatorioHora.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v("Focus", "true");
                 DialogoHora dialog = new DialogoHora(v);
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
-                dialog.show(ft, "Fecha Recordatorio");
-                //tvFechaRecordatorioHora.setText(dialog);
+                dialog.show(ft, "Hora Recordatorio");
             }
         });
 
 
-
-
-       /* btn_img.setOnClickListener(new View.OnClickListener() {
+        btn_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                abrirGaleria(v);
+                mostrarDialogoCamaraGaleria();
             }
         });
-*/
+
         if (savedInstanceState != null) {
             nota = savedInstanceState.getParcelable("nota");
         } else {
@@ -98,6 +102,44 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             }
         }
         mostrarNota(nota);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_nota, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.alert:
+                String fecha_recordatorio = tvFechaRecordatorioDia.getText().toString() + " " + tvFechaRecordatorioHora.getText().toString();
+                String nuevo_formato = cambiarFormato(fecha_recordatorio);
+                SaveRecordatorio(nuevo_formato);
+                Toast.makeText(this, "Save", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.save:
+                Toast.makeText(this, "Save", Toast.LENGTH_SHORT).show();
+                saveNota();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private String cambiarFormato(String fecha_recordatorio) {
+        String original = fecha_recordatorio;
+        DateFormat originalFormat = new SimpleDateFormat("E'.,' d MMM'.' yyyy HH:mm:ss", new Locale("es", "ES"));
+        DateFormat otherFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", new Locale("es", "ES"));
+        Date date = null;
+        try {
+            date = originalFormat.parse(original);
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        }
+        String formattedDate = otherFormat.format(date);
+        return formattedDate;
     }
 
 
@@ -122,7 +164,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         super.onSaveInstanceState(outState);
         outState.putParcelable("nota", nota);
         /*
-         * Ejemplso
+         * Ejemplo
             savedInstanceState.putBoolean("MyBoolean", true);
             savedInstanceState.putDouble("myDouble", 1.9);
             savedInstanceState.putInt("MyInt", 1);
@@ -156,14 +198,11 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     private void saveNota() {
         nota.setTitulo(editTextTitulo.getText().toString());
         nota.setNota(editTextNota.getText().toString());
-
         String fecha_actual = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss").format(new Date());
-
         //Si no tiene fecha de creacion se la da
         if (nota.getFecha_creacion() == null) {
             nota.setFecha_creacion(fecha_actual);
         }
-
         //Fecha de modificacion se la cambia por la actual
         nota.setFecha_modificacion(fecha_actual);
 
@@ -174,11 +213,14 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         }
     }
 
+    private void SaveRecordatorio(String fecha_recordatorio) {
+        nota.setFecha_recordatorio(fecha_recordatorio);
+    }
 
     /*
      * Metodos con los que se abre el selector de imagenes de la galeria
      */
-    public void abrirGaleria(View v) {
+    public void abrirGaleria() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -217,4 +259,34 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         }
     }
 
+
+    /*
+     *
+     */
+    public void mostrarDialogoCamaraGaleria() {
+        /*
+            DialogoImagen fragmentImagen = DialogoImagen.newInstance(n, img_view);
+            fragmentImagen.show(getSupportFragmentManager(), "Dialogo Imagen");
+         */
+        final CharSequence[] items = {"Sacar Foto", "Galeria"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Elige una opcion");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                switch (item) {
+                    case 0:
+                        //Camara
+
+                        break;
+                    case 1:
+                        //Galeria
+                        abrirGaleria();
+                        break;
+                }
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
 }

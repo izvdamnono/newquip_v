@@ -24,7 +24,16 @@ public class ContratoBaseDatos {
         public static final String FECHA_MODIFICACION = "fecha_modificacion";
         public static final String FECHA_RECORDATORIO = "fecha_recordatorio";
         public static final String COLOR = "color";
-        public static final String[] PROJECTION_ALL = {_ID, TITULO, NOTA, IMAGEN, VIDEO, AUDIO, FECHA_CREACION, FECHA_MODIFICACION, FECHA_RECORDATORIO, COLOR};
+        public static final String[] PROJECTION_ALL = {
+                _ID,
+                TITULO,
+                NOTA,
+                IMAGEN,
+                VIDEO,
+                AUDIO,
+                FECHA_CREACION,
+                FECHA_MODIFICACION,
+                FECHA_RECORDATORIO, COLOR};
         public static final String SORT_ORDER_DEFAULT = _ID + " desc";
     }
 

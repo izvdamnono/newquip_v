@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/alert"
+        android:icon="@drawable/ic_alarm_black_24dp"
+        android:title="@string/alert"
+        app:showAsAction="always"/>
+
+    <!--
+    <item
+        android:id="@+id/delete"
+        android:icon="@android:drawable/btn_plus"
+        android:title="@string/delete"
+        app:showAsAction="never"/>
+    -->
+    <item
+        android:id="@+id/save"
+        android:icon="@drawable/ic_save_black_24dp"
+        android:title="@string/save"
+        app:showAsAction="always"/>
+
+</menu>
+
+<!--
+    Iconos:
+            ic_camera_black_24dp Para añadir fotos y videos desde la camara
+            ic_photo_black_24dp solo para imagenes desde la galeria
+            ic_videocam_black_24dp solo para videos desde la galeria
+            ic_save_black_24dp para guardar la nota
+            ic_delete_black_24dp para borrar
+-->

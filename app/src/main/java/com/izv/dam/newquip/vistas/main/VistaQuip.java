@@ -77,7 +77,7 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
     @Override
     public void mostrarAgregarNota() {
         //Podemos quitar el toast de "add"
-        Toast.makeText(VistaQuip.this, "add", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(VistaQuip.this, "add", Toast.LENGTH_SHORT).show();
         Intent i = new Intent(this, VistaNota.class);
         startActivity(i);
     }
@@ -90,7 +90,7 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
     @Override
     public void mostrarEditarNota(Nota n) {
         //Podemos quitar el toast de "edit"
-        Toast.makeText(VistaQuip.this, "edit", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(VistaQuip.this, "edit", Toast.LENGTH_SHORT).show();
         Intent i = new Intent(this, VistaNota.class);
         Bundle b = new Bundle();
         b.putParcelable("nota", n);

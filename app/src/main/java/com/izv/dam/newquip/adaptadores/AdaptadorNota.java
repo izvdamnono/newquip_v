@@ -12,7 +12,7 @@ import com.izv.dam.newquip.R;
 import com.izv.dam.newquip.pojo.Nota;
 
 public class AdaptadorNota extends CursorAdapter {
-    TextView tv_titulo_nota, texo_nota, fecha_creacion;
+    TextView tv_titulo_nota, texo_nota, fecha_creacion, fecha_recordatorio;
 
     public AdaptadorNota(Context context, Cursor c) {
         super(context, c, 0);
@@ -26,6 +26,7 @@ public class AdaptadorNota extends CursorAdapter {
         tv_titulo_nota = (TextView) view.findViewById(R.id.tvTituloNota);
         texo_nota = (TextView) view.findViewById(R.id.tvTexoNota);
         fecha_creacion = (TextView) view.findViewById(R.id.tvFecha);
+        fecha_recordatorio = (TextView) view.findViewById(R.id.tvFechaRecordatorio);
 
         //Recogemos todos los datos del cursor de
         Nota nota = Nota.getNota(cursor);
@@ -34,6 +35,7 @@ public class AdaptadorNota extends CursorAdapter {
         tv_titulo_nota.setText(nota.getTitulo());
         texo_nota.setText(nota.getNota());
         fecha_creacion.setText(nota.getFecha_creacion());
+        fecha_recordatorio.setText(nota.getFecha_recordatorio());
     }
 
     @Override
