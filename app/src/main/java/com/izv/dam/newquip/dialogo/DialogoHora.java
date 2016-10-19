@@ -29,13 +29,16 @@ public class DialogoHora extends DialogFragment implements TimePickerDialog.OnTi
         int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
         int second = calendar.get(Calendar.SECOND);
+        boolean is24Hour = true;
 
-        return new TimePickerDialog(getActivity(), this, hourOfDay, minute);
+
+        return new TimePickerDialog(getActivity(), this, hourOfDay, minute, is24Hour);
+//        return new TimePickerDialog(getActivity(), this, hourOfDay, minute);
     }
 
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        String date = hourOfDay + ":" + minute + ":" + second;
+        String date = hourOfDay + ":" + minute;
     }
 }

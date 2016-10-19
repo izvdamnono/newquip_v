@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.izv.dam.newquip.R;
 import com.izv.dam.newquip.contrato.ContratoNota;
 import com.izv.dam.newquip.dialogo.DialogoFecha;
+import com.izv.dam.newquip.dialogo.DialogoHora;
 import com.izv.dam.newquip.pojo.Nota;
 
 import java.io.FileNotFoundException;
@@ -71,9 +72,10 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             @Override
             public void onClick(View v) {
                 Log.v("Focus", "true");
-                DialogoFecha dialogFecha = new DialogoFecha(v);
+                DialogoHora dialog = new DialogoHora(v);
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
-                dialogFecha.show(ft, "Fecha Recordatorio");
+                dialog.show(ft, "Fecha Recordatorio");
+                //tvFechaRecordatorioHora.setText(dialog);
             }
         });
 
