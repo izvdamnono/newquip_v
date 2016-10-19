@@ -2,11 +2,13 @@ package com.izv.dam.newquip.vistas.notas;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -62,7 +64,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         tvFechaRecordatorioDia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v("Focus", "true");
                 DialogoFecha dialogFecha = new DialogoFecha(v);
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 dialogFecha.show(ft, "Fecha Recordatorio");
@@ -71,24 +72,20 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         tvFechaRecordatorioHora.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v("Focus", "true");
                 DialogoHora dialog = new DialogoHora(v);
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
-                dialog.show(ft, "Fecha Recordatorio");
-                //tvFechaRecordatorioHora.setText(dialog);
+                dialog.show(ft, "Hora Recordatorio");
             }
         });
 
 
-
-
-       /* btn_img.setOnClickListener(new View.OnClickListener() {
+        btn_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                abrirGaleria(v);
+                mostrarDialogoCamaraGaleria();
             }
         });
-*/
+
         if (savedInstanceState != null) {
             nota = savedInstanceState.getParcelable("nota");
         } else {
@@ -178,7 +175,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     /*
      * Metodos con los que se abre el selector de imagenes de la galeria
      */
-    public void abrirGaleria(View v) {
+    public void abrirGaleria() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -217,4 +214,33 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         }
     }
 
+
+    /*
+     *
+     */
+    public void mostrarDialogoCamaraGaleria() {
+        /*
+            DialogoImagen fragmentImagen = DialogoImagen.newInstance(n, img);
+            fragmentImagen.show(getSupportFragmentManager(), "Dialogo Imagen");
+         */
+        final CharSequence[] items = {"Sacar Foto", "Galeria"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Elige una opcion");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                switch (item) {
+                    case 0:
+                        //Camara
+                        break;
+                    case 1:
+                        //galeria
+                        abrirGaleria();
+                        break;
+                }
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
 }

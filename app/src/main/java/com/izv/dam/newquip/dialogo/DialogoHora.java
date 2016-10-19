@@ -1,5 +1,6 @@
 package com.izv.dam.newquip.dialogo;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
@@ -15,6 +16,7 @@ import android.widget.TimePicker;
  * Created by dam on 18/10/16.
  */
 
+@SuppressLint("ValidFragment")
 public class DialogoHora extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
     TextView tvFechaRecordatorioHora;
@@ -28,17 +30,16 @@ public class DialogoHora extends DialogFragment implements TimePickerDialog.OnTi
         final Calendar calendar = Calendar.getInstance();
         int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
-        int second = calendar.get(Calendar.SECOND);
         boolean is24Hour = true;
 
 
         return new TimePickerDialog(getActivity(), this, hourOfDay, minute, is24Hour);
-//        return new TimePickerDialog(getActivity(), this, hourOfDay, minute);
     }
 
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        String date = hourOfDay + ":" + minute;
+        String fecha = hourOfDay + ":" + minute;
+        tvFechaRecordatorioHora.setText(fecha);
     }
 }

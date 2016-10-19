@@ -20,5 +20,8 @@
     <string name="etiqueta_dialogo_foto">Hacer foto </string>
     <string name="etiqueta_dialogo_galeria">Seleccionar imagen </string>
     <string name="fecha_recordatorio_dia">Jue. 1 Sept 2016</string>
-    <string name="fecha_recordatorio_hora">12:52:30</string>
+    <string name="fecha_recordatorio_hora">12:52</string>
+    <string name="add">Add</string>
+    <string name="delete">Delete</string>
+    <string name="save">Save</string>
 </resources>
