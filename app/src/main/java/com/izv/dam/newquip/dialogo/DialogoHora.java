@@ -1,5 +1,6 @@
 package com.izv.dam.newquip.dialogo;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
@@ -14,6 +15,7 @@ import android.widget.TimePicker;
 /**
  * Created by dam on 18/10/16.
  */
+
 
 @SuppressLint("ValidFragment")
 public class DialogoHora extends DialogFragment implements TimePickerDialog.OnTimeSetListener {

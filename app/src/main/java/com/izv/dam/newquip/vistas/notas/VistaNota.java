@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -68,20 +69,20 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         tvFechaRecordatorioDia = (TextView) findViewById(R.id.tvFechaRecordatorioDia);
         tvFechaRecordatorioHora = (TextView) findViewById(R.id.tvFechaRecordatorioHora);
 
-        tvFechaRecordatorioDia.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogoFecha dialogFecha = new DialogoFecha(v);
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                dialogFecha.show(ft, "Fecha Recordatorio");
-            }
-        });
         tvFechaRecordatorioHora.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DialogoHora dialog = new DialogoHora(v);
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 dialog.show(ft, "Hora Recordatorio");
+            }
+        });
+        tvFechaRecordatorioDia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogoFecha dialogFecha = new DialogoFecha(v);
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                dialogFecha.show(ft, "Fecha Recordatorio");
             }
         });
 
