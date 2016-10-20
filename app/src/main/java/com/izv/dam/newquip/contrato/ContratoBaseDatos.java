@@ -6,7 +6,7 @@ import android.provider.BaseColumns;
  * Generamos la clase abstracta de la base de datos
  */
 public class ContratoBaseDatos {
-
+    ///storage/emulated/0/databaseIZV/
     public final static String BASEDATOS = "quiip.sqlite";
 
     private ContratoBaseDatos() {

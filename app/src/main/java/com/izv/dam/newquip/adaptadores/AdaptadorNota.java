@@ -10,9 +10,11 @@ import android.widget.TextView;
 
 import com.izv.dam.newquip.R;
 import com.izv.dam.newquip.pojo.Nota;
+import com.izv.dam.newquip.util.UtilFecha;
 
 public class AdaptadorNota extends CursorAdapter {
     TextView tv_titulo_nota, texo_nota, fecha_creacion, fecha_recordatorio;
+    UtilFecha fecha_util;
 
     public AdaptadorNota(Context context, Cursor c) {
         super(context, c, 0);
@@ -34,8 +36,12 @@ public class AdaptadorNota extends CursorAdapter {
         //Le damos los datos a los items del listView
         tv_titulo_nota.setText(nota.getTitulo());
         texo_nota.setText(nota.getNota());
-        fecha_creacion.setText(nota.getFecha_creacion());
-        fecha_recordatorio.setText(nota.getFecha_recordatorio());
+        fecha_creacion.setText(UtilFecha.cambiarFormato(nota.getFecha_creacion(), 1));
+        if (nota.getFecha_recordatorio() != null){
+            fecha_recordatorio.setText(UtilFecha.cambiarFormato(nota.getFecha_recordatorio(), 1));
+        } else {
+            fecha_recordatorio.setText("");
+        }
     }
 
     @Override

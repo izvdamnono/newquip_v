@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,12 +33,12 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class VistaNota extends AppCompatActivity implements ContratoNota.InterfaceVista {
 
     private EditText editTextTitulo, editTextNota;
     private TextView tvFechaRecordatorioDia, tvFechaRecordatorioHora;
-    private UtilFecha fechas_util;
     private ImageButton id_imageButton;
     private Button btn_img;
     private ImageView img_view;
@@ -52,7 +51,22 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nota);
 
-        presentador = new PresentadorNota(this);
+        init();
+
+        ejecutar();
+
+        if (savedInstanceState != null) {
+            nota = savedInstanceState.getParcelable("nota");
+        } else {
+            Bundle b = getIntent().getExtras();
+            if (b != null) {
+                nota = b.getParcelable("nota");
+            }
+        }
+        mostrarNota(nota);
+    }
+
+    private void init() {
 
         editTextTitulo = (EditText) findViewById(R.id.etTitulo);
         editTextNota = (EditText) findViewById(R.id.etNota);
@@ -66,7 +80,10 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         // HORA: 12:52:30
         tvFechaRecordatorioDia = (TextView) findViewById(R.id.tvFechaRecordatorioDia);
         tvFechaRecordatorioHora = (TextView) findViewById(R.id.tvFechaRecordatorioHora);
+        presentador = new PresentadorNota(this);
+    }
 
+    private void ejecutar() {
         tvFechaRecordatorioHora.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,17 +108,8 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                 mostrarDialogoCamaraGaleria();
             }
         });
-
-        if (savedInstanceState != null) {
-            nota = savedInstanceState.getParcelable("nota");
-        } else {
-            Bundle b = getIntent().getExtras();
-            if (b != null) {
-                nota = b.getParcelable("nota");
-            }
-        }
-        mostrarNota(nota);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -116,12 +124,13 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
 
                 String fecha_recordatorio = tvFechaRecordatorioDia.getText().toString() + " " + tvFechaRecordatorioHora.getText().toString();
-                String nuevo_formato = fechas_util.cambiarFormato(fecha_recordatorio, 0);
+                String nuevo_formato = UtilFecha.cambiarFormato(fecha_recordatorio, 0);
 
 
-                SaveRecordatorio(nuevo_formato);
+                saveRecordatorio(nuevo_formato);
                 Toast.makeText(this, "Save", Toast.LENGTH_SHORT).show();
                 return true;
+
             case R.id.save:
                 Toast.makeText(this, "Save", Toast.LENGTH_SHORT).show();
                 saveNota();
@@ -180,10 +189,10 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         editTextTitulo.setText(nota.getTitulo());
         editTextNota.setText(nota.getNota());
         String formato_a_cortar = nota.getFecha_recordatorio();
-        formato_a_cortar = fechas_util.cambiarFormato(formato_a_cortar, 1);
 
         if (formato_a_cortar != null) {
-            String[] fecha_recordatorio = fechas_util.cortarFormato(formato_a_cortar);
+            formato_a_cortar = UtilFecha.cambiarFormato(formato_a_cortar, 1);
+            String[] fecha_recordatorio = UtilFecha.cortarFormato(formato_a_cortar);
             tvFechaRecordatorioDia.setText(fecha_recordatorio[0]);
             tvFechaRecordatorioHora.setText(fecha_recordatorio[1]);
         }
@@ -196,8 +205,9 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     private void saveNota() {
         nota.setTitulo(editTextTitulo.getText().toString());
         nota.setNota(editTextNota.getText().toString());
-        String fecha_actual = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss").format(new Date());
 
+        SimpleDateFormat formato_fecha_actual = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss", new Locale("es", "ES"));
+        String fecha_actual = formato_fecha_actual.format(new Date());
 
         //Si no tiene fecha de creacion se la da
         if (nota.getFecha_creacion() == null) {
@@ -213,7 +223,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         }
     }
 
-    private void SaveRecordatorio(String fecha_recordatorio) {
+    private void saveRecordatorio(String fecha_recordatorio) {
         nota.setFecha_recordatorio(fecha_recordatorio);
     }
 

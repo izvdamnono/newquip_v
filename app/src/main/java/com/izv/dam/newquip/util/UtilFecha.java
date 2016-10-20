@@ -13,7 +13,7 @@ public class UtilFecha {
 
     public static long dateToLong(String date) {
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", new Locale("es", "ES"));
             Date fecha = sdf.parse(date);
             return fecha.getTime();
         } catch (ParseException e) {
@@ -22,7 +22,7 @@ public class UtilFecha {
     }
 
     public static String formatDate(Date date) {
-        return formatStringDate("yyyy-MM-dd_hh-mm-ss", date);
+        return formatStringDate("yyyy-MM-dd HH:mm:ss", date);
     }
 
     public static String formatStringDate(String formatStr, Date date) {
@@ -33,11 +33,8 @@ public class UtilFecha {
     }
 
 
-    /**
+    /*
      * Formato de jue. 1 sept 2016 12:43:00 a 2016-9-1 12:43:00
-     *
-     * @param fecha_recordatorio
-     * @return
      */
     public static String cambiarFormato(String fecha_recordatorio, int formato) {
         String formato1 = "E',' d MMM yyyy HH:mm:ss";
@@ -48,6 +45,8 @@ public class UtilFecha {
                 formato2 = "E',' d MMM yyyy HH:mm:ss";
                 break;
             case 2:
+                formato1 = "E',' d MMM yyyy HH:mm:ss";
+                formato2 = "yyyy-MM-dd HH:mm:ss";
                 break;
         }
         String original = fecha_recordatorio.trim();
@@ -72,9 +71,10 @@ public class UtilFecha {
 
 
     public static String[] cortarFormato(String fecha_a_cortar) {
-        String[] re = {"hola", "mundo"};
+        String[] re = {"", ""};
+        String fecha;
         // fecha = "mié., 19 oct. 2016 19:52:00";
-        String fecha = fecha_a_cortar;
+        fecha = fecha_a_cortar;
         int mitad = fecha.lastIndexOf(" ");
 
         re[0] = fecha.substring(0, mitad).trim();
