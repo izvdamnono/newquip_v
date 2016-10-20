@@ -19,7 +19,7 @@ public class Ayudante extends SQLiteOpenHelper {
      * TERMINADA la nueva base de datos
      */
 
-    private static final int VERSION = 6;
+    private static final int VERSION = 8;
 
     public Ayudante(Context context) {
         super(context, ContratoBaseDatos.BASEDATOS, null, VERSION);
@@ -30,7 +30,7 @@ public class Ayudante extends SQLiteOpenHelper {
         String sql_NOTA, sql_LISTA;
         sql_NOTA = "create table if not exists " + ContratoBaseDatos.TablaNota.TABLA +
                 " (" +
-                ContratoBaseDatos.TablaNota._ID + " integer primary key autoincrement , " +
+                ContratoBaseDatos.TablaNota._ID + " integer primary key autoincrement, " +
                 ContratoBaseDatos.TablaNota.TITULO + " text, " +
                 ContratoBaseDatos.TablaNota.NOTA + " text, " +
                 ContratoBaseDatos.TablaNota.IMAGEN + " text, " +
@@ -47,7 +47,7 @@ public class Ayudante extends SQLiteOpenHelper {
 
         sql_LISTA = "create table if not exists " + ContratoBaseDatos.TablaLista.TABLA +
                 " (" +
-                ContratoBaseDatos.TablaLista._ID + " integer primary key autoincrement , " +
+                ContratoBaseDatos.TablaLista._ID + " integer primary key autoincrement, " +
                 ContratoBaseDatos.TablaLista.ID_NOTA + " integer, " +
                 ContratoBaseDatos.TablaLista.TEXTO_LISTA + " text, " +
                 ContratoBaseDatos.TablaLista.HECHO + " boolean " +

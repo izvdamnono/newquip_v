@@ -27,21 +27,19 @@ import com.izv.dam.newquip.contrato.ContratoNota;
 import com.izv.dam.newquip.dialogo.DialogoFecha;
 import com.izv.dam.newquip.dialogo.DialogoHora;
 import com.izv.dam.newquip.pojo.Nota;
+import com.izv.dam.newquip.util.UtilFecha;
 
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 public class VistaNota extends AppCompatActivity implements ContratoNota.InterfaceVista {
 
     private EditText editTextTitulo, editTextNota;
     private TextView tvFechaRecordatorioDia, tvFechaRecordatorioHora;
-
+    private UtilFecha fechas_util;
     private ImageButton id_imageButton;
     private Button btn_img;
     private ImageView img_view;
@@ -115,8 +113,12 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.alert:
+
+
                 String fecha_recordatorio = tvFechaRecordatorioDia.getText().toString() + " " + tvFechaRecordatorioHora.getText().toString();
-                String nuevo_formato = cambiarFormato(fecha_recordatorio);
+                String nuevo_formato = fechas_util.cambiarFormato(fecha_recordatorio, 0);
+
+
                 SaveRecordatorio(nuevo_formato);
                 Toast.makeText(this, "Save", Toast.LENGTH_SHORT).show();
                 return true;
@@ -127,20 +129,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    private String cambiarFormato(String fecha_recordatorio) {
-        String original = fecha_recordatorio;
-        DateFormat originalFormat = new SimpleDateFormat("E'.,' d MMM'.' yyyy HH:mm:ss", new Locale("es", "ES"));
-        DateFormat otherFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", new Locale("es", "ES"));
-        Date date = null;
-        try {
-            date = originalFormat.parse(original);
-        } catch (ParseException ex) {
-            ex.printStackTrace();
-        }
-        String formattedDate = otherFormat.format(date);
-        return formattedDate;
     }
 
 
@@ -191,15 +179,26 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     public void mostrarNota(Nota n) {
         editTextTitulo.setText(nota.getTitulo());
         editTextNota.setText(nota.getNota());
+        String formato_a_cortar = nota.getFecha_recordatorio();
+        formato_a_cortar = fechas_util.cambiarFormato(formato_a_cortar, 1);
+
+        if (formato_a_cortar != null) {
+            String[] fecha_recordatorio = fechas_util.cortarFormato(formato_a_cortar);
+            tvFechaRecordatorioDia.setText(fecha_recordatorio[0]);
+            tvFechaRecordatorioHora.setText(fecha_recordatorio[1]);
+        }
     }
 
     /*
      * Con este metodo se guarda la nota
      */
+
     private void saveNota() {
         nota.setTitulo(editTextTitulo.getText().toString());
         nota.setNota(editTextNota.getText().toString());
         String fecha_actual = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss").format(new Date());
+
+
         //Si no tiene fecha de creacion se la da
         if (nota.getFecha_creacion() == null) {
             nota.setFecha_creacion(fecha_actual);
