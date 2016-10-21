@@ -3,27 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/alert"
-        android:icon="@drawable/ic_alarm_black_24dp"
+        android:icon="@mipmap/ic_alarm"
         android:title="@string/alert"
         app:showAsAction="always"/>
 
-    <!--
     <item
         android:id="@+id/delete"
-        android:icon="@android:drawable/btn_plus"
+        android:icon="@mipmap/ic_delete"
         android:title="@string/delete"
-        app:showAsAction="never"/>
-    -->
+        app:showAsAction="always"/>
     <item
         android:id="@+id/save"
-        android:icon="@drawable/ic_save_black_24dp"
+        android:icon="@mipmap/ic_save"
         android:title="@string/save"
         app:showAsAction="always"/>
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="100"
         android:title="@string/action_settings"
-        app:showAsAction="never" />
+        app:showAsAction="always"
+        android:icon="@mipmap/ic_color" />
 
 </menu>
 

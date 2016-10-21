@@ -49,7 +49,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app2:srcCompat="@drawable/ic_alarm_black_24dp"
-                    android:paddingRight="5dp" />
+                    android:paddingEnd="5dp"
+                    android:paddingStart="5dp"
+                    android:contentDescription="@string/add" />
 
                 <!-- Fecha dia mes año ejemplo (jue. 1 sept 2016) -->
                 <TextView
@@ -59,7 +61,8 @@
                     android:layout_weight="1"
                     android:paddingTop="3dp"
                     android:text="@string/fecha_recordatorio_dia"
-                    android:textStyle="normal|bold" />
+                    android:textStyle="normal|bold"
+                    tools:ignore="NestedWeights" />
 
                 <!-- Fecha hora minuto segundo ejemplo (12:52:30) -->
                 <TextView
@@ -84,7 +87,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:cropToPadding="true"
-                android:paddingRight="5dp" />
+                android:paddingEnd="5dp"
+                android:paddingStart="5dp"
+                android:contentDescription="@string/add" />
 
 
         </LinearLayout>
