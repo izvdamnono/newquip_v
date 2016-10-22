@@ -76,7 +76,8 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
         setSupportActionBar(toolbar);
         fab = (FloatingActionButton) findViewById(R.id.fabAdd);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -159,7 +160,7 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_nota, menu);
+        getMenuInflater().inflate(R.menu.menu_quip, menu);
         return true;
     }
 
@@ -173,18 +174,15 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
         // Handle navigation view item clicks here.
         int id_menu = item.getItemId();
         switch (id_menu) {
-            case R.id.nav_camera:
+            case R.id.order_l:
                 break;
-            case R.id.nav_gallery:
+            case R.id.order_i:
                 break;
-            case R.id.nav_slideshow:
+            case R.id.order_v:
                 break;
-            case R.id.nav_manage:
+            case R.id.order_a:
                 break;
-            case R.id.nav_share:
-                break;
-            case R.id.nav_send:
-                break;
+
             case 0:
                 break;
             default:

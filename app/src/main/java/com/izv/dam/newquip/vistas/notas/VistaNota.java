@@ -8,9 +8,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,11 +43,17 @@ import java.util.Locale;
 
 public class VistaNota extends AppCompatActivity implements ContratoNota.InterfaceVista {
 
-    private EditText editTextTitulo, editTextNota;
-    private TextView tvFechaRecordatorioDia, tvFechaRecordatorioHora;
-    private ImageButton id_imageButton;
-    private Button btn_img;
-    private ImageView img_view;
+
+
+    DrawerLayout drawer;
+    Toolbar toolbar;
+
+    ActionBarDrawerToggle toggle;
+    EditText editTextTitulo, editTextNota;
+    TextView tvFechaRecordatorioDia, tvFechaRecordatorioHora;
+    ImageButton id_imageButton;
+    Button btn_img;
+    ImageView img_view;
     private Nota nota = new Nota();
     private PresentadorNota presentador;
     private static final int SELECT_FILE = 1;
@@ -49,7 +61,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_nota);
+        setContentView(R.layout.app_bar_nota);
 
         init();
 
@@ -67,6 +79,11 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     }
 
     private void init() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+
+
 
         editTextTitulo = (EditText) findViewById(R.id.etTitulo);
         editTextNota = (EditText) findViewById(R.id.etNota);
@@ -84,6 +101,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     }
 
     private void ejecutar() {
+
         tvFechaRecordatorioHora.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

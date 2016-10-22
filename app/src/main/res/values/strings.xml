@@ -28,6 +28,12 @@
     <string name="delete">Delete</string>
     <string name="save">Save</string>
     <string name="alert">Alert</string>
+    <string name="ordenar">Ordenar</string>
+    <string name="videos">Vídeos</string>
+    <string name="imagenes">Imágenes</string>
+    <string name="audio">Audio</string>
+    <string name="lista">Lista</string>
+    <string name="search">Borrar</string>
 
 
 </resources>

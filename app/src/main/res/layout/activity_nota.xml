@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:configChanges="orientation|keyboardHidden"
-    tools:context=".vistas.notas.VistaNota">
+    tools:context=".vistas.notas.VistaNota"
+    tools:showIn="@layout/app_bar_nota">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -25,16 +26,16 @@
                 android:id="@+id/etTitulo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:imeOptions="actionNext"
-                android:hint="@string/titulo" />
+                android:hint="@string/titulo"
+                android:imeOptions="actionNext" />
 
             <EditText
                 android:id="@+id/etNota"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:imeOptions="actionNext"
                 android:ems="10"
                 android:hint="@string/nota"
+                android:imeOptions="actionNext"
                 android:inputType="textMultiLine" />
 
             <!--Fecha recordatorio-->
@@ -48,10 +49,10 @@
                     android:id="@+id/id_icono_fecha_recordatorio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app2:srcCompat="@drawable/ic_alarm_black_24dp"
+                    android:contentDescription="@string/add"
                     android:paddingEnd="5dp"
                     android:paddingStart="5dp"
-                    android:contentDescription="@string/add" />
+                    app2:srcCompat="@drawable/ic_alarm_black_24dp" />
 
                 <!-- Fecha dia mes año ejemplo (jue. 1 sept 2016) -->
                 <TextView
@@ -86,10 +87,10 @@
                 android:id="@+id/id_imagen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/add"
                 android:cropToPadding="true"
                 android:paddingEnd="5dp"
-                android:paddingStart="5dp"
-                android:contentDescription="@string/add" />
+                android:paddingStart="5dp" />
 
 
         </LinearLayout>
