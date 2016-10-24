@@ -28,6 +28,8 @@
     <string name="delete">Delete</string>
     <string name="save">Save</string>
     <string name="alert">Alert</string>
+    <string name="alert_ok">Alert OK</string>
+    <string name="alert_delete">Deleted Alert</string>
     <string name="ordenar">Ordenar</string>
     <string name="videos">Vídeos</string>
     <string name="imagenes">Imágenes</string>

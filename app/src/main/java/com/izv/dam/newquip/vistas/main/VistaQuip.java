@@ -45,7 +45,29 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
+        ejecutar();
+    }
 
+    public void init() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        fab = (FloatingActionButton) findViewById(R.id.fabAdd);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        lv = (ListView) findViewById(R.id.lvListaNotas);
+        presentador = new PresentadorQuip(this);
+        adaptador = new AdaptadorNota(this, null);
+        lv.setAdapter(adaptador);
+    }
+
+
+    private void ejecutar() {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -70,25 +92,6 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
             }
         });
     }
-
-    public void init() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        fab = (FloatingActionButton) findViewById(R.id.fabAdd);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        lv = (ListView) findViewById(R.id.lvListaNotas);
-        presentador = new PresentadorQuip(this);
-        adaptador = new AdaptadorNota(this, null);
-        lv.setAdapter(adaptador);
-    }
-
     @Override
     protected void onPause() {
         presentador.onPause();

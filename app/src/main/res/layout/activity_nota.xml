@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app2="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:configChanges="orientation|keyboardHidden"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".vistas.notas.VistaNota"
     tools:showIn="@layout/app_bar_nota">
 
@@ -22,21 +22,35 @@
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin">
 
-            <EditText
-                android:id="@+id/etTitulo"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/titulo"
-                android:imeOptions="actionNext" />
+                android:layout_height="match_parent">
 
-            <EditText
-                android:id="@+id/etNota"
+                <EditText
+                    android:id="@+id/etTitulo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/titulo"
+                    android:imeOptions="actionNext" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/nota"
-                android:imeOptions="actionNext"
-                android:inputType="textMultiLine" />
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/etNota"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/nota"
+                    android:imeOptions="actionNext"
+                    android:inputType="textMultiLine" />
+            </android.support.design.widget.TextInputLayout>
+
+
+
+
 
             <!--Fecha recordatorio-->
             <LinearLayout
@@ -52,7 +66,7 @@
                     android:contentDescription="@string/add"
                     android:paddingEnd="5dp"
                     android:paddingStart="5dp"
-                    app2:srcCompat="@drawable/ic_alarm_black_24dp" />
+                    app:srcCompat="@drawable/ic_alarm_black_24dp" />
 
                 <!-- Fecha dia mes año ejemplo (jue. 1 sept 2016) -->
                 <TextView
@@ -97,4 +111,4 @@
 
     </ScrollView>
 
-</LinearLayout>
+</RelativeLayout>

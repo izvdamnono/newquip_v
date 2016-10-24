@@ -2,34 +2,37 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/alert"
-        android:icon="@mipmap/ic_alarm"
-        android:title="@string/alert"
-        app:showAsAction="always"/>
+        android:id="@+id/delete_alert"
+        android:icon="@mipmap/ic_delete_alert"
+        android:title="@string/alert_delete"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/ok_alert"
+        android:icon="@mipmap/ic_ok_alert"
+        android:title="@string/alert_ok"
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/delete"
         android:icon="@mipmap/ic_delete"
         android:title="@string/delete"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
+
     <item
         android:id="@+id/save"
         android:icon="@mipmap/ic_save"
         android:title="@string/save"
-        app:showAsAction="always"/>
-    <item
-        android:id="@+id/action_settings"
-        android:title="@string/action_settings"
-        app:showAsAction="always"
-        android:icon="@mipmap/ic_color" />
+        app:showAsAction="always" />
+
 
 </menu>
 
-<!--
-    Iconos:
-            ic_camera_black_24dp Para añadir fotos y videos desde la camara
-            ic_photo_black_24dp solo para imagenes desde la galeria
-            ic_videocam_black_24dp solo para videos desde la galeria
-            ic_save_black_24dp para guardar la nota
-            ic_delete_black_24dp para borrar
--->
+    <!--
+        Iconos:
+                ic_camera_black_24dp Para añadir fotos y videos desde la camara
+                ic_photo_black_24dp solo para imagenes desde la galeria
+                ic_videocam_black_24dp solo para videos desde la galeria
+                ic_save_black_24dp para guardar la nota
+                ic_delete_black_24dp para borrar
+    -->

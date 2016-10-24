@@ -36,9 +36,10 @@ public class AdaptadorNota extends CursorAdapter {
         //Le damos los datos a los items del listView
         tv_titulo_nota.setText(nota.getTitulo());
         texo_nota.setText(nota.getNota());
-        fecha_creacion.setText(UtilFecha.cambiarFormato(nota.getFecha_creacion(), 1));
+        fecha_creacion.setText(fecha_util.cambiarFormato(nota.getFecha_creacion(), 1));
+
         if (nota.getFecha_recordatorio() != null){
-            fecha_recordatorio.setText(UtilFecha.cambiarFormato(nota.getFecha_recordatorio(), 1));
+            fecha_recordatorio.setText(fecha_util.cambiarFormato(nota.getFecha_recordatorio(), 1));
         } else {
             fecha_recordatorio.setText("");
         }

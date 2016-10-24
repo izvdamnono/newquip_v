@@ -3,6 +3,7 @@ package com.izv.dam.newquip.util;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -63,7 +64,7 @@ public class UtilFecha {
         if (date != null) {
             formattedDate = otherFormat.format(date);
         } else {
-            formattedDate = "is null";
+            formattedDate = "";
         }
 
         return formattedDate;
@@ -82,4 +83,10 @@ public class UtilFecha {
         return re;
     }
 
+    public String fechaHoy(){
+        SimpleDateFormat formato = new SimpleDateFormat("E',' d MMM yyyy", new Locale("es", "ES"));
+        Calendar c = Calendar.getInstance();
+
+        return formato.format(c.getTime());
+    }
 }

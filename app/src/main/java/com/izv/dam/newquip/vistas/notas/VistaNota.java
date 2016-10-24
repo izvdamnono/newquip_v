@@ -44,7 +44,6 @@ import java.util.Locale;
 public class VistaNota extends AppCompatActivity implements ContratoNota.InterfaceVista {
 
 
-
     DrawerLayout drawer;
     Toolbar toolbar;
 
@@ -61,7 +60,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.app_bar_nota);
+        setContentView(R.layout.activity_main_nota);
 
         init();
 
@@ -83,8 +82,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         setSupportActionBar(toolbar);
 
 
-
-
         editTextTitulo = (EditText) findViewById(R.id.etTitulo);
         editTextNota = (EditText) findViewById(R.id.etNota);
         //Boton
@@ -102,14 +99,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
     private void ejecutar() {
 
-        tvFechaRecordatorioHora.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogoHora dialog = new DialogoHora(v);
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                dialog.show(ft, "Hora Recordatorio");
-            }
-        });
         tvFechaRecordatorioDia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,6 +108,14 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             }
         });
 
+        tvFechaRecordatorioHora.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogoHora dialog = new DialogoHora(v);
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                dialog.show(ft, "Hora Recordatorio");
+            }
+        });
 
         btn_img.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,21 +134,30 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
+        String fecha_recordatorio, nuevo_formato;
         switch (item.getItemId()) {
-            case R.id.alert:
+            case R.id.delete_alert:
 
+                saveRecordatorio(null);
+                Toast.makeText(this, "Alert Delete", Toast.LENGTH_SHORT).show();
+                return true;
 
-                String fecha_recordatorio = tvFechaRecordatorioDia.getText().toString() + " " + tvFechaRecordatorioHora.getText().toString();
-                String nuevo_formato = UtilFecha.cambiarFormato(fecha_recordatorio, 0);
-
-
+            case R.id.ok_alert:
+                fecha_recordatorio = tvFechaRecordatorioDia.getText().toString() + " " + tvFechaRecordatorioHora.getText().toString();
+                nuevo_formato = UtilFecha.cambiarFormato(fecha_recordatorio, 0);
                 saveRecordatorio(nuevo_formato);
-                Toast.makeText(this, "Save", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Alert " + nuevo_formato, Toast.LENGTH_SHORT).show();
                 return true;
 
             case R.id.save:
-                Toast.makeText(this, "Save", Toast.LENGTH_SHORT).show();
                 saveNota();
+                Toast.makeText(this, "Save", Toast.LENGTH_SHORT).show();
+                return true;
+
+            case R.id.delete:
+                saveRecordatorio(null);
+                saveNota();
+                Toast.makeText(this, "Reset", Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -224,7 +230,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         nota.setTitulo(editTextTitulo.getText().toString());
         nota.setNota(editTextNota.getText().toString());
 
-        SimpleDateFormat formato_fecha_actual = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss", new Locale("es", "ES"));
+        SimpleDateFormat formato_fecha_actual = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", new Locale("es", "ES"));
         String fecha_actual = formato_fecha_actual.format(new Date());
 
         //Si no tiene fecha de creacion se la da
