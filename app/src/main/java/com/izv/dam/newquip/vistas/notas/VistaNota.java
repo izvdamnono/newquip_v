@@ -6,10 +6,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.FileProvider;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -17,6 +21,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,7 +41,9 @@ import com.izv.dam.newquip.pojo.Nota;
 import com.izv.dam.newquip.util.UtilFecha;
 
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -52,11 +59,16 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     EditText editTextTitulo, editTextNota;
     TextView tvFechaRecordatorioDia, tvFechaRecordatorioHora;
     ImageButton id_imageButton;
+    String mPath;
     Button btn_img;
     ImageView img_view;
     private Nota nota = new Nota();
     private PresentadorNota presentador;
     private static final int SELECT_FILE = 1;
+
+    static final int REQUEST_TAKE_PHOTO = 1;
+    static final int REQUEST_IMAGE_CAPTURE = 2;
+    String mCurrentPhotoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,7 +139,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         btn_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mostrarDialogoCamaraGaleria();
+                mostrarDialogoCamaraGaleria(v);
             }
         });
     }
@@ -279,32 +291,38 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                 if (resultCode == Activity.RESULT_OK) {
                     selectedImage = imageReturnedIntent.getData();
 
-                    if (requestCode == SELECT_FILE) {
-
-                        InputStream imageStream = null;
-                        try {
-                            imageStream = getContentResolver().openInputStream(selectedImage);
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
-
-                        // Transformamos la URI de la imagen a inputStream y este a un Bitmap
-                        Bitmap bmp = BitmapFactory.decodeStream(imageStream);
-
-                        // Ponemos nuestro bitmap en un ImageView que tengamos en la vista
-                        img_view.setImageBitmap(bmp);
-
+                    InputStream imageStream = null;
+                    try {
+                        imageStream = getContentResolver().openInputStream(selectedImage);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
                     }
+
+                    // Transformamos la URI de la imagen a inputStream y este a un Bitmap
+                    Bitmap bmp = BitmapFactory.decodeStream(imageStream);
+
+                    // Ponemos nuestro bitmap en un ImageView que tengamos en la vista
+                    img_view.setImageBitmap(bmp);
+
                 }
                 break;
+            case REQUEST_IMAGE_CAPTURE:
+
+                if (resultCode == Activity.RESULT_OK) {
+                    Bundle extras = imageReturnedIntent.getExtras();
+                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    img_view.setImageBitmap(imageBitmap);
+                }
+                break;
+
         }
     }
 
 
     /*
-     *
+     * Dialogo de la camara y la galeria
      */
-    public void mostrarDialogoCamaraGaleria() {
+    public void mostrarDialogoCamaraGaleria(View v) {
         /*
             DialogoImagen fragmentImagen = DialogoImagen.newInstance(n, img_view);
             fragmentImagen.show(getSupportFragmentManager(), "Dialogo Imagen");
@@ -316,9 +334,10 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 switch (item) {
+                    //camara
                     case 0:
-                        //Camara
-
+                        //Toast.makeText(VistaNota.this, "Cámara", Toast.LENGTH_SHORT).show();
+                        dispatchTakePictureIntent();
                         break;
                     case 1:
                         //Galeria
@@ -329,5 +348,76 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    /*
+     * Camara
+     */
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        return image;
+    }
+
+    /*
+        private void dispatchTakePictureIntent() {
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            // Ensure that there's a camera activity to handle the intent
+            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                // Create the File where the photo should go
+                File photoFile = null;
+                try {
+                    photoFile = createImageFile();
+                } catch (IOException ex) {
+                    // Error occurred while creating the File
+
+                }
+                // Continue only if the File was successfully created
+                if (photoFile != null) {
+                     Uri photoURI = FileProvider.getUriForFile(this, "com.izv.dam.newquip.fileprovider", photoFile);
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                    startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                }
+            }
+        }*/
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    private void setPic() {
+        // Get the dimensions of the View
+        int targetW = img_view.getWidth();
+        int targetH = img_view.getHeight();
+
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        // Determine how much to scale down the image
+        int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
+
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inPurgeable = true;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        img_view.setImageBitmap(bitmap);
     }
 }
