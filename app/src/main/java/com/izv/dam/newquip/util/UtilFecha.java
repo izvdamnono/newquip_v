@@ -83,8 +83,22 @@ public class UtilFecha {
         return re;
     }
 
-    public String fechaHoy(){
+    public static String fechaHoy() {
+        SimpleDateFormat formato = new SimpleDateFormat("E',' d MMM yyyy HH:mm:ss", new Locale("es", "ES"));
+        Calendar c = Calendar.getInstance();
+
+        return formato.format(c.getTime());
+    }
+
+    public static String fechaHoyDia() {
         SimpleDateFormat formato = new SimpleDateFormat("E',' d MMM yyyy", new Locale("es", "ES"));
+        Calendar c = Calendar.getInstance();
+
+        return formato.format(c.getTime());
+    }
+
+    public static String fechaHoyHora() {
+        SimpleDateFormat formato = new SimpleDateFormat("HH:mm:ss", new Locale("es", "ES"));
         Calendar c = Calendar.getInstance();
 
         return formato.format(c.getTime());

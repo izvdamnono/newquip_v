@@ -165,3 +165,10 @@ FALTA LOS METODOS DE LISTA {InterfaceModelo, InterfacePresentador, InterfaceVist
                     android:layout_gravity="center_vertical|right"
                     />
             </android.support.v7.widget.Toolbar>
+
+
+
+
+            public void abrirCamara(){ File file = new File(Environment.getExternalStorageDirectory(), MEDIA_DIRECTORY); boolean isDirectoryCreated = file.exists(); if(!isDirectoryCreated) isDirectoryCreated = file.mkdirs(); if(isDirectoryCreated){ Long timestamp = System.currentTimeMillis() / 1000; imageName = timestamp.toString() + ".jpg"; nota.setImg(imageName); mPath = Environment.getExternalStorageDirectory() + File.separator + MEDIA_DIRECTORY + File.separator + imageName; File newFile = new File(mPath); Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE); intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(newFile)); startActivityForResult(intent, PHOTO_CODE); } }
+
+            case PHOTO_CODE://camara MediaScannerConnection.scanFile(this, new String[]{mPath}, null, new MediaScannerConnection.OnScanCompletedListener() { @Override public void onScanCompleted(String path, Uri uri) { Log.i("ExternalStorage", "Scanned " + path + ":"); Log.i("ExternalStorage", "-> Uri = " + uri); } }); Bitmap bitmap = BitmapFactory.decodeFile(mPath); img.setImageBitmap(bitmap); break;

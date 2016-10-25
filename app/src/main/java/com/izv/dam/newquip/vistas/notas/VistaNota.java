@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -81,7 +82,10 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
 
-
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
         editTextTitulo = (EditText) findViewById(R.id.etTitulo);
         editTextNota = (EditText) findViewById(R.id.etNota);
         //Boton
@@ -98,6 +102,9 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     }
 
     private void ejecutar() {
+
+        tvFechaRecordatorioDia.setText(UtilFecha.fechaHoyDia());
+        tvFechaRecordatorioHora.setText(UtilFecha.fechaHoyHora());
 
         tvFechaRecordatorioDia.setOnClickListener(new View.OnClickListener() {
             @Override
