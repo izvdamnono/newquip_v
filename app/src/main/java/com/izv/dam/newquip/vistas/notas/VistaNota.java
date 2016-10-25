@@ -60,7 +60,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_nota);
+        setContentView(R.layout.activity_detail_nota);
 
         init();
 
@@ -78,7 +78,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     }
 
     private void init() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
 
 
