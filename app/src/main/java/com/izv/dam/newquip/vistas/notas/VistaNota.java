@@ -1,18 +1,19 @@
 package com.izv.dam.newquip.vistas.notas;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -21,7 +22,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,10 +29,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.izv.dam.newquip.BuildConfig;
 import com.izv.dam.newquip.R;
 import com.izv.dam.newquip.contrato.ContratoNota;
 import com.izv.dam.newquip.dialogo.DialogoFecha;
@@ -52,23 +52,21 @@ import java.util.Locale;
 public class VistaNota extends AppCompatActivity implements ContratoNota.InterfaceVista {
 
 
-    DrawerLayout drawer;
     Toolbar toolbar;
 
-    ActionBarDrawerToggle toggle;
+
     EditText editTextTitulo, editTextNota;
     TextView tvFechaRecordatorioDia, tvFechaRecordatorioHora;
     ImageButton id_imageButton;
-    String mPath;
+
     Button btn_img;
     ImageView img_view;
     private Nota nota = new Nota();
     private PresentadorNota presentador;
     private static final int SELECT_FILE = 1;
+    private static final int REQUEST_IMAGE_CAPTURE = 2;
 
-    static final int REQUEST_TAKE_PHOTO = 1;
-    static final int REQUEST_IMAGE_CAPTURE = 2;
-    String mCurrentPhotoPath;
+    Uri file;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,12 +134,23 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             }
         });
 
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            btn_img.setEnabled(false);
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{Manifest.permission.CAMERA,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+        }
         btn_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mostrarDialogoCamaraGaleria(v);
+//                takePicture(v);
+
             }
         });
+
+
     }
 
 
@@ -244,7 +253,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     /*
      * Con este metodo se guarda la nota
      */
-
     private void saveNota() {
         nota.setTitulo(editTextTitulo.getText().toString());
         nota.setNota(editTextNota.getText().toString());
@@ -271,6 +279,37 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     }
 
     /*
+     * Dialogo de la camara y la galeria
+     */
+    public void mostrarDialogoCamaraGaleria(final View v) {
+        /*
+            DialogoImagen fragmentImagen = DialogoImagen.newInstance(n, img_view);
+            fragmentImagen.show(getSupportFragmentManager(), "Dialogo Imagen");
+         */
+        final CharSequence[] items = {"Sacar Foto", "Galeria"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Elige una opcion");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                switch (item) {
+                    //camara
+                    case 0:
+                        Toast.makeText(VistaNota.this, "Cámara", Toast.LENGTH_SHORT).show();
+                        takePicture(v);
+                        break;
+                    case 1:
+                        //Galeria
+                        abrirGaleria();
+                        break;
+                }
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    /*
      * Metodos con los que se abre el selector de imagenes de la galeria
      */
     public void abrirGaleria() {
@@ -280,8 +319,8 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         startActivityForResult(Intent.createChooser(intent, "Seleccione una imagen"), SELECT_FILE);
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
-        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         Uri selectedImageUri = null;
         Uri selectedImage;
 
@@ -289,7 +328,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         switch (requestCode) {
             case SELECT_FILE:
                 if (resultCode == Activity.RESULT_OK) {
-                    selectedImage = imageReturnedIntent.getData();
+                    selectedImage = data.getData();
 
                     InputStream imageStream = null;
                     try {
@@ -307,117 +346,54 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                 }
                 break;
             case REQUEST_IMAGE_CAPTURE:
-
-                if (resultCode == Activity.RESULT_OK) {
-                    Bundle extras = imageReturnedIntent.getExtras();
-                    Bitmap imageBitmap = (Bitmap) extras.get("data");
-                    img_view.setImageBitmap(imageBitmap);
+                if (requestCode == 100) {
+                    if (resultCode == RESULT_OK) {
+                        img_view.setImageURI(file);
+                    }
                 }
                 break;
-
         }
+
     }
 
-
-    /*
-     * Dialogo de la camara y la galeria
-     */
-    public void mostrarDialogoCamaraGaleria(View v) {
-        /*
-            DialogoImagen fragmentImagen = DialogoImagen.newInstance(n, img_view);
-            fragmentImagen.show(getSupportFragmentManager(), "Dialogo Imagen");
-         */
-        final CharSequence[] items = {"Sacar Foto", "Galeria"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Elige una opcion");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                switch (item) {
-                    //camara
-                    case 0:
-                        //Toast.makeText(VistaNota.this, "Cámara", Toast.LENGTH_SHORT).show();
-                        dispatchTakePictureIntent();
-                        break;
-                    case 1:
-                        //Galeria
-                        abrirGaleria();
-                        break;
-                }
-            }
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
-    }
 
     /*
      * Camara
      */
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
+    private static File getOutputMediaFile() {
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "NewQuipPictures");
 
-        // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
-        return image;
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                return null;
+            }
+        }
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        return new File(mediaStorageDir.getPath() + File.separator +
+                "IMG_" + timeStamp + ".jpg");
+    }
+
+    public void takePicture(View view) {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        file = Uri.fromFile(getOutputMediaFile());
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, file);
+
+        startActivityForResult(intent, 100);
     }
 
     /*
-        private void dispatchTakePictureIntent() {
-            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            // Ensure that there's a camera activity to handle the intent
-            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                // Create the File where the photo should go
-                File photoFile = null;
-                try {
-                    photoFile = createImageFile();
-                } catch (IOException ex) {
-                    // Error occurred while creating the File
-
-                }
-                // Continue only if the File was successfully created
-                if (photoFile != null) {
-                     Uri photoURI = FileProvider.getUriForFile(this, "com.izv.dam.newquip.fileprovider", photoFile);
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                    startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-                }
+     * Permisos
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == 0) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                btn_img.setEnabled(true);
             }
-        }*/
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
     }
 
-    private void setPic() {
-        // Get the dimensions of the View
-        int targetW = img_view.getWidth();
-        int targetH = img_view.getHeight();
-
-        // Get the dimensions of the bitmap
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        bmOptions.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-        int photoW = bmOptions.outWidth;
-        int photoH = bmOptions.outHeight;
-
-        // Determine how much to scale down the image
-        int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
-
-        // Decode the image file into a Bitmap sized to fill the View
-        bmOptions.inJustDecodeBounds = false;
-        bmOptions.inSampleSize = scaleFactor;
-        bmOptions.inPurgeable = true;
-
-        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-        img_view.setImageBitmap(bitmap);
-    }
 }

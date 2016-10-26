@@ -13,7 +13,7 @@ import com.izv.dam.newquip.contrato.ContratoBaseDatos;
 public class Nota implements Parcelable {
 
     private long id;
-    private String titulo, nota, image,
+    private String titulo, nota, imagen,
             video, audio, fecha_creacion,
             fecha_modificacion, fecha_recordatorio, color;
 
@@ -21,7 +21,7 @@ public class Nota implements Parcelable {
         this.id = id;
         this.titulo = titulo;
         this.nota = nota;
-        this.image = image;
+        this.imagen = image;
         this.video = video;
         this.audio = audio;
         this.fecha_creacion = fecha_creacion;
@@ -58,12 +58,12 @@ public class Nota implements Parcelable {
         this.nota = nota;
     }
 
-    public String getImage() {
-        return image;
+    public String getImagen() {
+        return imagen;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 
     public String getVideo() {
@@ -120,7 +120,7 @@ public class Nota implements Parcelable {
                 "id=" + id +
                 ", titulo='" + titulo + '\'' +
                 ", nota='" + nota + '\'' +
-                ", image='" + image + '\'' +
+                ", imagen='" + imagen + '\'' +
                 ", video='" + video + '\'' +
                 ", audio='" + audio + '\'' +
                 ", fecha_creacion='" + fecha_creacion + '\'' +
@@ -144,7 +144,7 @@ public class Nota implements Parcelable {
         }
         valores.put(ContratoBaseDatos.TablaNota.TITULO, this.getTitulo());
         valores.put(ContratoBaseDatos.TablaNota.NOTA, this.getNota());
-        valores.put(ContratoBaseDatos.TablaNota.IMAGEN, this.getImage());
+        valores.put(ContratoBaseDatos.TablaNota.IMAGEN, this.getImagen());
         valores.put(ContratoBaseDatos.TablaNota.VIDEO, this.getVideo());
         valores.put(ContratoBaseDatos.TablaNota.AUDIO, this.getAudio());
         valores.put(ContratoBaseDatos.TablaNota.FECHA_CREACION, this.getFecha_creacion());
@@ -169,7 +169,7 @@ public class Nota implements Parcelable {
         dest.writeLong(id);
         dest.writeString(titulo);
         dest.writeString(nota);
-        dest.writeString(image);
+        dest.writeString(imagen);
         dest.writeString(video);
         dest.writeString(audio);
         dest.writeString(fecha_creacion);//datetime
@@ -185,7 +185,7 @@ public class Nota implements Parcelable {
         id = in.readLong();
         titulo = in.readString();
         nota = in.readString();
-        image = in.readString();
+        imagen = in.readString();
         video = in.readString();
         audio = in.readString();
         fecha_creacion = in.readString();//datetime
@@ -218,7 +218,7 @@ public class Nota implements Parcelable {
         objeto.setId(c.getLong(c.getColumnIndex(ContratoBaseDatos.TablaNota._ID)));
         objeto.setTitulo(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaNota.TITULO)));
         objeto.setNota(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaNota.NOTA)));
-        objeto.setImage(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaNota.IMAGEN)));
+        objeto.setImagen(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaNota.IMAGEN)));
         objeto.setVideo(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaNota.VIDEO)));
         objeto.setAudio(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaNota.AUDIO)));
         objeto.setFecha_creacion(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaNota.FECHA_CREACION)));

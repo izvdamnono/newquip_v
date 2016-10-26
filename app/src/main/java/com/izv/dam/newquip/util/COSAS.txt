@@ -17,11 +17,11 @@ FALTA LOS METODOS DE LISTA {InterfaceModelo, InterfacePresentador, InterfaceVist
     }
 
     public String getImage() {
-        return image;
+        return imagen;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImage(String imagen) {
+        this.imagen = imagen;
     }
 
     public String getVideo() {

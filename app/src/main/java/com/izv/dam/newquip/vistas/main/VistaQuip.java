@@ -1,15 +1,21 @@
 package com.izv.dam.newquip.vistas.main;
 
+import android.app.SearchManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -31,6 +37,7 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
         OnBorrarDialogListener,
         NavigationView.OnNavigationItemSelectedListener {
 
+    private static final long SHORT_DELAY = 100; // 3.5 seconds
     private AdaptadorNota adaptador;
     private PresentadorQuip presentador;
     FloatingActionButton fab;
@@ -164,7 +171,45 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_quip, menu);
-        return true;
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                final Toast toast = Toast.makeText(getApplicationContext(), "onQueryTextSubmit", Toast.LENGTH_SHORT);
+                toast.show();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        toast.cancel();
+                    }
+                }, 10);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                final Toast toast = Toast.makeText(getApplicationContext(), "onQueryTextChange", Toast.LENGTH_SHORT);
+                toast.show();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        toast.cancel();
+                    }
+                }, 10);
+                return false;
+            }
+        });
+        /*
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        ComponentName componentName= new ComponentName(context, --.class);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName));
+        */
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
