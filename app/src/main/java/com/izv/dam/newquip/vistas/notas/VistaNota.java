@@ -2,7 +2,12 @@ package com.izv.dam.newquip.vistas.notas;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.FragmentTransaction;
+
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,12 +17,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
-import android.support.v4.widget.DrawerLayout;
+
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
@@ -32,7 +38,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.izv.dam.newquip.BuildConfig;
+import com.izv.dam.newquip.AlertReceiver;
+import com.izv.dam.newquip.Notificacion;
 import com.izv.dam.newquip.R;
 import com.izv.dam.newquip.contrato.ContratoNota;
 import com.izv.dam.newquip.dialogo.DialogoFecha;
@@ -40,33 +47,34 @@ import com.izv.dam.newquip.dialogo.DialogoHora;
 import com.izv.dam.newquip.pojo.Nota;
 import com.izv.dam.newquip.util.UtilFecha;
 
-
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 public class VistaNota extends AppCompatActivity implements ContratoNota.InterfaceVista {
 
-
     Toolbar toolbar;
-
-
     EditText editTextTitulo, editTextNota;
     TextView tvFechaRecordatorioDia, tvFechaRecordatorioHora;
     ImageButton id_imageButton;
-
     Button btn_img;
     ImageView img_view;
+
     private Nota nota = new Nota();
     private PresentadorNota presentador;
     private static final int SELECT_FILE = 1;
     private static final int REQUEST_IMAGE_CAPTURE = 2;
 
     Uri file;
+    View v ;
+
+    NotificationManager notificationManager;
+    boolean isNotificActive = false;
+    private int notifID = 33;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,8 +153,8 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             @Override
             public void onClick(View v) {
                 mostrarDialogoCamaraGaleria(v);
-//                takePicture(v);
-
+                showNotification(v);
+//                addNotificationAlarm(v);
             }
         });
 
@@ -178,6 +186,8 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                 return true;
 
             case R.id.save:
+//                View v = findViewById(R.id.id_activity_detail_nota);
+//                showNotification(v);
                 saveNota();
                 Toast.makeText(this, "Save", Toast.LENGTH_SHORT).show();
                 return true;
@@ -360,6 +370,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     /*
      * Camara
      */
+    @Nullable
     private static File getOutputMediaFile() {
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES), "NewQuipPictures");
@@ -384,12 +395,55 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     }
 
     /*
+     * Notificaciones
+     */
+    public void showNotification(View v) {
+        NotificationCompat.Builder notificBuilder = new NotificationCompat.Builder(this)
+                .setContentTitle("Notificacion prueba")
+                .setContentText("Texto prueba")
+                .setTicker("Alerta de prueba")
+                .setSmallIcon(R.mipmap.ic_add_note);
+        Intent intentNotification = new Intent(this, Notificacion.class);
+
+        TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(this);
+        taskStackBuilder.addParentStack(Notificacion.class);
+        taskStackBuilder.addNextIntent(intentNotification);
+        PendingIntent pendingIntent = taskStackBuilder.getPendingIntent(0,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        notificBuilder.setContentIntent(pendingIntent);
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(notifID, notificBuilder.build());
+        isNotificActive = true;
+    }
+
+    public void stopNotification(View v) {
+
+        if (isNotificActive) {
+            notificationManager.cancel(notifID);
+        }
+    }
+
+    public void addNotificationAlarm(View v) {
+        Long alertTime = new GregorianCalendar().getTimeInMillis() + 5 * 1000;
+        Intent alertIntent = new Intent(this, AlertReceiver.class);
+
+        AlarmManager alarmManager = (AlarmManager)
+                getSystemService(Context.ALARM_SERVICE);
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime,
+                PendingIntent.getBroadcast(this, 1, alertIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT));
+
+    }
+
+    /*
      * Permisos
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == 0) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
                     && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 btn_img.setEnabled(true);
             }
