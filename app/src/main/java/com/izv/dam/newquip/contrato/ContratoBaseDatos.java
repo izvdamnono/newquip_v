@@ -33,7 +33,9 @@ public class ContratoBaseDatos {
                 AUDIO,
                 FECHA_CREACION,
                 FECHA_MODIFICACION,
-                FECHA_RECORDATORIO, COLOR};
+                FECHA_RECORDATORIO,
+                COLOR
+        };
         public static final String SORT_ORDER_DEFAULT = _ID + " desc";
     }
 

@@ -17,11 +17,11 @@ public class Nota implements Parcelable {
             video, audio, fecha_creacion,
             fecha_modificacion, fecha_recordatorio, color;
 
-    public Nota(long id, String titulo, String nota, String image, String video, String audio, String fecha_creacion, String fecha_modificacion, String fecha_recordatorio, String color) {
+    public Nota(long id, String titulo, String nota, String imagen, String video, String audio, String fecha_creacion, String fecha_modificacion, String fecha_recordatorio, String color) {
         this.id = id;
         this.titulo = titulo;
         this.nota = nota;
-        this.imagen = image;
+        this.imagen = imagen;
         this.video = video;
         this.audio = audio;
         this.fecha_creacion = fecha_creacion;
