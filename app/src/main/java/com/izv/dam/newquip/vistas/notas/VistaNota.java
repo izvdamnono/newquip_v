@@ -1,6 +1,7 @@
 package com.izv.dam.newquip.vistas.notas;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.FragmentTransaction;
@@ -17,6 +18,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
@@ -28,12 +30,13 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
 import android.support.v7.widget.Toolbar;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,7 +63,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     Toolbar toolbar;
     EditText editTextTitulo, editTextNota;
     TextView tvFechaRecordatorioDia, tvFechaRecordatorioHora;
-    ImageButton id_imageButton;
+
     Button btn_img;
     ImageView img_view;
 
@@ -68,9 +71,9 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     private PresentadorNota presentador;
     private static final int SELECT_FILE = 1;
     private static final int REQUEST_IMAGE_CAPTURE = 2;
-
     Uri file;
-    View v ;
+
+    private static String filePathAddGallery;
 
     NotificationManager notificationManager;
     boolean isNotificActive = false;
@@ -153,7 +156,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             @Override
             public void onClick(View v) {
                 mostrarDialogoCamaraGaleria(v);
-                showNotification(v);
+//                showNotification(v);
 //                addNotificationAlarm(v);
             }
         });
@@ -169,7 +172,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
+
         String fecha_recordatorio, nuevo_formato;
         switch (item.getItemId()) {
             case R.id.delete_alert:
@@ -331,14 +334,11 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Uri selectedImageUri = null;
-        Uri selectedImage;
 
-        String filePath = null;
         switch (requestCode) {
             case SELECT_FILE:
                 if (resultCode == Activity.RESULT_OK) {
-                    selectedImage = data.getData();
+                    Uri selectedImage = data.getData();
 
                     InputStream imageStream = null;
                     try {
@@ -356,11 +356,11 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                 }
                 break;
             case REQUEST_IMAGE_CAPTURE:
-                if (requestCode == 100) {
-                    if (resultCode == RESULT_OK) {
-                        img_view.setImageURI(file);
-                    }
+                if (resultCode == RESULT_OK) {
+                    galleryAddPic(filePathAddGallery);
+                    setPic();
                 }
+
                 break;
         }
 
@@ -372,8 +372,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
      */
     @Nullable
     private static File getOutputMediaFile() {
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "NewQuipPictures");
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "NewQuipPictures");
 
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
@@ -381,17 +380,52 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             }
         }
 
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        return new File(mediaStorageDir.getPath() + File.separator +
-                "IMG_" + timeStamp + ".jpg");
+        @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        File f = new File(mediaStorageDir.getPath() + File.separator + "IMG_" + timeStamp + ".jpg");
+        filePathAddGallery = f.toString();
+        //    Log.v("FILE: ", f.toString());
+        return f;
     }
 
     public void takePicture(View view) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         file = Uri.fromFile(getOutputMediaFile());
         intent.putExtra(MediaStore.EXTRA_OUTPUT, file);
+        intent.putExtra("data", file);
 
-        startActivityForResult(intent, 100);
+        startActivityForResult(intent, 2);
+    }
+
+    private void galleryAddPic(String pathFile) {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        Uri contentUri = Uri.fromFile(new File(pathFile));
+        // Log.v("ruta", filePathAddGallery);
+        mediaScanIntent.setData(contentUri);
+        this.sendBroadcast(mediaScanIntent);
+    }
+
+    private void setPic() {
+        // Get the dimensions of the View
+        int targetW = img_view.getWidth();
+        int targetH = img_view.getHeight();
+
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(filePathAddGallery, bmOptions);
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        // Determine how much to scale down the image
+        int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
+
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inPurgeable = true;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(filePathAddGallery, bmOptions);
+        img_view.setImageBitmap(bitmap);
     }
 
     /*
@@ -440,7 +474,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
      * Permisos
      */
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == 0) {
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED
