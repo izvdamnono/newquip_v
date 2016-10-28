@@ -36,6 +36,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.izv.dam.newquip.vistas.main.VistaQuip" />
         </activity>
+
+        <provider
+            android:name=".datos.Proveedor"
+            android:authorities="com.example.nono.navigation.datos"
+            android:enabled="true"
+            android:exported="true"></provider>
     </application>
 
 </manifest>
