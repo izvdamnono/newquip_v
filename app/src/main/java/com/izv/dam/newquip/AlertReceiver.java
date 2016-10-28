@@ -10,9 +10,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.izv.dam.newquip.vistas.notas.VistaNota;
 
-/**
- * Created by Unchicodelavida on 26/10/2016.
- */
+
 
 public class AlertReceiver extends BroadcastReceiver {
     @Override

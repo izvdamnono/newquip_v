@@ -40,6 +40,7 @@
     <string name="settings_description">Filtrar por notas</string>
     <string name="search_hint">Buscar</string>
     <string name="search_label">Nota</string>
+    <string name="name">Name</string>
 
 
 </resources>
