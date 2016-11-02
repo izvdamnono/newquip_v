@@ -92,10 +92,12 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         if (savedInstanceState != null) {
             nota = savedInstanceState.getParcelable("nota");
         } else {
+
             Bundle b = getIntent().getExtras();
             if (b != null) {
                 nota = b.getParcelable("nota");
             }
+            System.out.println(nota.getTitulo() + "prueba");
         }
         mostrarNota(nota);
     }
@@ -176,6 +178,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         String fecha_recordatorio, nuevo_formato;
         switch (item.getItemId()) {
             case R.id.delete_alert:
+                saveRecordatorio(null);
                 stopNotification();
                 Toast.makeText(this, "Alert Delete", Toast.LENGTH_SHORT).show();
                 return true;
@@ -469,16 +472,17 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         Log.v("Alarm getTimeInMillis", Long.toString(date_alarm));
 
         Intent alertIntent = new Intent(this, AlarmReceiver.class);
+
+        Bundle b = new Bundle();
+        b.putParcelable("nota", nota);
+        alertIntent.putExtras(b);
+
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
         alarmManager.set(
                 AlarmManager.RTC_WAKEUP,
                 alertTime.getTimeInMillis(),
-                PendingIntent.getBroadcast(
-                        this,
-                        1,
-                        alertIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.getBroadcast(this, 1, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT
                 )
         );
 
