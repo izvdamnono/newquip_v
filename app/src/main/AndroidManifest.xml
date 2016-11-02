@@ -31,17 +31,24 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.izv.dam.newquip.vistas.main.VistaQuip" />
         </activity>
-        <activity android:name="com.izv.dam.newquip.Notificacion">
+
+        <activity android:name="com.izv.dam.newquip.vistas.notification.Notificacion">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.izv.dam.newquip.vistas.main.VistaQuip" />
         </activity>
 
         <provider
-            android:name=".datos.Proveedor"
-            android:authorities="com.example.nono.navigation.datos"
+            android:name="com.izv.dam.newquip.proveedor.ProveedorNota"
+            android:authorities="com.izv.dam.newquip.proveedor"
             android:enabled="true"
-            android:exported="true"></provider>
+            android:exported="true"/>
+
+        <receiver android:name=".broadcast.AlarmReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

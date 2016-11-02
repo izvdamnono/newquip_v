@@ -11,8 +11,10 @@ public class ContratoBaseDatos {
     ///storage/emulated/0/databaseIZV/
     public final static String BASEDATOS = "quiip.sqlite";
     //ProveedorNota
-    public static final String AUTORIDAD = "com.izv.dam.newquip.bdprovider.datos";
+    public static final String AUTORIDAD = "com.izv.dam.newquip.proveedor";
+
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTORIDAD);
+    public static final Uri CONTENT_URI_NOTA = Uri.withAppendedPath(CONTENT_URI, TablaNota.TABLA);
 
     private ContratoBaseDatos() {
     }
@@ -45,7 +47,7 @@ public class ContratoBaseDatos {
 
         //Tipos MIME
         public final static String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd" + AUTORIDAD + "." + TABLA;
-        public final static String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd" + AUTORIDAD + "."+ TABLA;
+        public final static String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd" + AUTORIDAD + "." + TABLA;
 
     }
 

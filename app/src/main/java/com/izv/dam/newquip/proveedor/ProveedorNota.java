@@ -28,7 +28,7 @@ public class ProveedorNota extends ContentProvider {
     }
 
     public ProveedorNota() {
-        gestionNota = new GestionNota(getContext());
+
     }
 
     @Override
@@ -110,5 +110,7 @@ public class ProveedorNota extends ContentProvider {
 
     @Override
     public boolean onCreate() {
+        gestionNota = new GestionNota(getContext());
         return true;
-    }}
+    }
+}

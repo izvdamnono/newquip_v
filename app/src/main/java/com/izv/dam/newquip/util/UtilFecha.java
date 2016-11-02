@@ -103,4 +103,19 @@ public class UtilFecha {
 
         return formato.format(c.getTime());
     }
+
+    public static Long stringToLongTime(String alarm) {
+        SimpleDateFormat string_date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date;
+        Long longDate;
+        try {
+            date = string_date.parse(alarm);
+            longDate = date.getTime();
+        } catch (ParseException ex) {
+            longDate = null;
+            ex.printStackTrace();
+        }
+
+        return longDate;
+    }
 }

@@ -229,8 +229,8 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
             case R.id.order_v:
                 break;
             case R.id.order_a:
-                break;
 
+                break;
             case 0:
                 break;
             default:

@@ -31,6 +31,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.support.v7.widget.Toolbar;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,8 +42,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.izv.dam.newquip.AlertReceiver;
-import com.izv.dam.newquip.Notificacion;
+import com.izv.dam.newquip.broadcast.AlarmReceiver;
+import com.izv.dam.newquip.vistas.notification.Notificacion;
 import com.izv.dam.newquip.R;
 import com.izv.dam.newquip.contrato.ContratoNota;
 import com.izv.dam.newquip.dialogo.DialogoFecha;
@@ -155,9 +156,8 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         btn_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mostrarDialogoCamaraGaleria(v);
-//                showNotification(v);
-//                addNotificationAlarm(v);
+//                mostrarDialogoCamaraGaleria(v);
+//                showNotification();
             }
         });
 
@@ -176,14 +176,15 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         String fecha_recordatorio, nuevo_formato;
         switch (item.getItemId()) {
             case R.id.delete_alert:
-
-                saveRecordatorio(null);
+                stopNotification();
                 Toast.makeText(this, "Alert Delete", Toast.LENGTH_SHORT).show();
                 return true;
 
             case R.id.ok_alert:
                 fecha_recordatorio = tvFechaRecordatorioDia.getText().toString() + " " + tvFechaRecordatorioHora.getText().toString();
                 nuevo_formato = UtilFecha.cambiarFormato(fecha_recordatorio, 0);
+
+                addAlarmNotification(nuevo_formato);
                 saveRecordatorio(nuevo_formato);
                 Toast.makeText(this, "Alert " + nuevo_formato, Toast.LENGTH_SHORT).show();
                 return true;
@@ -431,42 +432,55 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     /*
      * Notificaciones
      */
-    public void showNotification(View v) {
+    public void showNotification() {
         NotificationCompat.Builder notificBuilder = new NotificationCompat.Builder(this)
                 .setContentTitle("Notificacion prueba")
                 .setContentText("Texto prueba")
-                .setTicker("Alerta de prueba")
-                .setSmallIcon(R.mipmap.ic_add_note);
+                .setTicker("Alarma de prueba")
+                .setSmallIcon(R.mipmap.ic_alarm)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_add_note));
         Intent intentNotification = new Intent(this, Notificacion.class);
 
         TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(this);
         taskStackBuilder.addParentStack(Notificacion.class);
         taskStackBuilder.addNextIntent(intentNotification);
-        PendingIntent pendingIntent = taskStackBuilder.getPendingIntent(0,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        notificBuilder.setAutoCancel(true);//Permite que se borre cuando abrimos la notificacion
         notificBuilder.setContentIntent(pendingIntent);
+
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(notifID, notificBuilder.build());
         isNotificActive = true;
     }
 
-    public void stopNotification(View v) {
+    public void stopNotification() {
 
         if (isNotificActive) {
             notificationManager.cancel(notifID);
         }
     }
 
-    public void addNotificationAlarm(View v) {
-        Long alertTime = new GregorianCalendar().getTimeInMillis() + 5 * 1000;
-        Intent alertIntent = new Intent(this, AlertReceiver.class);
+    public void addAlarmNotification(String alarm) {
+        Long date_alarm = UtilFecha.stringToLongTime(alarm);
+        GregorianCalendar alertTime = new GregorianCalendar();
+        alertTime.setTimeInMillis(date_alarm);
 
-        AlarmManager alarmManager = (AlarmManager)
-                getSystemService(Context.ALARM_SERVICE);
+        Log.v("Alarm", alarm);
+        Log.v("Alarm getTimeInMillis", Long.toString(date_alarm));
 
-        alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime,
-                PendingIntent.getBroadcast(this, 1, alertIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT));
+        Intent alertIntent = new Intent(this, AlarmReceiver.class);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        alarmManager.set(
+                AlarmManager.RTC_WAKEUP,
+                alertTime.getTimeInMillis(),
+                PendingIntent.getBroadcast(
+                        this,
+                        1,
+                        alertIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                )
+        );
 
     }
 
