@@ -13,7 +13,7 @@ public class ContratoBaseDatos {
     //ProveedorNota
     public static final String AUTORIDAD = "com.izv.dam.newquip.proveedor";
 
-    public static final Uri CONTENT_URI = Uri.parse("content://" + AUTORIDAD);
+    private static final Uri CONTENT_URI = Uri.parse("content://" + AUTORIDAD);
     public static final Uri CONTENT_URI_NOTA = Uri.withAppendedPath(CONTENT_URI, TablaNota.TABLA);
 
     private ContratoBaseDatos() {

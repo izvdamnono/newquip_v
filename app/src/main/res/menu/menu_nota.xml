@@ -12,13 +12,13 @@
         android:icon="@mipmap/ic_ok_alert"
         android:title="@string/alert_ok"
         app:showAsAction="always" />
-
+<!--
     <item
         android:id="@+id/delete"
         android:icon="@mipmap/ic_delete"
         android:title="@string/delete"
         app:showAsAction="always" />
-
+-->
     <item
         android:id="@+id/save"
         android:icon="@mipmap/ic_save"

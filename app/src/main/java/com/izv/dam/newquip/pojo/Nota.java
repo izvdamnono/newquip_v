@@ -181,7 +181,7 @@ public class Nota implements Parcelable {
     /*
      * Metodo de la clase parcelabre que necesita lista
      */
-    protected Nota(Parcel in) {
+    public Nota(Parcel in) {
         id = in.readLong();
         titulo = in.readString();
         nota = in.readString();

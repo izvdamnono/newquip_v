@@ -58,11 +58,21 @@ public class Ayudante extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        //Crear tablas temporales
+        //llevar los datos a las tablas temporales
+        //borrar datos antiguas tablas
+        //Crear tablas nuevas
+        //llevar datos a las tablas nuevas
+
+
+
+
         String sql_nota = "drop table if exists " + ContratoBaseDatos.TablaNota.TABLA;
         String sql_lista = "drop table if exists " + ContratoBaseDatos.TablaLista.TABLA;
         Log.v("sql_nota2", sql_nota);
         Log.v("sql_lista2", sql_lista);
         db.execSQL(sql_nota);
         db.execSQL(sql_lista);
+        onCreate(db);
     }
 }

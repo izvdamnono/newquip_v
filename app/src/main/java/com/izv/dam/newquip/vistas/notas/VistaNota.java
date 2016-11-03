@@ -12,14 +12,18 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
@@ -70,15 +74,17 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
     private Nota nota = new Nota();
     private PresentadorNota presentador;
-    private static final int SELECT_FILE = 1;
-    private static final int REQUEST_IMAGE_CAPTURE = 2;
+    private static final int SELECT_FILE = 0;
+    private static final int IMAGE_CAPTURE = 1;
     Uri file;
 
-    private static String filePathAddGallery;
 
-    NotificationManager notificationManager;
-    boolean isNotificActive = false;
+    private static String temp_file_path;
+
+    NotificationManager notification_manager;
+    boolean is_notific_active = false;
     private int notifID = 33;
+    public static final String BUNDLE_KEY = "nota";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,14 +96,14 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         ejecutar();
 
         if (savedInstanceState != null) {
-            nota = savedInstanceState.getParcelable("nota");
+            nota = savedInstanceState.getParcelable(BUNDLE_KEY);
         } else {
 
             Bundle b = getIntent().getExtras();
             if (b != null) {
-                nota = b.getParcelable("nota");
+                nota = b.getParcelable(BUNDLE_KEY);
+
             }
-            System.out.println(nota.getTitulo() + "prueba");
         }
         mostrarNota(nota);
     }
@@ -158,7 +164,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         btn_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                mostrarDialogoCamaraGaleria(v);
+                mostrarDialogoCamaraGaleria(v);
 //                showNotification();
             }
         });
@@ -191,7 +197,12 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                 saveRecordatorio(nuevo_formato);
                 Toast.makeText(this, "Alert " + nuevo_formato, Toast.LENGTH_SHORT).show();
                 return true;
-
+/*
+            case R.id.delete:
+                saveNota();
+                Toast.makeText(this, "Reset", Toast.LENGTH_SHORT).show();
+                return true;
+*/
             case R.id.save:
 //                View v = findViewById(R.id.id_activity_detail_nota);
 //                showNotification(v);
@@ -199,11 +210,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                 Toast.makeText(this, "Save", Toast.LENGTH_SHORT).show();
                 return true;
 
-            case R.id.delete:
-                saveRecordatorio(null);
-                saveNota();
-                Toast.makeText(this, "Reset", Toast.LENGTH_SHORT).show();
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -229,7 +235,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable("nota", nota);
+        outState.putParcelable(BUNDLE_KEY, nota);
         /*
          * Ejemplo
             savedInstanceState.putBoolean("MyBoolean", true);
@@ -265,6 +271,10 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             tvFechaRecordatorioDia.setText(fecha_recordatorio[0]);
             tvFechaRecordatorioHora.setText(fecha_recordatorio[1]);
         }
+        if (nota.getImagen() != null) {
+            Bitmap bMap = BitmapFactory.decodeFile(nota.getImagen());
+            img_view.setImageBitmap(bMap);
+        }
     }
 
     /*
@@ -283,7 +293,9 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         }
         //Fecha de modificacion se la cambia por la actual
         nota.setFecha_modificacion(fecha_actual);
-
+        if (nota.getImagen() == null) {
+            nota.setImagen(temp_file_path);
+        }
 
         long r = presentador.onSaveNota(nota);
         if (r > 0 & nota.getId() == 0) {
@@ -295,6 +307,27 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         nota.setFecha_recordatorio(fecha_recordatorio);
     }
 
+    private void saveImagen(String imagen) {
+        nota.setImagen(imagen);
+    }
+
+
+    private String getRealPath(Uri datos) {
+        String filePath = "";
+        String wholeID = DocumentsContract.getDocumentId(datos); // Split at colon, use second item in the array
+        String id = wholeID.split(":")[1];
+        String[] column = {MediaStore.Images.Media.DATA}; // where id is equal to
+        String sel = MediaStore.Images.Media._ID + "=?";
+        Cursor cursor = VistaNota.this.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, column, sel, new String[]{id}, null);
+        int columnIndex = cursor.getColumnIndex(column[0]);
+        if (cursor.moveToFirst()) {
+            filePath = cursor.getString(columnIndex);
+        }
+        cursor.close();
+        return filePath;
+    }
+
+
     /*
      * Dialogo de la camara y la galeria
      */
@@ -303,78 +336,75 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             DialogoImagen fragmentImagen = DialogoImagen.newInstance(n, img_view);
             fragmentImagen.show(getSupportFragmentManager(), "Dialogo Imagen");
          */
-        final CharSequence[] items = {"Sacar Foto", "Galeria"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Elige una opcion");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
+        final CharSequence[] items = {"Galeria", "Cámara"};
+        AlertDialog.Builder alert_builder = new AlertDialog.Builder(this);
+        alert_builder.setTitle("Elige una opcion");
+        alert_builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 switch (item) {
-                    //camara
-                    case 0:
-                        Toast.makeText(VistaNota.this, "Cámara", Toast.LENGTH_SHORT).show();
-                        takePicture(v);
-                        break;
-                    case 1:
-                        //Galeria
+                    //Galeria
+                    case SELECT_FILE:
+                        Toast.makeText(VistaNota.this, "Galeria", Toast.LENGTH_SHORT).show();
                         abrirGaleria();
                         break;
+                    //camara
+                    case IMAGE_CAPTURE:
+                        Toast.makeText(VistaNota.this, "Cámara", Toast.LENGTH_SHORT).show();
+                        takePicture();
+                        break;
+
                 }
             }
         });
-        AlertDialog alert = builder.create();
+        AlertDialog alert = alert_builder.create();
         alert.show();
+    }
+
+     /*
+     * Se ejecuta cada vez que seleccionamos una imagen desde la galerio o desde la cámara
+     */
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+        switch (requestCode) {
+            case SELECT_FILE://Funciona
+                if (resultCode == RESULT_OK) {
+                    Uri selectedImage = data.getData();
+                    temp_file_path = getRealPath(selectedImage);
+                    System.out.println("1" + temp_file_path);
+
+                    setPic(temp_file_path);
+                    saveImagen(temp_file_path);
+                }
+                break;
+            case IMAGE_CAPTURE://No funciona
+                if (resultCode == Activity.RESULT_OK) {
+                    System.out.println("2" + temp_file_path);
+
+                    galleryAddPic(temp_file_path);//Añade la imagen a la galeria
+                    setPic(temp_file_path);
+                    saveImagen(temp_file_path);
+                }
+                break;
+        }
     }
 
     /*
      * Metodos con los que se abre el selector de imagenes de la galeria
      */
     public void abrirGaleria() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Seleccione una imagen"), SELECT_FILE);
+        Intent intent = new Intent()
+                .setType("image/*")
+                .setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, getString(R.string.selecciona_una_imagen)), SELECT_FILE);
     }
-
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        switch (requestCode) {
-            case SELECT_FILE:
-                if (resultCode == Activity.RESULT_OK) {
-                    Uri selectedImage = data.getData();
-
-                    InputStream imageStream = null;
-                    try {
-                        imageStream = getContentResolver().openInputStream(selectedImage);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-
-                    // Transformamos la URI de la imagen a inputStream y este a un Bitmap
-                    Bitmap bmp = BitmapFactory.decodeStream(imageStream);
-
-                    // Ponemos nuestro bitmap en un ImageView que tengamos en la vista
-                    img_view.setImageBitmap(bmp);
-
-                }
-                break;
-            case REQUEST_IMAGE_CAPTURE:
-                if (resultCode == RESULT_OK) {
-                    galleryAddPic(filePathAddGallery);
-                    setPic();
-                }
-
-                break;
-        }
-
-    }
-
 
     /*
      * Camara
      */
-    @Nullable
     private static File getOutputMediaFile() {
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "NewQuipPictures");
 
@@ -384,31 +414,30 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             }
         }
 
-        @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File f = new File(mediaStorageDir.getPath() + File.separator + "IMG_" + timeStamp + ".jpg");
-        filePathAddGallery = f.toString();
-        //    Log.v("FILE: ", f.toString());
+        temp_file_path = f.toString();
+        System.out.println("FILE getOutputMediaFile: " + f.toString());
         return f;
     }
 
-    public void takePicture(View view) {
+    public void takePicture() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         file = Uri.fromFile(getOutputMediaFile());
         intent.putExtra(MediaStore.EXTRA_OUTPUT, file);
         intent.putExtra("data", file);
 
-        startActivityForResult(intent, 2);
+        startActivityForResult(intent, IMAGE_CAPTURE);
     }
 
     private void galleryAddPic(String pathFile) {
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         Uri contentUri = Uri.fromFile(new File(pathFile));
-        // Log.v("ruta", filePathAddGallery);
         mediaScanIntent.setData(contentUri);
         this.sendBroadcast(mediaScanIntent);
     }
 
-    private void setPic() {
+    private void setPic(String filePathAddGallery) {
         // Get the dimensions of the View
         int targetW = img_view.getWidth();
         int targetH = img_view.getHeight();
@@ -432,6 +461,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         img_view.setImageBitmap(bitmap);
     }
 
+
     /*
      * Notificaciones
      */
@@ -447,19 +477,20 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(this);
         taskStackBuilder.addParentStack(Notificacion.class);
         taskStackBuilder.addNextIntent(intentNotification);
+
         PendingIntent pendingIntent = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         notificBuilder.setAutoCancel(true);//Permite que se borre cuando abrimos la notificacion
         notificBuilder.setContentIntent(pendingIntent);
 
-        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(notifID, notificBuilder.build());
-        isNotificActive = true;
+        notification_manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notification_manager.notify(notifID, notificBuilder.build());
+        is_notific_active = true;
     }
 
     public void stopNotification() {
 
-        if (isNotificActive) {
-            notificationManager.cancel(notifID);
+        if (is_notific_active) {
+            notification_manager.cancel(notifID);
         }
     }
 
@@ -474,7 +505,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         Intent alertIntent = new Intent(this, AlarmReceiver.class);
 
         Bundle b = new Bundle();
-        b.putParcelable("nota", nota);
+        b.putParcelable(BUNDLE_KEY, nota);
         alertIntent.putExtras(b);
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -482,8 +513,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         alarmManager.set(
                 AlarmManager.RTC_WAKEUP,
                 alertTime.getTimeInMillis(),
-                PendingIntent.getBroadcast(this, 1, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT
-                )
+                PendingIntent.getBroadcast(this, 1, alertIntent, PendingIntent.FLAG_CANCEL_CURRENT)
         );
 
     }
