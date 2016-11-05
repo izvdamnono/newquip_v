@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.izv.dam.newquip.basedatos.Ayudante;
 
 /*
-                        O_o ¿whaaat?
+ *  O_o ¿whaaat?
  */
 public abstract class Gestion<T> {
 

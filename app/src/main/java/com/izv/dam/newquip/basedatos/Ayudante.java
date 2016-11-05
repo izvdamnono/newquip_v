@@ -14,7 +14,7 @@ public class Ayudante extends SQLiteOpenHelper {
     //fechas https://www.sqlite.org/lang_datefunc.html
     //trigger https://www.sqlite.org/lang_createtrigger.html
 
-    /**
+    /*
      * Created by Nono on 10/10/2016.
      * TERMINADA la nueva base de datos
      */

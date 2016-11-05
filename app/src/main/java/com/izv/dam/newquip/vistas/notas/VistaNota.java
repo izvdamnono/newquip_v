@@ -1,7 +1,6 @@
 package com.izv.dam.newquip.vistas.notas;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.FragmentTransaction;
@@ -16,14 +15,11 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
@@ -33,6 +29,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import android.util.Log;
@@ -56,8 +54,6 @@ import com.izv.dam.newquip.pojo.Nota;
 import com.izv.dam.newquip.util.UtilFecha;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -85,6 +81,10 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     boolean is_notific_active = false;
     private int notifID = 33;
     public static final String BUNDLE_KEY = "nota";
+
+    private RecyclerView recycler_view_lista;
+    private RecyclerView.Adapter recycler_view_adapter;
+    private RecyclerView.LayoutManager recycler_view_layout_manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +122,22 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         btn_img = (Button) findViewById(R.id.id_imagen_btn);
         //Imagen
         img_view = (ImageView) findViewById(R.id.id_imagen);
+
+
+        recycler_view_lista = (RecyclerView) findViewById(R.id.id_recycler_view_lista);
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        recycler_view_lista.setHasFixedSize(true);
+
+        // use a linear layout manager
+        recycler_view_layout_manager = new LinearLayoutManager(this);
+        recycler_view_lista.setLayoutManager(recycler_view_layout_manager);
+
+        // specify an adapter (see also next example)
+        recycler_view_adapter = new MyAdapter(myDataset);
+        recycler_view_lista.setAdapter(recycler_view_adapter);
+
 
         // Fechas de recordatorio
         // DIA: jue. 1 sept 2016
