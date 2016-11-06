@@ -14,6 +14,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -44,6 +45,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.izv.dam.newquip.adaptadores.AdaptadorLista;
 import com.izv.dam.newquip.broadcast.AlarmReceiver;
 import com.izv.dam.newquip.vistas.notification.Notificacion;
 import com.izv.dam.newquip.R;
@@ -55,6 +57,7 @@ import com.izv.dam.newquip.util.UtilFecha;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
@@ -82,9 +85,10 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     private int notifID = 33;
     public static final String BUNDLE_KEY = "nota";
 
-    private RecyclerView recycler_view_lista;
-    private RecyclerView.Adapter recycler_view_adapter;
-    private RecyclerView.LayoutManager recycler_view_layout_manager;
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,20 +127,28 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         //Imagen
         img_view = (ImageView) findViewById(R.id.id_imagen);
 
+        ArrayList mDatas = new ArrayList();
+        /*-----------*/
+        for (int i = 0; i < 10; i++) {
+            mDatas.add(i, "i=" + i);
+        }
 
-        recycler_view_lista = (RecyclerView) findViewById(R.id.id_recycler_view_lista);
+        mRecyclerView = (RecyclerView) findViewById(R.id.id_recycler_view_listas);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
-        recycler_view_lista.setHasFixedSize(true);
+        mRecyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
-        recycler_view_layout_manager = new LinearLayoutManager(this);
-        recycler_view_lista.setLayoutManager(recycler_view_layout_manager);
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        recycler_view_adapter = new MyAdapter(myDataset);
-        recycler_view_lista.setAdapter(recycler_view_adapter);
+        mAdapter = new AdaptadorLista(mDatas);
+        mRecyclerView.setAdapter(mAdapter);
+
+
+        /*-----------*/
 
 
         // Fechas de recordatorio

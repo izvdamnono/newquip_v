@@ -4,39 +4,36 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.izv.dam.newquip.R;
 
-/**
- * Created by nono on 5/11/16.
- */
-
 
 public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.ViewHolder> {
+
     private String[] mDataset;
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView textView;
+        public TextView mTextView;
 
         public ViewHolder(TextView v) {
             super(v);
-            textView = v;
+            mTextView = (TextView) v.findViewById(R.id.item_title);
         }
     }
-
 
     public AdaptadorLista(String[] myDataset) {
         mDataset = myDataset;
     }
 
-
+    // Create new views (invoked by the layout manager)
     @Override
     public AdaptadorLista.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_lista, parent, false);
+        // create a new view
+        View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.my_text_view, parent, false);
 
         ViewHolder vh = new ViewHolder(v);
         return vh;
@@ -44,13 +41,12 @@ public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.textView.setText(mDataset[position]);
+        holder.mTextView.setText(mDataset[position]);
 
     }
 
     @Override
     public int getItemCount() {
         return mDataset.length;
-
     }
 }
