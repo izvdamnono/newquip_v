@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.izv.dam.newquip.R;
@@ -26,7 +27,8 @@ public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.ViewHold
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_lista, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_lista, parent, false);
         ViewHolder viewHolder = new ViewHolder(itemView);
         return viewHolder;
     }
@@ -36,20 +38,22 @@ public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.ViewHold
         holder.text_view_id_lista.setText("" + listaList.get(position).getId_lista());
         holder.text_view_id_nota.setText("" + listaList.get(position).getId_nota());
         holder.text_view_lista_texto.setText(listaList.get(position).getTexto_lista());
+        holder.check_box_lista.setChecked(listaList.get(position).isHecho());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return listaList.size();
     }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-
+        CheckBox check_box_lista;
         TextView text_view_id_nota, text_view_id_lista, text_view_lista_texto;
 
         public ViewHolder(View v) {
             super(v);
+            check_box_lista = (CheckBox) v.findViewById(R.id.check_box_lista);
             text_view_id_nota = (TextView) v.findViewById(R.id.id_nota);
             text_view_id_lista = (TextView) v.findViewById(R.id.id_lista);
             text_view_lista_texto = (TextView) v.findViewById(R.id.id_texto_lista);

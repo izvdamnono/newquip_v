@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="horizontal">
 
 
     <CheckBox
@@ -13,20 +13,17 @@
     <TextView
         android:id="@+id/id_lista"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/add" />
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/id_nota"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/add" />
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/id_texto_lista"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/add" />
+        android:layout_height="wrap_content" />
 <!--
     <EditText
         android:layout_width="match_parent"
