@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.FragmentTransaction;
-
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -14,7 +13,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -25,41 +23,39 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
-
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.izv.dam.newquip.R;
 import com.izv.dam.newquip.adaptadores.AdaptadorLista;
 import com.izv.dam.newquip.broadcast.AlarmReceiver;
-import com.izv.dam.newquip.vistas.notification.Notificacion;
-import com.izv.dam.newquip.R;
 import com.izv.dam.newquip.contrato.ContratoNota;
 import com.izv.dam.newquip.dialogo.DialogoFecha;
 import com.izv.dam.newquip.dialogo.DialogoHora;
+import com.izv.dam.newquip.pojo.Lista;
 import com.izv.dam.newquip.pojo.Nota;
 import com.izv.dam.newquip.util.UtilFecha;
+import com.izv.dam.newquip.vistas.notification.Notificacion;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 
 public class VistaNota extends AppCompatActivity implements ContratoNota.InterfaceVista {
@@ -86,9 +82,9 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     public static final String BUNDLE_KEY = "nota";
 
 
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+    RecyclerView mRecyclerView;
+    List<Lista> listaList;
+    AdaptadorLista adaptadorLista;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,25 +123,16 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         //Imagen
         img_view = (ImageView) findViewById(R.id.id_imagen);
 
-        ArrayList mDatas = new ArrayList();
         /*-----------*/
-        for (int i = 0; i < 10; i++) {
-            mDatas.add(i, "i=" + i);
-        }
 
         mRecyclerView = (RecyclerView) findViewById(R.id.id_recycler_view_listas);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+        cargarDatos();
 
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        mRecyclerView.setHasFixedSize(true);
-
-        // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        // specify an adapter (see also next example)
-        mAdapter = new AdaptadorLista(mDatas);
-        mRecyclerView.setAdapter(mAdapter);
+        adaptadorLista = new AdaptadorLista(this, listaList);
+        mRecyclerView.setAdapter(adaptadorLista);
 
 
         /*-----------*/
@@ -157,6 +144,18 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         tvFechaRecordatorioDia = (TextView) findViewById(R.id.tvFechaRecordatorioDia);
         tvFechaRecordatorioHora = (TextView) findViewById(R.id.tvFechaRecordatorioHora);
         presentador = new PresentadorNota(this);
+    }
+
+    public void cargarDatos() {
+
+        for (int i = 1; i < 10; i++) {
+            listaList.add(new Lista(
+                    (long) i,
+                    (long) i * 2,
+                    "Antonio " + i,
+                    true
+            ));
+        }
     }
 
     private void ejecutar() {

@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-
-    android:layout_height="wrap_content">
-    <!-- A CardView that contains a TextView -->
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
 
     <CheckBox
@@ -14,14 +11,21 @@
         android:layout_height="wrap_content" />
 
     <TextView
+        android:id="@+id/id_lista"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/add" />
 
+    <TextView
+        android:id="@+id/id_nota"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add" />
+<!--
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/hint" />
-
+-->
 
 </LinearLayout>
