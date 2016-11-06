@@ -1,8 +1,6 @@
 package com.izv.dam.newquip.vistas.main;
 
-import android.app.SearchManager;
-import android.content.ComponentName;
-import android.content.Context;
+
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Handler;
@@ -37,7 +35,6 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
         OnBorrarDialogListener,
         NavigationView.OnNavigationItemSelectedListener {
 
-    private static final long SHORT_DELAY = 100; // 3.5 seconds
     private AdaptadorNota adaptador;
     private PresentadorQuip presentador;
     FloatingActionButton fab;
@@ -99,6 +96,7 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
             }
         });
     }
+
     @Override
     protected void onPause() {
         presentador.onPause();
@@ -140,7 +138,6 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
     public void mostrarConfirmarBorrarNota(Nota n) {
         DialogoBorrar fragmentBorrar = DialogoBorrar.newInstance(n);
         fragmentBorrar.show(getSupportFragmentManager(), "Dialogo borrar");
-
     }
 
 

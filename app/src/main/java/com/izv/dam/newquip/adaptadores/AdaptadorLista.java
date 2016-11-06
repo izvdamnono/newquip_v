@@ -26,15 +26,16 @@ public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.ViewHold
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView  = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_lista,parent,false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_lista, parent, false);
         ViewHolder viewHolder = new ViewHolder(itemView);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.text_view_lista.setText((int) listaList.get(position).getId_lista());
-        holder.text_view_lista.setText((int) listaList.get(position).getId_lista());
+        holder.text_view_id_lista.setText("" + listaList.get(position).getId_lista());
+        holder.text_view_id_nota.setText("" + listaList.get(position).getId_nota());
+        holder.text_view_lista_texto.setText(listaList.get(position).getTexto_lista());
     }
 
     @Override
@@ -45,12 +46,13 @@ public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView text_view_nota, text_view_lista;
+        TextView text_view_id_nota, text_view_id_lista, text_view_lista_texto;
 
         public ViewHolder(View v) {
             super(v);
-            text_view_nota = (TextView) v.findViewById(R.id.id_nota);
-            text_view_lista = (TextView) v.findViewById(R.id.id_lista);
+            text_view_id_nota = (TextView) v.findViewById(R.id.id_nota);
+            text_view_id_lista = (TextView) v.findViewById(R.id.id_lista);
+            text_view_lista_texto = (TextView) v.findViewById(R.id.id_texto_lista);
         }
     }
 

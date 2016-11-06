@@ -83,7 +83,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
 
     RecyclerView mRecyclerView;
-    List<Lista> listaList;
+    List<Lista> listaList = new ArrayList<>();
     AdaptadorLista adaptadorLista;
 
     @Override
@@ -147,14 +147,10 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     }
 
     public void cargarDatos() {
-
         for (int i = 1; i < 10; i++) {
-            listaList.add(new Lista(
-                    (long) i,
-                    (long) i * 2,
-                    "Antonio " + i,
-                    true
-            ));
+            Lista lista = new Lista((long) i, (long) i * 2, "Antonio " + i, true);
+            System.out.println("ToString(): "+lista.toString());
+            listaList.add(lista);
         }
     }
 
@@ -192,7 +188,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             @Override
             public void onClick(View v) {
                 mostrarDialogoCamaraGaleria(v);
-//                showNotification();
             }
         });
 
@@ -457,6 +452,9 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         startActivityForResult(intent, IMAGE_CAPTURE);
     }
 
+    /*
+     * Este metodo añade a la galeria las fotos que se hacen en la aplicacion
+     */
     private void galleryAddPic(String pathFile) {
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         Uri contentUri = Uri.fromFile(new File(pathFile));
@@ -487,7 +485,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         Bitmap bitmap = BitmapFactory.decodeFile(filePathAddGallery, bmOptions);
         img_view.setImageBitmap(bitmap);
     }
-
 
     /*
      * Notificaciones
