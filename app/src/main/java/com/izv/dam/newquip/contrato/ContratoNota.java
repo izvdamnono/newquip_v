@@ -1,5 +1,6 @@
 package com.izv.dam.newquip.contrato;
 
+import com.izv.dam.newquip.pojo.Lista;
 import com.izv.dam.newquip.pojo.Nota;
 
 /**
@@ -12,6 +13,8 @@ public interface ContratoNota {
         void close();
 
         Nota getNota(long id);
+
+        Lista getLista(long id);
 
         long saveNota(Nota n);
 

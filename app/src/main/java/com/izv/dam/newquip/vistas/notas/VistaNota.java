@@ -68,23 +68,22 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     ImageView img_view;
 
     private Nota nota = new Nota();
-    private PresentadorNota presentador;
+    private PresentadorNota presentadorNota;
+
     private static final int SELECT_FILE = 0;
     private static final int IMAGE_CAPTURE = 1;
+    private static String temp_file_path;//Ruta temporal para guardar la imagen
     Uri file;
-
-
-    private static String temp_file_path;
 
     NotificationManager notification_manager;
     boolean is_notific_active = false;
     private int notifID = 33;
     public static final String BUNDLE_KEY = "nota";
 
-
     RecyclerView mRecyclerView;
     List<Lista> listaList = new ArrayList<>();
     AdaptadorLista adaptadorLista;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,7 +128,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        cargarDatos();
+        cargarDatosLista();
 
         adaptadorLista = new AdaptadorLista(this, listaList);
         mRecyclerView.setAdapter(adaptadorLista);
@@ -143,15 +142,22 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         // HORA: 12:52:30
         tvFechaRecordatorioDia = (TextView) findViewById(R.id.tvFechaRecordatorioDia);
         tvFechaRecordatorioHora = (TextView) findViewById(R.id.tvFechaRecordatorioHora);
-        presentador = new PresentadorNota(this);
+        presentadorNota = new PresentadorNota(this);
     }
 
-    public void cargarDatos() {
+    /**
+     * Funcion que consulta la base de datos en
+     * busca de listas que tenga el id de la nota a mostrar
+     */
+    public void cargarDatosLista() {
+       long id_nota = nota.getId();
+
         for (int i = 1; i < 10; i++) {
-            Lista lista = new Lista((long) i, (long) i * 2, "Antonio " + i, true);
-            System.out.println("ToString(): "+lista.toString());
+            Lista lista = new Lista((long) i, 1, "Antonio " + i, true);
+//            System.out.println("ToString(): " + lista.toString());
             listaList.add(lista);
         }
+
     }
 
     private void ejecutar() {
@@ -241,13 +247,13 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     @Override
     protected void onPause() {
         saveNota();
-        presentador.onPause();
+        presentadorNota.onPause();
         super.onPause();
     }
 
     @Override
     protected void onResume() {
-        presentador.onResume();
+        presentadorNota.onResume();
         super.onResume();
     }
 
@@ -319,7 +325,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             nota.setImagen(temp_file_path);
         }
 
-        long r = presentador.onSaveNota(nota);
+        long r = presentadorNota.onSaveNota(nota);
         if (r > 0 & nota.getId() == 0) {
             nota.setId(r);
         }

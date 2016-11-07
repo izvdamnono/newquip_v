@@ -51,6 +51,9 @@ public class GestionLista extends Gestion<Lista> {
         return null;
     }
 
+   String sql =  "select * from nota inner join lista on nota._id = lista.id_nota where nota._id = ?";
+
+
     @Override
     public Cursor getCursor() {
         return this.getCursor(

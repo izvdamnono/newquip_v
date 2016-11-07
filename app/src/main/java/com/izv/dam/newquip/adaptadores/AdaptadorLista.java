@@ -27,18 +27,23 @@ public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.ViewHold
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_lista, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_lista, parent, false);
         ViewHolder viewHolder = new ViewHolder(itemView);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.text_view_id_lista.setText("" + listaList.get(position).getId_lista());
-        holder.text_view_id_nota.setText("" + listaList.get(position).getId_nota());
-        holder.text_view_lista_texto.setText(listaList.get(position).getTexto_lista());
-        holder.check_box_lista.setChecked(listaList.get(position).isHecho());
+        String id_lista = String.valueOf(listaList.get(position).getId_lista());
+        String id_nota = String.valueOf(listaList.get(position).getId_nota());
+        String lista_texto = listaList.get(position).getTexto_lista();
+        boolean check_box_lista = listaList.get(position).isHecho();
+
+
+        holder.text_view_id_lista.setText(id_lista);
+        holder.text_view_id_nota.setText(id_nota);
+        holder.text_view_lista_texto.setText(lista_texto);
+        holder.check_box_lista.setChecked(check_box_lista);
     }
 
     @Override
