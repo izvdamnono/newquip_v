@@ -65,10 +65,10 @@ public class Lista implements Parcelable {
     @Override
     public String toString() {
         return "Lista{" +
-                "id_lista=" + id_lista +
-                ", id_nota=" + id_nota +
-                ", texto_lista='" + texto_lista + '\'' +
-                ", hecho=" + hecho +
+                "id_lista=" + this.getId_lista() +
+                ", id_nota=" + this.getId_nota() +
+                ", texto_lista='" + this.getTexto_lista() + '\'' +
+                ", hecho=" + this.isHecho() +
                 '}';
     }
 
@@ -142,12 +142,12 @@ public class Lista implements Parcelable {
         objeto.setId_lista(c.getLong(c.getColumnIndex(ContratoBaseDatos.TablaLista._ID)));
         objeto.setId_nota(c.getLong(c.getColumnIndex(ContratoBaseDatos.TablaLista.ID_NOTA)));
         objeto.setTexto_lista(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaLista.TEXTO_LISTA)));
-        /*
-         * ¿Correcto?
-         */
-        objeto.setHecho(c.getInt(c.getColumnIndex(ContratoBaseDatos.TablaLista.HECHO)) > 0);
+
+            String hecho = c.getString(c.getColumnIndex(ContratoBaseDatos.TablaLista.HECHO));
+        objeto.setHecho(Boolean.valueOf(hecho));
 
         return objeto;
     }
+
 
 }

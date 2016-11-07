@@ -21,14 +21,8 @@ public class GestionNota extends Gestion<Nota> {
     public Nota get(long id) {
         String where = ContratoBaseDatos.TablaNota._ID + " = ? ";
         String[] parametros = {id + ""};
-        Cursor c = this.getCursor(
-                ContratoBaseDatos.TablaNota.PROJECTION_ALL,
-                where,
-                parametros,
-                null,
-                null,
-                ContratoBaseDatos.TablaNota.SORT_ORDER_DEFAULT
-        );
+        Cursor c = this.getCursor(ContratoBaseDatos.TablaNota.PROJECTION_ALL, where, parametros,
+                null, null, ContratoBaseDatos.TablaNota.SORT_ORDER_DEFAULT);
         if (c.getCount() > 0) {
             c.moveToFirst();
             return Nota.getNota(c);
@@ -46,8 +40,10 @@ public class GestionNota extends Gestion<Nota> {
     }
 
     @Override
-    public Cursor getCursor(String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy) {
-        return this.getCursor(ContratoBaseDatos.TablaNota.TABLA, columns, selection, selectionArgs, groupBy, having, orderBy);
+    public Cursor getCursor(String[] columns, String selection, String[] selectionArgs,
+                            String groupBy, String having, String orderBy) {
+        return this.getCursor(ContratoBaseDatos.TablaNota.TABLA, columns, selection, selectionArgs,
+                groupBy, having, orderBy);
     }
 
 

@@ -45,6 +45,7 @@ import com.izv.dam.newquip.broadcast.AlarmReceiver;
 import com.izv.dam.newquip.contrato.ContratoNota;
 import com.izv.dam.newquip.dialogo.DialogoFecha;
 import com.izv.dam.newquip.dialogo.DialogoHora;
+import com.izv.dam.newquip.gestion.GestionLista;
 import com.izv.dam.newquip.pojo.Lista;
 import com.izv.dam.newquip.pojo.Nota;
 import com.izv.dam.newquip.util.UtilFecha;
@@ -91,9 +92,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         setContentView(R.layout.activity_detail_nota);
 
         init();
-
-        ejecutar();
-
         if (savedInstanceState != null) {
             nota = savedInstanceState.getParcelable(BUNDLE_KEY);
         } else {
@@ -105,6 +103,9 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             }
         }
         mostrarNota(nota);
+        ejecutar();
+
+
     }
 
     private void init() {
@@ -122,17 +123,9 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         //Imagen
         img_view = (ImageView) findViewById(R.id.id_imagen);
 
-        /*-----------*/
+        /*------ RECYCLER VIEW ------*/
 
         mRecyclerView = (RecyclerView) findViewById(R.id.id_recycler_view_listas);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(linearLayoutManager);
-        cargarDatosLista();
-
-        adaptadorLista = new AdaptadorLista(this, listaList);
-        mRecyclerView.setAdapter(adaptadorLista);
-
 
         /*-----------*/
 
@@ -145,20 +138,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         presentadorNota = new PresentadorNota(this);
     }
 
-    /**
-     * Funcion que consulta la base de datos en
-     * busca de listas que tenga el id de la nota a mostrar
-     */
-    public void cargarDatosLista() {
-       long id_nota = nota.getId();
-
-        for (int i = 1; i < 10; i++) {
-            Lista lista = new Lista((long) i, 1, "Antonio " + i, true);
-//            System.out.println("ToString(): " + lista.toString());
-            listaList.add(lista);
-        }
-
-    }
 
     private void ejecutar() {
 
@@ -197,9 +176,38 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             }
         });
 
+        /*------ RECYCLER VIEW ------*/
 
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+        cargarDatosLista();
+
+        adaptadorLista = new AdaptadorLista(this, listaList);
+        mRecyclerView.setAdapter(adaptadorLista);
+
+        /*-----------*/
     }
 
+    /**
+     * Funcion que consulta la base de datos en
+     * busca de listas que tenga el id de la nota a mostrar
+     */
+    public void cargarDatosLista() {
+        long id_nota = nota.getId();
+        if (id_nota == 0) {
+            id_nota = 1;
+        }
+
+        GestionLista gestionLista = new GestionLista(this);
+        ArrayList<Lista> lista2 = gestionLista.getListas(id_nota);
+        if (lista2 == null) {
+            System.out.println("lista2 IS NULL");
+        } else {
+            System.out.println("id_nota: " + id_nota);
+            listaList = lista2;
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

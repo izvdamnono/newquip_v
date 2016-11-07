@@ -7,6 +7,8 @@ import android.database.Cursor;
 import com.izv.dam.newquip.contrato.ContratoBaseDatos;
 import com.izv.dam.newquip.pojo.Lista;
 
+import java.util.ArrayList;
+
 
 public class GestionLista extends Gestion<Lista> {
     public GestionLista(Context c) {
@@ -36,14 +38,8 @@ public class GestionLista extends Gestion<Lista> {
     public Lista get(long id) {
         String where = ContratoBaseDatos.TablaLista._ID + " = ? ";
         String[] parametros = {id + ""};
-        Cursor c = this.getCursor(
-                ContratoBaseDatos.TablaLista.PROJECTION_ALL,
-                where,
-                parametros,
-                null,
-                null,
-                ContratoBaseDatos.TablaLista.SORT_ORDER_DEFAULT
-        );
+        Cursor c = this.getCursor(ContratoBaseDatos.TablaLista.PROJECTION_ALL, where, parametros,
+                null, null, ContratoBaseDatos.TablaLista.SORT_ORDER_DEFAULT);
         if (c.getCount() > 0) {
             c.moveToFirst();
             return Lista.getLista(c);
@@ -51,7 +47,23 @@ public class GestionLista extends Gestion<Lista> {
         return null;
     }
 
-   String sql =  "select * from nota inner join lista on nota._id = lista.id_nota where nota._id = ?";
+    public ArrayList<Lista> getListas(long id_nota) {
+        ArrayList<Lista> listaArrayList = new ArrayList<>();
+        String where = ContratoBaseDatos.TablaLista.ID_NOTA + " = ? ";
+        String[] parametros = {id_nota + ""};
+        Cursor c = this.getCursor(ContratoBaseDatos.TablaLista.PROJECTION_ALL, where, parametros,
+                null, null, ContratoBaseDatos.TablaLista.SORT_ORDER_DEFAULT);
+
+        for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
+            listaArrayList.add(Lista.getLista(c));
+        }
+        if (listaArrayList.size() > 0) {
+            return listaArrayList;
+        }
+        return null;
+    }
+
+//      String sql = "SELECT * FROM nota INNER JOIN lista ON nota._id = lista.id_nota WHERE nota._id = ?";
 
 
     @Override
@@ -92,7 +104,8 @@ public class GestionLista extends Gestion<Lista> {
         ContentValues valores = objeto.getContentValues();
         String condicion = ContratoBaseDatos.TablaLista._ID + " = ?";
         String[] argumentos = {objeto.getId_lista() + ""};
-        return this.update(ContratoBaseDatos.TablaLista.TABLA, valores, condicion, argumentos);    }
+        return this.update(ContratoBaseDatos.TablaLista.TABLA, valores, condicion, argumentos);
+    }
 
     @Override
     public int update(ContentValues valores, String condicion, String[] argumentos) {

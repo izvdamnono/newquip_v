@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.izv.dam.newquip.R;
@@ -34,14 +35,14 @@ public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String id_lista = String.valueOf(listaList.get(position).getId_lista());
-        String id_nota = String.valueOf(listaList.get(position).getId_nota());
+        String id_lista = "" + (listaList.get(position).getId_lista());
+        String id_nota = "" + (listaList.get(position).getId_nota());
         String lista_texto = listaList.get(position).getTexto_lista();
         boolean check_box_lista = listaList.get(position).isHecho();
 
-
-        holder.text_view_id_lista.setText(id_lista);
-        holder.text_view_id_nota.setText(id_nota);
+        System.out.println("check_box_lista: " + check_box_lista);
+        holder.text_view_id_lista.setText("id_lista: " + id_lista);
+        holder.text_view_id_nota.setText("id_nota: " + id_nota);
         holder.text_view_lista_texto.setText(lista_texto);
         holder.check_box_lista.setChecked(check_box_lista);
     }
@@ -54,14 +55,15 @@ public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         CheckBox check_box_lista;
-        TextView text_view_id_nota, text_view_id_lista, text_view_lista_texto;
+        TextView text_view_id_nota, text_view_id_lista;
+        EditText text_view_lista_texto;
 
         public ViewHolder(View v) {
             super(v);
             check_box_lista = (CheckBox) v.findViewById(R.id.check_box_lista);
             text_view_id_nota = (TextView) v.findViewById(R.id.id_nota);
             text_view_id_lista = (TextView) v.findViewById(R.id.id_lista);
-            text_view_lista_texto = (TextView) v.findViewById(R.id.id_texto_lista);
+            text_view_lista_texto = (EditText) v.findViewById(R.id.id_texto_lista);
         }
     }
 
