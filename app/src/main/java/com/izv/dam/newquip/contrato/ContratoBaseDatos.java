@@ -10,7 +10,7 @@ import android.provider.BaseColumns;
 public class ContratoBaseDatos {
     ///storage/emulated/0/databaseIZV/
     public final static String BASEDATOS = "quiip.sqlite";
-    //ProveedorQuip
+    //ProveedorNota
     public static final String AUTORIDAD = "com.izv.dam.newquip.proveedor";
 
     private static final Uri CONTENT_URI = Uri.parse("content://" + AUTORIDAD);

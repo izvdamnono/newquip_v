@@ -103,8 +103,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         }
         mostrarNota(nota);
         ejecutar();
-
-
     }
 
     private void init() {
@@ -223,32 +221,31 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         /*-----------*/
     }
 
-
     /*
      * Funcion que consulta la base de datos en
      * busca de listas que tenga el id de la nota a mostrar
      */
-
     public void cargarDatosLista() {
         long id_nota = nota.getId();
-        if (id_nota == 0) {
-            id_nota = 1;
-        }
-        System.out.println("id_nota: " + id_nota);
+        if (id_nota != 0) {
+//            id_nota = 1;
+            System.out.println("id_nota: " + id_nota);
 
-        GestionLista gestionLista = new GestionLista(this);
-        ArrayList<Lista> listas = gestionLista.getListas(id_nota);
+            GestionLista gestionLista = new GestionLista(this);
+            ArrayList<Lista> listas = gestionLista.getListas(id_nota);
 
-        if (listas == null) {
-            System.out.println("listas IS NULL");
-        } else {
-            System.out.println("listas NOT NULL");
+            if (listas != null) {
+                System.out.println("listas NOT NULL");
 
-            for (Lista lista : listas) {
-                System.out.println("ToString: " + lista.toString());
+                for (Lista lista : listas) {
+                    System.out.println("ToString: " + lista.toString());
+                }
+                listaList = listas;
+            } else {
+                System.out.println("listas IS NULL");
             }
-            listaList = listas;
         }
+
     }
 
     @Override
@@ -293,7 +290,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         }
     }
 
-
     @Override
     protected void onPause() {
         saveNota();
@@ -335,7 +331,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         */
 
     }
-
 
     @Override
     public void mostrarNota(Nota n) {
@@ -388,7 +383,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     private void saveImagen(String imagen) {
         nota.setImagen(imagen);
     }
-
 
     private String getRealPath(Uri datos) {
         String filePath = "";

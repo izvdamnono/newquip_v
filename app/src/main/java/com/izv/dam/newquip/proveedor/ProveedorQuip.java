@@ -15,6 +15,9 @@ import com.izv.dam.newquip.util.UtilCadenas;
 import static com.izv.dam.newquip.contrato.ContratoBaseDatos.TablaNota.CONTENT_ITEM_TYPE_NOTA;
 import static com.izv.dam.newquip.contrato.ContratoBaseDatos.TablaNota.CONTENT_TYPE_NOTA;
 
+import static com.izv.dam.newquip.contrato.ContratoBaseDatos.TablaLista.CONTENT_ITEM_TYPE_LISTA;
+import static com.izv.dam.newquip.contrato.ContratoBaseDatos.TablaLista.CONTENT_TYPE_LISTA;
+
 public class ProveedorQuip extends ContentProvider {
     private static final UriMatcher URI_MATCHER;
     private static final int TODO_NOTA = 0;
@@ -33,7 +36,8 @@ public class ProveedorQuip extends ContentProvider {
     }
 
     public ProveedorQuip() {
-
+//        gestionNota = new GestionNota(getContext());
+//        gestionLista = new GestionLista(getContext());
     }
 
     @Override
@@ -44,10 +48,10 @@ public class ProveedorQuip extends ContentProvider {
         switch (URI_MATCHER.match(uri)) {
             case CONCRETO_NOTA:
                 id = uri.getLastPathSegment();
-//                newSelectionArgs = UtilCadenas.getNewArray(selectionArgs, id);
-//                delete = gestionNota.delete(selection, newSelectionArgs);
+                newSelectionArgs = UtilCadenas.getNewArray(selectionArgs, id);
+                delete = gestionNota.delete(selection, newSelectionArgs);
 
-                delete = gestionNota.delete(ContratoBaseDatos.TablaNota._ID + " = ?", new String[]{id});
+//                delete = gestionNota.delete(ContratoBaseDatos.TablaNota._ID + " = ?", new String[]{id});
                 break;
             case TODO_NOTA:
                 delete = gestionNota.delete(selection, selectionArgs);
@@ -55,9 +59,9 @@ public class ProveedorQuip extends ContentProvider {
 
             case CONCRETO_LISTA:
                 id = uri.getLastPathSegment();
-//                newSelectionArgs = UtilCadenas.getNewArray(selectionArgs, id);
-//                delete = gestionLista.delete(selection, newSelectionArgs);
-                delete = gestionLista.delete(ContratoBaseDatos.TablaLista._ID + " = ?", new String[]{id});
+                newSelectionArgs = UtilCadenas.getNewArray(selectionArgs, id);
+                delete = gestionLista.delete(selection, newSelectionArgs);
+//                delete = gestionLista.delete(ContratoBaseDatos.TablaLista._ID + " = ?", new String[]{id});
                 break;
             case TODO_LISTA:
                 delete = gestionLista.delete(selection, selectionArgs);
@@ -75,7 +79,6 @@ public class ProveedorQuip extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         long id = 0;
-
         switch (URI_MATCHER.match(uri)) {
             case TODO_NOTA:
                 id = gestionNota.insert(values);
@@ -98,13 +101,22 @@ public class ProveedorQuip extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        int tipo = URI_MATCHER.match(uri);
-        if (tipo == CONCRETO_NOTA) {
-            String id = uri.getLastPathSegment();
-            selection = UtilCadenas.getCondicionesSql(selection, ContratoBaseDatos.TablaNota._ID + " = ?");
-            selectionArgs = UtilCadenas.getNewArray(selectionArgs, id);
+        String id;
+        int valor = 0;
+        switch (URI_MATCHER.match(uri)) {
+            case CONCRETO_NOTA:
+                id = uri.getLastPathSegment();
+                selection = UtilCadenas.getCondicionesSql(selection, ContratoBaseDatos.TablaNota._ID + " = ?");
+                selectionArgs = UtilCadenas.getNewArray(selectionArgs, id);
+                valor = gestionNota.update(values, selection, selectionArgs);
+                break;
+            case CONCRETO_LISTA:
+                id = uri.getLastPathSegment();
+                selection = UtilCadenas.getCondicionesSql(selection, ContratoBaseDatos.TablaLista._ID + " = ?");
+                selectionArgs = UtilCadenas.getNewArray(selectionArgs, id);
+                valor = gestionLista.update(values, selection, selectionArgs);
+                break;
         }
-        int valor = gestionNota.update(values, selection, selectionArgs);
         if (valor > 0) {
             getContext().getContentResolver().notifyChange(uri, null);
         }
@@ -123,7 +135,6 @@ public class ProveedorQuip extends ContentProvider {
                 selectionArgs = UtilCadenas.getNewArray(selectionArgs, id);
 
                 c = gestionNota.getCursor(projection, selection, selectionArgs, null, null, sortOrder);
-                c.setNotificationUri(getContext().getContentResolver(), uri);
                 break;
 
             case CONCRETO_LISTA:
@@ -132,10 +143,10 @@ public class ProveedorQuip extends ContentProvider {
                 selectionArgs = UtilCadenas.getNewArray(selectionArgs, id);
 
                 c = gestionLista.getCursor(projection, selection, selectionArgs, null, null, sortOrder);
-                c.setNotificationUri(getContext().getContentResolver(), uri);
                 break;
         }
-
+        c = gestionNota.getCursor(projection, selection, selectionArgs, null, null, sortOrder);
+        c.setNotificationUri(getContext().getContentResolver(), uri);
 
         return c;
     }
@@ -144,13 +155,13 @@ public class ProveedorQuip extends ContentProvider {
     public String getType(Uri uri) {
         switch (URI_MATCHER.match(uri)) {
             case TODO_NOTA:
-                return ContratoBaseDatos.TablaNota.CONTENT_TYPE_NOTA;
+                return CONTENT_TYPE_NOTA;
             case CONCRETO_NOTA:
-                return ContratoBaseDatos.TablaNota.CONTENT_ITEM_TYPE_NOTA;
+                return CONTENT_ITEM_TYPE_NOTA;
             case TODO_LISTA:
-                return ContratoBaseDatos.TablaLista.CONTENT_TYPE_LISTA;
+                return CONTENT_TYPE_LISTA;
             case CONCRETO_LISTA:
-                return ContratoBaseDatos.TablaLista.CONTENT_ITEM_TYPE_LISTA;
+                return CONTENT_ITEM_TYPE_LISTA;
 
             default:
                 throw new IllegalArgumentException("Error, la cagaste wey! :/ (En el getType)");
