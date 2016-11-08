@@ -2,6 +2,8 @@ package com.izv.dam.newquip.adaptadores;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +54,34 @@ public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.ViewHold
     }
 
 
+    public void addLista() {
+
+        listaList.add(new Lista(14, 1, "reasj", true));
+        notifyItemInserted(listaList.size());
+    }
+
+    public void deleteUltimaLista() {
+        int position = listaList.size();
+
+        System.out.println("listaList.size(): " + position);
+
+        if (position > 0) {
+            int index = 0;
+            System.out.println("---For listaList---");
+            for (Lista lista : listaList) {
+                System.out.println("I: " + (index++) + " " + lista.toString());
+            }
+            System.out.println("---end listaList---");
+
+            System.out.println("remove");
+            listaList.remove(position-1);
+
+            System.out.println("notifyItemRemoved");
+            notifyItemRemoved(position);
+//            notifyDataSetChanged();
+        }
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         CheckBox check_box_lista;
         TextView text_view_id_nota, text_view_id_lista;
@@ -63,6 +93,45 @@ public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.ViewHold
             text_view_id_nota = (TextView) v.findViewById(R.id.id_nota);
             text_view_id_lista = (TextView) v.findViewById(R.id.id_lista);
             text_view_lista_texto = (EditText) v.findViewById(R.id.id_texto_lista);
+
+            check_box_lista.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    int position = ViewHolder.super.getAdapterPosition();
+
+                    Lista lista = listaList.get(position);
+                    lista.setHecho(check_box_lista.isChecked());
+                }
+            });
+
+            text_view_lista_texto.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    int position = ViewHolder.super.getAdapterPosition();
+                    if (position >= 0) {
+                        String texto = s.toString();
+
+                        Lista lista = listaList.get(position);
+                        lista.setTexto_lista(texto);
+                        //TODO
+                        System.out.println(lista.toString());
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+
+
         }
     }
 

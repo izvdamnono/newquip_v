@@ -26,7 +26,7 @@ public class Lista implements Parcelable {
     }
 
     public Lista() {
-        this(0, 0, null, false);
+        this(0, 0, "", false);
     }
 
     public long getId_lista() {

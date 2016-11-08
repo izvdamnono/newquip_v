@@ -74,7 +74,6 @@ public class ProveedorQuip extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        int tipo = URI_MATCHER.match(uri);
         long id = 0;
 
         switch (URI_MATCHER.match(uri)) {
@@ -116,10 +115,10 @@ public class ProveedorQuip extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         Cursor c = null;
-
+        String id;
         switch (URI_MATCHER.match(uri)) {
             case CONCRETO_NOTA:
-                String id = uri.getLastPathSegment();
+                id = uri.getLastPathSegment();
                 selection = UtilCadenas.getCondicionesSql(selection, ContratoBaseDatos.TablaNota._ID + " = ?");
                 selectionArgs = UtilCadenas.getNewArray(selectionArgs, id);
 
@@ -128,7 +127,12 @@ public class ProveedorQuip extends ContentProvider {
                 break;
 
             case CONCRETO_LISTA:
+                id = uri.getLastPathSegment();
+                selection = UtilCadenas.getCondicionesSql(selection, ContratoBaseDatos.TablaNota._ID + " = ?");
+                selectionArgs = UtilCadenas.getNewArray(selectionArgs, id);
 
+                c = gestionLista.getCursor(projection, selection, selectionArgs, null, null, sortOrder);
+                c.setNotificationUri(getContext().getContentResolver(), uri);
                 break;
         }
 

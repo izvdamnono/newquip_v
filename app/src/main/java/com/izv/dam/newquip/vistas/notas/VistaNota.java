@@ -183,14 +183,15 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         delete_lista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteListaFunction();
+
+                adaptadorLista.deleteUltimaLista();
             }
         });
 
         add_lista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addListaFunction();
+                adaptadorLista.addLista();
             }
         });
 
@@ -205,18 +206,12 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         /*-----------*/
     }
 
-    private void addListaFunction() {
-
-    }
-
-    private void deleteListaFunction() {
-
-    }
 
     /*
      * Funcion que consulta la base de datos en
      * busca de listas que tenga el id de la nota a mostrar
      */
+
     public void cargarDatosLista() {
         long id_nota = nota.getId();
         if (id_nota == 0) {
@@ -378,9 +373,9 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
     private String getRealPath(Uri datos) {
         String filePath = "";
-        String wholeID = DocumentsContract.getDocumentId(datos); // Split at colon, use second item in the array
+        String wholeID = DocumentsContract.getDocumentId(datos);
         String id = wholeID.split(":")[1];
-        String[] column = {MediaStore.Images.Media.DATA}; // where id is equal to
+        String[] column = {MediaStore.Images.Media.DATA};
         String sel = MediaStore.Images.Media._ID + "=?";
         Cursor cursor = VistaNota.this.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, column, sel, new String[]{id}, null);
         int columnIndex = cursor.getColumnIndex(column[0]);
@@ -431,15 +426,16 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                 if (resultCode == RESULT_OK) {
                     Uri selectedImage = data.getData();
                     temp_file_path = getRealPath(selectedImage);
-                    System.out.println("1" + temp_file_path);
+//                    System.out.println("1" + temp_file_path);
 
+//                    img_view.setImageURI(selectedImage);
                     setPic(temp_file_path);
                     saveImagen(temp_file_path);
                 }
                 break;
             case IMAGE_CAPTURE://No funciona
                 if (resultCode == Activity.RESULT_OK) {
-                    System.out.println("2" + temp_file_path);
+//                    System.out.println("2" + temp_file_path);
 
                     galleryAddPic(temp_file_path);//Añade la imagen a la galeria
                     setPic(temp_file_path);
