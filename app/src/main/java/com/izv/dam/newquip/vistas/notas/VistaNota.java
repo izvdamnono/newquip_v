@@ -189,7 +189,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         /*-----------*/
     }
 
-    /**
+    /*
      * Funcion que consulta la base de datos en
      * busca de listas que tenga el id de la nota a mostrar
      */
@@ -198,14 +198,18 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         if (id_nota == 0) {
             id_nota = 1;
         }
+        System.out.println("id_nota: " + id_nota);
 
         GestionLista gestionLista = new GestionLista(this);
-        ArrayList<Lista> lista2 = gestionLista.getListas(id_nota);
-        if (lista2 == null) {
-            System.out.println("lista2 IS NULL");
+        ArrayList<Lista> listas = gestionLista.getListas(id_nota);
+
+        if (listas == null) {
+            System.out.println("listas IS NULL");
         } else {
-            System.out.println("id_nota: " + id_nota);
-            listaList = lista2;
+            for (Lista lista : listas) {
+                System.out.println("ToString: " + lista.toString());
+            }
+            listaList = listas;
         }
     }
 
@@ -363,15 +367,10 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         return filePath;
     }
 
-
     /*
      * Dialogo de la camara y la galeria
      */
     public void mostrarDialogoCamaraGaleria(final View v) {
-        /*
-            DialogoImagen fragmentImagen = DialogoImagen.newInstance(n, img_view);
-            fragmentImagen.show(getSupportFragmentManager(), "Dialogo Imagen");
-         */
         final CharSequence[] items = {"Galeria", "Cámara"};
         AlertDialog.Builder alert_builder = new AlertDialog.Builder(this);
         alert_builder.setTitle("Elige una opcion");
@@ -397,13 +396,11 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         alert.show();
     }
 
-     /*
+    /*
      * Se ejecuta cada vez que seleccionamos una imagen desde la galerio o desde la cámara
      */
-
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
 
         switch (requestCode) {
             case SELECT_FILE://Funciona
@@ -442,7 +439,8 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
      * Camara
      */
     private static File getOutputMediaFile() {
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "NewQuipPictures");
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "NewQuipPictures");
 
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
@@ -536,10 +534,8 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         Long date_alarm = UtilFecha.stringToLongTime(alarm);
         GregorianCalendar alertTime = new GregorianCalendar();
         alertTime.setTimeInMillis(date_alarm);
-
-        Log.v("Alarm", alarm);
-        Log.v("Alarm getTimeInMillis", Long.toString(date_alarm));
-
+//        Log.v("Alarm", alarm);
+//        Log.v("Alarm getTimeInMillis", Long.toString(date_alarm));
         Intent alertIntent = new Intent(this, AlarmReceiver.class);
 
         Bundle b = new Bundle();
@@ -560,7 +556,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
      * Permisos
      */
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == 0) {
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED

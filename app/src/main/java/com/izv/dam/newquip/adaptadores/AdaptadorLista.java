@@ -40,7 +40,6 @@ public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.ViewHold
         String lista_texto = listaList.get(position).getTexto_lista();
         boolean check_box_lista = listaList.get(position).isHecho();
 
-        System.out.println("check_box_lista: " + check_box_lista);
         holder.text_view_id_lista.setText("id_lista: " + id_lista);
         holder.text_view_id_nota.setText("id_nota: " + id_nota);
         holder.text_view_lista_texto.setText(lista_texto);
