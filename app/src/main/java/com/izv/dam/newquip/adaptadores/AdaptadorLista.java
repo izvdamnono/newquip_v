@@ -50,35 +50,23 @@ public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.ViewHold
 
     @Override
     public int getItemCount() {
-        return listaList.size();
+        return this.listaList.size();
     }
 
 
     public void addLista() {
-
-        listaList.add(new Lista(14, 1, "reasj", true));
+        listaList.add(new Lista());
         notifyItemInserted(listaList.size());
     }
 
     public void deleteUltimaLista() {
         int position = listaList.size();
-
-        System.out.println("listaList.size(): " + position);
-
+//        System.out.println("listaList.size(): " + position);
         if (position > 0) {
-            int index = 0;
-            System.out.println("---For listaList---");
-            for (Lista lista : listaList) {
-                System.out.println("I: " + (index++) + " " + lista.toString());
-            }
-            System.out.println("---end listaList---");
-
-            System.out.println("remove");
+//            System.out.println("remove");
             listaList.remove(position-1);
-
-            System.out.println("notifyItemRemoved");
-            notifyItemRemoved(position);
-//            notifyDataSetChanged();
+//            System.out.println("notifyItemRemoved");
+            notifyItemRemoved(position-1);
         }
     }
 
@@ -97,8 +85,7 @@ public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.ViewHold
             check_box_lista.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    int position = ViewHolder.super.getAdapterPosition();
+                    int position = getAdapterPosition();
 
                     Lista lista = listaList.get(position);
                     lista.setHecho(check_box_lista.isChecked());
@@ -113,21 +100,16 @@ public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.ViewHold
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                    int position = ViewHolder.super.getAdapterPosition();
-                    if (position >= 0) {
-                        String texto = s.toString();
-
-                        Lista lista = listaList.get(position);
-                        lista.setTexto_lista(texto);
-                        //TODO
-                        System.out.println(lista.toString());
-                    }
                 }
 
                 @Override
                 public void afterTextChanged(Editable s) {
-
+                    int position = getAdapterPosition();
+                    if (s.length() > 0) {
+                        Lista lista = listaList.get(position);
+                        lista.setTexto_lista(String.valueOf(text_view_lista_texto.getText()));
+                    }
+//                    notifyDataSetChanged();
                 }
             });
 

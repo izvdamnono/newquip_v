@@ -183,15 +183,32 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         delete_lista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                editTextTitulo.requestFocus();
                 adaptadorLista.deleteUltimaLista();
+//              /*
+                int index = 0;
+                System.out.println("---For listaList---");
+                for (Lista lista : listaList) {
+                    System.out.println("I: " + (index++) + " " + lista.toString());
+                }
+                System.out.println("---end listaList---");
+//              */
             }
         });
 
         add_lista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                editTextTitulo.requestFocus();
                 adaptadorLista.addLista();
+//              /*
+                int index = 0;
+                System.out.println("---For listaList---");
+                for (Lista lista : listaList) {
+                    System.out.println("I: " + (index++) + " " + lista.toString());
+                }
+                System.out.println("---end listaList---");
+//              */
             }
         });
 
@@ -225,6 +242,8 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         if (listas == null) {
             System.out.println("listas IS NULL");
         } else {
+            System.out.println("listas NOT NULL");
+
             for (Lista lista : listas) {
                 System.out.println("ToString: " + lista.toString());
             }
