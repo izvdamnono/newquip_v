@@ -39,7 +39,7 @@
         </activity>
 
         <provider
-            android:name="com.izv.dam.newquip.proveedor.ProveedorNota"
+            android:name="com.izv.dam.newquip.proveedor.ProveedorQuip"
             android:authorities="com.izv.dam.newquip.proveedor"
             android:enabled="true"
             android:exported="true"/>

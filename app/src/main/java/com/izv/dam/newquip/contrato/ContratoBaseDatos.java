@@ -10,11 +10,12 @@ import android.provider.BaseColumns;
 public class ContratoBaseDatos {
     ///storage/emulated/0/databaseIZV/
     public final static String BASEDATOS = "quiip.sqlite";
-    //ProveedorNota
+    //ProveedorQuip
     public static final String AUTORIDAD = "com.izv.dam.newquip.proveedor";
 
     private static final Uri CONTENT_URI = Uri.parse("content://" + AUTORIDAD);
     public static final Uri CONTENT_URI_NOTA = Uri.withAppendedPath(CONTENT_URI, TablaNota.TABLA);
+    public static final Uri CONTENT_URI_LISTA = Uri.withAppendedPath(CONTENT_URI, TablaLista.TABLA);
 
     private ContratoBaseDatos() {
     }
@@ -31,23 +32,13 @@ public class ContratoBaseDatos {
         public static final String FECHA_MODIFICACION = "fecha_modificacion";
         public static final String FECHA_RECORDATORIO = "fecha_recordatorio";
         public static final String COLOR = "color";
-        public static final String[] PROJECTION_ALL = {
-                _ID,
-                TITULO,
-                NOTA,
-                IMAGEN,
-                VIDEO,
-                AUDIO,
-                FECHA_CREACION,
-                FECHA_MODIFICACION,
-                FECHA_RECORDATORIO,
-                COLOR
-        };
+        public static final String[] PROJECTION_ALL = {_ID, TITULO, NOTA, IMAGEN, VIDEO, AUDIO,
+                FECHA_CREACION, FECHA_MODIFICACION, FECHA_RECORDATORIO, COLOR};
         public static final String SORT_ORDER_DEFAULT = _ID + " desc";
 
         //Tipos MIME
-        public final static String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd" + AUTORIDAD + "." + TABLA;
-        public final static String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd" + AUTORIDAD + "." + TABLA;
+        public final static String CONTENT_ITEM_TYPE_NOTA = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd" + AUTORIDAD + "." + TABLA;
+        public final static String CONTENT_TYPE_NOTA = ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd" + AUTORIDAD + "." + TABLA;
 
     }
 
@@ -59,5 +50,9 @@ public class ContratoBaseDatos {
         public static final String HECHO = "hecho";
         public static final String[] PROJECTION_ALL = {_ID, ID_NOTA, TEXTO_LISTA, HECHO};
         public static final String SORT_ORDER_DEFAULT = _ID + " desc";
+
+        //Tipos MIME
+        public final static String CONTENT_ITEM_TYPE_LISTA = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd" + AUTORIDAD + "." + TABLA;
+        public final static String CONTENT_TYPE_LISTA = ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd" + AUTORIDAD + "." + TABLA;
     }
 }

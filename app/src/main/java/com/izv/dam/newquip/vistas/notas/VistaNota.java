@@ -18,7 +18,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
@@ -29,7 +28,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -84,6 +82,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     RecyclerView mRecyclerView;
     List<Lista> listaList = new ArrayList<>();
     AdaptadorLista adaptadorLista;
+    Button add_lista, delete_lista;
 
 
     @Override
@@ -124,6 +123,9 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         img_view = (ImageView) findViewById(R.id.id_imagen);
 
         /*------ RECYCLER VIEW ------*/
+
+        delete_lista = (Button) findViewById(R.id.id_eliminar_ultima_lista);
+        add_lista = (Button) findViewById(R.id.id_aniadir_lista);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.id_recycler_view_listas);
 
@@ -178,6 +180,20 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
         /*------ RECYCLER VIEW ------*/
 
+        delete_lista.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteListaFunction();
+            }
+        });
+
+        add_lista.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addListaFunction();
+            }
+        });
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(linearLayoutManager);
@@ -187,6 +203,14 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         mRecyclerView.setAdapter(adaptadorLista);
 
         /*-----------*/
+    }
+
+    private void addListaFunction() {
+
+    }
+
+    private void deleteListaFunction() {
+
     }
 
     /*
@@ -534,8 +558,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         Long date_alarm = UtilFecha.stringToLongTime(alarm);
         GregorianCalendar alertTime = new GregorianCalendar();
         alertTime.setTimeInMillis(date_alarm);
-//        Log.v("Alarm", alarm);
-//        Log.v("Alarm getTimeInMillis", Long.toString(date_alarm));
+
         Intent alertIntent = new Intent(this, AlarmReceiver.class);
 
         Bundle b = new Bundle();

@@ -143,7 +143,7 @@ public class Lista implements Parcelable {
         objeto.setId_nota(c.getLong(c.getColumnIndex(ContratoBaseDatos.TablaLista.ID_NOTA)));
         objeto.setTexto_lista(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaLista.TEXTO_LISTA)));
 
-            String hecho = c.getString(c.getColumnIndex(ContratoBaseDatos.TablaLista.HECHO));
+        String hecho = c.getString(c.getColumnIndex(ContratoBaseDatos.TablaLista.HECHO));
         objeto.setHecho(Boolean.valueOf(hecho));
 
         return objeto;
