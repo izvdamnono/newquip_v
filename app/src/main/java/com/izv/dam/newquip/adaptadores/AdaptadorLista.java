@@ -25,7 +25,6 @@ public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.ViewHold
     public AdaptadorLista(Context context, List<Lista> listaList) {
         this.context = context;
         this.listaList = listaList;
-
     }
 
     @Override
@@ -61,11 +60,9 @@ public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.ViewHold
 
     public void deleteUltimaLista() {
         int position = listaList.size();
-//        System.out.println("listaList.size(): " + position);
+
         if (position > 0) {
-//            System.out.println("remove");
             listaList.remove(position-1);
-//            System.out.println("notifyItemRemoved");
             notifyItemRemoved(position-1);
         }
     }
@@ -100,6 +97,7 @@ public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.ViewHold
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
+
                 }
 
                 @Override
@@ -109,7 +107,6 @@ public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.ViewHold
                         Lista lista = listaList.get(position);
                         lista.setTexto_lista(String.valueOf(text_view_lista_texto.getText()));
                     }
-//                    notifyDataSetChanged();
                 }
             });
 

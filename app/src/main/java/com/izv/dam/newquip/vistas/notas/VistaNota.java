@@ -120,6 +120,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         //Control imagen
         imgBtn_img_add = (ImageButton) findViewById(R.id.id_imagen_btn);
         imgBtn_img_delete = (ImageButton) findViewById(R.id.id_imagen_btn_delete);
+
         //Imagen
         img_view = (ImageView) findViewById(R.id.id_imagen);
 
@@ -208,9 +209,26 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             public void onClick(View v) {
 
                 int index = 0;
+                long id_lista, id_nota;
+                boolean hecho;
+                String text_lista;
                 System.out.println("---For listaList---");
                 for (Lista lista : listaList) {
                     System.out.println("I: " + (index++) + " " + lista.toString());
+                    if (lista.getId_lista() != 0) {
+                        id_lista = lista.getId_lista();
+                    }
+                    if (lista.getId_nota() != 0) {
+                        id_nota = lista.getId_nota();
+                    }
+                    if (lista.isHecho() || !lista.isHecho()) {
+                        hecho = lista.isHecho();
+                    }
+                    if (!lista.getTexto_lista().isEmpty()) {
+                        String texto_lista = lista.getTexto_lista();
+                    }
+
+
                 }
                 System.out.println("---end listaList---");
 
