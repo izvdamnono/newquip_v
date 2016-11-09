@@ -91,6 +91,7 @@
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
 
+
                         <Button
                             android:id="@+id/id_eliminar_ultima_lista"
                             style="@style/Widget.AppCompat.Button.Borderless.Colored"
@@ -106,6 +107,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@string/a_adir_lista" />
+
+                        <ImageButton
+                            android:id="@+id/id_ok_lista"
+                            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.86"
+                            app:srcCompat="@mipmap/ic_save_color" />
 
                     </LinearLayout>
 
@@ -138,6 +147,23 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
+                        <ImageButton
+                            android:id="@+id/id_imagen_btn"
+                            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.86"
+                            app:srcCompat="@mipmap/ic_save_image_color" />
+
+                        <ImageButton
+                            android:id="@+id/id_imagen_btn_delete"
+                            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.86"
+                            app:srcCompat="@mipmap/ic_delete_color" />
+
+                        <!--
                         <Button
                             android:id="@+id/id_imagen_btn"
                             style="@style/Widget.AppCompat.Button.Borderless.Colored"
@@ -145,6 +171,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@string/mas" />
+                            -->
+
                     </LinearLayout>
 
                     <LinearLayout

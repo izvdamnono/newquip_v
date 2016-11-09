@@ -33,6 +33,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,7 +64,8 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     EditText editTextTitulo, editTextNota;
     TextView tvFechaRecordatorioDia, tvFechaRecordatorioHora;
 
-    Button btn_img;
+    ImageButton imgBtn_img_add;
+    ImageButton imgBtn_img_delete;
     ImageView img_view;
 
     private Nota nota = new Nota();
@@ -82,8 +84,9 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     RecyclerView mRecyclerView;
     List<Lista> listaList = new ArrayList<>();
     AdaptadorLista adaptadorLista;
-    Button add_lista, delete_lista;
 
+    Button add_lista, delete_lista;
+    ImageButton ok_lista;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,8 +118,9 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         }
         editTextTitulo = (EditText) findViewById(R.id.etTitulo);
         editTextNota = (EditText) findViewById(R.id.etNota);
-        //Boton
-        btn_img = (Button) findViewById(R.id.id_imagen_btn);
+        //Control imagen
+        imgBtn_img_add = (ImageButton) findViewById(R.id.id_imagen_btn);
+        imgBtn_img_delete = (ImageButton) findViewById(R.id.id_d);
         //Imagen
         img_view = (ImageView) findViewById(R.id.id_imagen);
 
@@ -124,6 +128,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
         delete_lista = (Button) findViewById(R.id.id_eliminar_ultima_lista);
         add_lista = (Button) findViewById(R.id.id_aniadir_lista);
+        ok_lista = (ImageButton) findViewById(R.id.id_ok_lista);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.id_recycler_view_listas);
 
@@ -163,13 +168,16 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         });
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            btn_img.setEnabled(false);
+            imgBtn_img_add.setEnabled(false);
             ActivityCompat.requestPermissions(
                     this,
-                    new String[]{Manifest.permission.CAMERA,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+                    new String[]{
+                            Manifest.permission.CAMERA,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    },
+                    0);
         }
-        btn_img.setOnClickListener(new View.OnClickListener() {
+        imgBtn_img_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mostrarDialogoCamaraGaleria(v);
@@ -183,14 +191,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             public void onClick(View v) {
                 editTextTitulo.requestFocus();
                 adaptadorLista.deleteUltimaLista();
-//              /*
-                int index = 0;
-                System.out.println("---For listaList---");
-                for (Lista lista : listaList) {
-                    System.out.println("I: " + (index++) + " " + lista.toString());
-                }
-                System.out.println("---end listaList---");
-//              */
+
             }
         });
 
@@ -199,14 +200,21 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             public void onClick(View v) {
                 editTextTitulo.requestFocus();
                 adaptadorLista.addLista();
-//              /*
+
+            }
+        });
+
+        ok_lista.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
                 int index = 0;
                 System.out.println("---For listaList---");
                 for (Lista lista : listaList) {
                     System.out.println("I: " + (index++) + " " + lista.toString());
                 }
                 System.out.println("---end listaList---");
-//              */
+
             }
         });
 
@@ -593,7 +601,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED
                     && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                btn_img.setEnabled(true);
+                imgBtn_img_add.setEnabled(true);
             }
         }
     }
