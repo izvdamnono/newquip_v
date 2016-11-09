@@ -85,8 +85,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     List<Lista> listaList = new ArrayList<>();
     AdaptadorLista adaptadorLista;
 
-    Button add_lista, delete_lista;
-    ImageButton ok_lista;
+    ImageButton add_lista, delete_lista, ok_lista;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,14 +119,14 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         editTextNota = (EditText) findViewById(R.id.etNota);
         //Control imagen
         imgBtn_img_add = (ImageButton) findViewById(R.id.id_imagen_btn);
-        imgBtn_img_delete = (ImageButton) findViewById(R.id.id_d);
+        imgBtn_img_delete = (ImageButton) findViewById(R.id.id_imagen_btn_delete);
         //Imagen
         img_view = (ImageView) findViewById(R.id.id_imagen);
 
         /*------ RECYCLER VIEW ------*/
 
-        delete_lista = (Button) findViewById(R.id.id_eliminar_ultima_lista);
-        add_lista = (Button) findViewById(R.id.id_aniadir_lista);
+        delete_lista = (ImageButton) findViewById(R.id.id_eliminar_ultima_lista);
+        add_lista = (ImageButton) findViewById(R.id.id_aniadir_lista);
         ok_lista = (ImageButton) findViewById(R.id.id_ok_lista);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.id_recycler_view_listas);
