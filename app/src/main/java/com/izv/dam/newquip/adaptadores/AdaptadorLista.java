@@ -36,13 +36,14 @@ public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String id_lista = "" + (listaList.get(position).getId_lista());
-        String id_nota = "" + (listaList.get(position).getId_nota());
-        String lista_texto = listaList.get(position).getTexto_lista();
-        boolean check_box_lista = listaList.get(position).isHecho();
+        Lista lista = listaList.get(position);
+        String id_lista = "id_lista: " + lista.getId_lista();
+        String id_nota = "id_nota: " + lista.getId_nota();
+        String lista_texto = lista.getTexto_lista();
+        boolean check_box_lista = lista.isHecho();
 
-        holder.text_view_id_lista.setText("id_lista: " + id_lista);
-        holder.text_view_id_nota.setText("id_nota: " + id_nota);
+        holder.text_view_id_lista.setText(id_lista);
+        holder.text_view_id_nota.setText(id_nota);
         holder.text_view_lista_texto.setText(lista_texto);
         holder.check_box_lista.setChecked(check_box_lista);
     }

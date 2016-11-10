@@ -59,7 +59,6 @@ import java.util.List;
 import java.util.Locale;
 
 public class VistaNota extends AppCompatActivity implements ContratoNota.InterfaceVista {
-    boolean notainsertada = false;
 
     Toolbar toolbar;
     EditText editTextTitulo, editTextNota;
@@ -81,6 +80,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     boolean is_notific_active = false;
     private int notifID = 33;
     public static final String BUNDLE_KEY = "nota";
+    public static final String BUNDLE_KEY_LISTAS = "listas";
 
     RecyclerView mRecyclerView;
     List<Lista> listaList = new ArrayList<>();
@@ -170,18 +170,13 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             imgBtn_img_add.setEnabled(false);
-            ActivityCompat.requestPermissions(
-                    this,
-                    new String[]{
-                            Manifest.permission.CAMERA,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    },
-                    0);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
         }
         imgBtn_img_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mostrarDialogoCamaraGaleria(v);
+                mostrarDialogoCamaraGaleria();
             }
         });
 
@@ -190,25 +185,22 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         delete_lista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editTextTitulo.requestFocus();
+                editTextNota.requestFocus();
                 adaptadorLista.deleteUltimaLista();
-
             }
         });
 
         add_lista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editTextTitulo.requestFocus();
+                editTextNota.requestFocus();
                 adaptadorLista.addLista();
-
             }
         });
 
         ok_lista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 int index = 0;
                 long id_lista = 0, id_nota = 0;
                 String texto_lista = "";
@@ -224,9 +216,9 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                     texto_lista = lista.getTexto_lista();
                     hecho = lista.isHecho();
 
-                    insert = new Lista(id_lista, id_nota, texto_lista, hecho);
-
-                    VistaNota.this.presentadorNota.onSaveLista(insert);
+                    VistaNota.this.presentadorNota.onSaveLista(
+                            new Lista(id_lista, id_nota, texto_lista, hecho)
+                    );
 
                 }
                 System.out.println("---end listaList---");
@@ -250,25 +242,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
      * busca de listas que tenga el id de la nota a mostrar
      */
     public void cargarDatosLista() {
-        long id_nota = nota.getId();
-        if (id_nota != 0) {
-            System.out.println("id_nota: " + id_nota);
-
-            GestionLista gestionLista = new GestionLista(this);
-            ArrayList<Lista> listas = gestionLista.getListas(id_nota);
-
-            if (listas != null) {
-                System.out.println("listas NOT NULL");
-
-                for (Lista lista : listas) {
-                    System.out.println("ToString: " + lista.toString());
-                }
-                listaList = listas;
-            } else {
-                System.out.println("listas IS NULL");
-            }
-        }
-
+        mostrarListas(null);
     }
 
     @Override
@@ -303,7 +277,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 */
             case R.id.save:
 
-                saveNota();
                 Toast.makeText(this, "Save", Toast.LENGTH_SHORT).show();
                 return true;
 
@@ -372,6 +345,29 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         }
     }
 
+    @Override
+    public void mostrarListas(ArrayList<Lista> ls) {
+        long id_nota = nota.getId();
+        if (id_nota != 0) {
+            System.out.println("id_nota: " + id_nota);
+
+            GestionLista gestionLista = new GestionLista(this);
+            ArrayList<Lista> listas = gestionLista.getListas(id_nota);
+
+            if (listas != null) {
+                System.out.println("listas NOT NULL");
+
+                for (Lista lista : listas) {
+                    System.out.println("ToString: " + lista.toString());
+                }
+                listaList = listas;
+            } else {
+                System.out.println("listas IS NULL");
+            }
+        }
+
+    }
+
     /*
      * Con este metodo se guarda la nota
      */
@@ -382,22 +378,21 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         SimpleDateFormat formato_fecha_actual = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", new Locale("es", "ES"));
         String fecha_actual = formato_fecha_actual.format(new Date());
 
-        //Si no tiene fecha de creacion se la da
+        /*Si no tiene fecha de creacion se la da*/
         if (nota.getFecha_creacion() == null) {
             nota.setFecha_creacion(fecha_actual);
         }
-        //Fecha de modificacion se la cambia por la actual
+        /*Fecha de modificacion se la cambia por la actual*/
         nota.setFecha_modificacion(fecha_actual);
         if (nota.getImagen() == null) {
             nota.setImagen(temp_file_path);
         }
 
-        if (notainsertada == false) {
-            long r = presentadorNota.onSaveNota(nota);
-            if (r > 0 & nota.getId() == 0) {
-                nota.setId(r);
-            }
+        long r = presentadorNota.onSaveNota(nota);
+        if (r > 0 & nota.getId() == 0) {
+            nota.setId(r);
         }
+
     }
 
     private void saveRecordatorio(String fecha_recordatorio) {
@@ -426,7 +421,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     /*
      * Dialogo de la camara y la galeria
      */
-    public void mostrarDialogoCamaraGaleria(final View v) {
+    public void mostrarDialogoCamaraGaleria() {
         final CharSequence[] items = {"Galeria", "Cámara"};
         AlertDialog.Builder alert_builder = new AlertDialog.Builder(this);
         alert_builder.setTitle("Elige una opcion");

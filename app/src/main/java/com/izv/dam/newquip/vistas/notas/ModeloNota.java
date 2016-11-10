@@ -31,9 +31,11 @@ public class ModeloNota implements ContratoNota.InterfaceModelo {
         return gestionNota.get(id);
     }
 
-    public Lista getLista(long id) {
+    @Override
+    public Lista getListas(long id) {
         return gestionLista.get(id);
     }
+
 
     @Override
     public long saveNota(Nota n) {
