@@ -18,6 +18,8 @@ public interface ContratoNota {
 
         long saveNota(Nota n);
 
+        long saveLista(Lista l);
+
     }
 
     interface InterfacePresentador {
@@ -27,6 +29,8 @@ public interface ContratoNota {
         void onResume();
 
         long onSaveNota(Nota n);
+
+        long onSaveLista(Lista l);
 
     }
 

@@ -59,6 +59,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class VistaNota extends AppCompatActivity implements ContratoNota.InterfaceVista {
+    boolean notainsertada = false;
 
     Toolbar toolbar;
     EditText editTextTitulo, editTextNota;
@@ -209,25 +210,23 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             public void onClick(View v) {
 
                 int index = 0;
-                long id_lista, id_nota;
-                boolean hecho;
-                String text_lista;
+                long id_lista = 0, id_nota = 0;
+                String texto_lista = "";
+                boolean hecho = false;
+                Lista insert;
+
                 System.out.println("---For listaList---");
                 for (Lista lista : listaList) {
                     System.out.println("I: " + (index++) + " " + lista.toString());
-                    if (lista.getId_lista() != 0) {
-                        id_lista = lista.getId_lista();
-                    }
-                    if (lista.getId_nota() != 0) {
-                        id_nota = lista.getId_nota();
-                    }
-                    if (lista.isHecho() || !lista.isHecho()) {
-                        hecho = lista.isHecho();
-                    }
-                    if (!lista.getTexto_lista().isEmpty()) {
-                        String texto_lista = lista.getTexto_lista();
-                    }
 
+                    id_lista = lista.getId_lista();
+                    id_nota = nota.getId();
+                    texto_lista = lista.getTexto_lista();
+                    hecho = lista.isHecho();
+
+                    insert = new Lista(id_lista, id_nota, texto_lista, hecho);
+
+                    VistaNota.this.presentadorNota.onSaveLista(insert);
 
                 }
                 System.out.println("---end listaList---");
@@ -253,7 +252,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     public void cargarDatosLista() {
         long id_nota = nota.getId();
         if (id_nota != 0) {
-//            id_nota = 1;
             System.out.println("id_nota: " + id_nota);
 
             GestionLista gestionLista = new GestionLista(this);
@@ -304,8 +302,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                 return true;
 */
             case R.id.save:
-//                View v = findViewById(R.id.id_activity_detail_nota);
-//                showNotification(v);
+
                 saveNota();
                 Toast.makeText(this, "Save", Toast.LENGTH_SHORT).show();
                 return true;
@@ -395,9 +392,11 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             nota.setImagen(temp_file_path);
         }
 
-        long r = presentadorNota.onSaveNota(nota);
-        if (r > 0 & nota.getId() == 0) {
-            nota.setId(r);
+        if (notainsertada == false) {
+            long r = presentadorNota.onSaveNota(nota);
+            if (r > 0 & nota.getId() == 0) {
+                nota.setId(r);
+            }
         }
     }
 
@@ -497,8 +496,11 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
      * Camara
      */
     private static File getOutputMediaFile() {
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "NewQuipPictures");
+        File mediaStorageDir = new File(
+                Environment.getExternalStoragePublicDirectory(
+                        Environment.DIRECTORY_PICTURES
+                ),
+                "NewQuipPictures");
 
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
