@@ -10,3 +10,4 @@ public interface ClickListenerLong {
 
     void onItemLongClick(View view, int position);
 }
+ 
