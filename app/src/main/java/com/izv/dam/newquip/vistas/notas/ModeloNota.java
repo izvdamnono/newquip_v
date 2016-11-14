@@ -39,26 +39,37 @@ public class ModeloNota implements ContratoNota.InterfaceModelo {
 
     @Override
     public long saveNota(Nota n) {
-        long r;
         if (n.getId() == 0) {
-            r = this.insertNota(n);
-        } else {
-            r = this.updateNota(n);
+            return this.insertNota(n);
         }
-        return r;
+        return this.updateNota(n);
+    }
+
+    @Override
+    public long deleteNota(Nota n) {
+        return gestionNota.delete(n);
     }
 
     @Override
     public long saveLista(Lista l) {
         Uri u = context.getContentResolver().insert(ContratoBaseDatos.CONTENT_URI_LISTA, l.getContentValues());
         String s = u.getLastPathSegment();
-        long id = Long.parseLong(s);
-        return id;
+        return Long.parseLong(s);
+//        long r;
+//        if (l.getId_lista() == 0) {
+//            r = this.insertLista(l);
+//        } else {
+//            r = this.updateLista(l);
+//        }
+//        return r;
     }
 
-    private long deleteNota(Nota n) {
-        return gestionNota.delete(n);
+    @Override
+    public long deleteLista(Lista l) {
+//        System.out.println("deleteLista" + l.toString());
+        return gestionLista.delete(l);
     }
+
 
     private long insertNota(Nota n) {
         if (n.getNota().trim().compareTo("") == 0 && n.getTitulo().trim().compareTo("") == 0) {
@@ -75,11 +86,21 @@ public class ModeloNota implements ContratoNota.InterfaceModelo {
     }
 
     private long updateNota(Nota n) {
-        if (n.getNota().trim().compareTo("") == 0 && n.getTitulo().trim().compareTo("") == 0) {
+        if (n.getNota().trim().compareTo("") == 0
+                && n.getTitulo().trim().compareTo("") == 0) {
             this.deleteNota(n);
             gestionNota.delete(n);
             return 0;
         }
         return gestionNota.update(n);
+    }
+
+    private long updateLista(Lista l) {
+        if (l.getTexto_lista().trim().compareTo("") == 0) {
+            this.deleteLista(l);
+            gestionLista.delete(l);
+            return 0;
+        }
+        return gestionLista.update(l);
     }
 }

@@ -6,7 +6,7 @@ import android.database.Cursor;
 import com.izv.dam.newquip.contrato.ContratoMain;
 import com.izv.dam.newquip.pojo.Nota;
 
-public class PresentadorQuip implements ContratoMain.InterfacePresentador{
+public class PresentadorQuip implements ContratoMain.InterfacePresentador {
 
     private ContratoMain.InterfaceModelo modelo;
     private ContratoMain.InterfaceVista vista;
@@ -14,7 +14,7 @@ public class PresentadorQuip implements ContratoMain.InterfacePresentador{
 
     public PresentadorQuip(ContratoMain.InterfaceVista vista) {
         this.vista = vista;
-        this.modelo = new ModeloQuip((Context)vista);
+        this.modelo = new ModeloQuip((Context) vista);
         oyente = new ContratoMain.InterfaceModelo.OnDataLoadListener() {
             @Override
             public void setCursor(Cursor c) {
@@ -35,6 +35,12 @@ public class PresentadorQuip implements ContratoMain.InterfacePresentador{
     }
 
     @Override
+    public void onDeleteNota(int position) {
+        this.modelo.deleteNota(position);
+        this.modelo.loadData(oyente);
+    }
+
+    @Override
     public void onEditNota(Nota n) {
         this.vista.mostrarEditarNota(n);
     }
@@ -48,19 +54,12 @@ public class PresentadorQuip implements ContratoMain.InterfacePresentador{
         this.modelo.loadData(oyente);
     }
 
-
-
     @Override
     public void onShowBorrarNota(int position) {
         Nota n = this.modelo.getNota(position);
         this.vista.mostrarConfirmarBorrarNota(n);
     }
 
-    @Override
-    public void onDeleteNota(int position) {
-        this.modelo.deleteNota(position);
-        this.modelo.loadData(oyente);
-    }
 
     @Override
     public void onEditNota(int position) {

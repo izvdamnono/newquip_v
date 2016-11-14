@@ -185,8 +185,11 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         delete_lista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editTextNota.requestFocus();
+                System.out.println(listaList.get(listaList.size()-1).toString());
+//                VistaNota.this.presentadorNota.onDeleteLista(listaList.get(listaList.size()-1));
                 adaptadorLista.deleteUltimaLista();
+                editTextNota.requestFocus();
+                presentadorNota.onDeleteLista(listaList.get(listaList.size()-1));
             }
         });
 

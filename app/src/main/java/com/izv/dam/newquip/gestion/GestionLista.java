@@ -9,8 +9,8 @@ import com.izv.dam.newquip.pojo.Lista;
 
 import java.util.ArrayList;
 
-
 public class GestionLista extends Gestion<Lista> {
+
     public GestionLista(Context c) {
         super(c);
     }
@@ -24,14 +24,14 @@ public class GestionLista extends Gestion<Lista> {
         return this.deleteAll(ContratoBaseDatos.TablaLista.TABLA);
     }
 
-    public int delete(String condicion, String[] argumentos) {
-        return this.delete(ContratoBaseDatos.TablaLista.TABLA, condicion, argumentos);
-    }
-
-
+    @Override
     public int delete(Lista objeto) {
         String condicion = ContratoBaseDatos.TablaLista._ID + " = ?";
         String[] argumentos = {objeto.getId_lista() + ""};
+        return this.delete(ContratoBaseDatos.TablaLista.TABLA, condicion, argumentos);
+    }
+
+    public int delete(String condicion, String[] argumentos) {
         return this.delete(ContratoBaseDatos.TablaLista.TABLA, condicion, argumentos);
     }
 
@@ -45,6 +45,44 @@ public class GestionLista extends Gestion<Lista> {
             return Lista.getLista(c);
         }
         return null;
+    }
+
+    @Override
+    public Cursor getCursor() {
+        return this.getCursor(ContratoBaseDatos.TablaLista.TABLA,
+                ContratoBaseDatos.TablaLista.PROJECTION_ALL,
+                ContratoBaseDatos.TablaLista.SORT_ORDER_DEFAULT
+        );
+    }
+
+    @Override
+    public Cursor getCursor(String[] columns, String selection, String[] selectionArgs,
+                            String groupBy, String having, String orderBy) {
+        return this.getCursor(ContratoBaseDatos.TablaLista.TABLA, columns, selection, selectionArgs,
+                groupBy, having, orderBy);
+    }
+
+    @Override
+    public long insert(ContentValues objeto) {
+        return this.insert(ContratoBaseDatos.TablaLista.TABLA, objeto);
+    }
+
+    @Override
+    public long insert(Lista objeto) {
+        return this.insert(ContratoBaseDatos.TablaLista.TABLA, objeto.getContentValues());
+    }
+
+    @Override
+    public int update(ContentValues valores, String condicion, String[] argumentos) {
+        return this.update(ContratoBaseDatos.TablaLista.TABLA, valores, condicion, argumentos);
+    }
+
+    @Override
+    public int update(Lista objeto) {
+        ContentValues valores = objeto.getContentValues();
+        String condicion = ContratoBaseDatos.TablaLista._ID + " = ?";
+        String[] argumentos = {objeto.getId_lista() + ""};
+        return this.update(ContratoBaseDatos.TablaLista.TABLA, valores, condicion, argumentos);
     }
 
     public ArrayList<Lista> getListas(long id_nota) {
@@ -63,53 +101,5 @@ public class GestionLista extends Gestion<Lista> {
         return null;
     }
 
-//      String sql = "SELECT * FROM nota INNER JOIN lista ON nota._id = lista.id_nota WHERE nota._id = ?";
-
-
-    @Override
-    public Cursor getCursor() {
-        return this.getCursor(
-                ContratoBaseDatos.TablaLista.TABLA,
-                ContratoBaseDatos.TablaLista.PROJECTION_ALL,
-                ContratoBaseDatos.TablaLista.SORT_ORDER_DEFAULT
-        );
-    }
-
-    @Override
-    public Cursor getCursor(String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy) {
-        return this.getCursor(
-                ContratoBaseDatos.TablaLista.TABLA,
-                columns,
-                selection,
-                selectionArgs,
-                groupBy,
-                having,
-                orderBy
-        );
-    }
-
-
-    @Override
-    public long insert(Lista objeto) {
-        return this.insert(ContratoBaseDatos.TablaLista.TABLA, objeto.getContentValues());
-    }
-
-    @Override
-    public long insert(ContentValues objeto) {
-        return this.insert(ContratoBaseDatos.TablaLista.TABLA, objeto);
-    }
-
-    @Override
-    public int update(Lista objeto) {
-        ContentValues valores = objeto.getContentValues();
-        String condicion = ContratoBaseDatos.TablaLista._ID + " = ?";
-        String[] argumentos = {objeto.getId_lista() + ""};
-        return this.update(ContratoBaseDatos.TablaLista.TABLA, valores, condicion, argumentos);
-    }
-
-    @Override
-    public int update(ContentValues valores, String condicion, String[] argumentos) {
-        return this.update(ContratoBaseDatos.TablaLista.TABLA, valores, condicion, argumentos);
-    }
 
 }

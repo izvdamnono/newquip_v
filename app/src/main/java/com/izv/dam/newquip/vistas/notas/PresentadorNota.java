@@ -27,12 +27,22 @@ public class PresentadorNota implements ContratoNota.InterfacePresentador {
 
     @Override
     public long onSaveNota(Nota n) {
-        return this.modelo.saveNota(n);
+       return this.modelo.saveNota(n);
     }
 
     @Override
-    public long onSaveLista(Lista l) {
-        return this.modelo.saveLista(l);
+    public void onDeleteNota(Nota n) {
+        this.modelo.deleteNota(n);
+    }
+
+    @Override
+    public void onSaveLista(Lista l) {
+        this.modelo.saveLista(l);
+    }
+
+    @Override
+    public void onDeleteLista(Lista l) {
+        this.modelo.deleteLista(l);
     }
 
 }

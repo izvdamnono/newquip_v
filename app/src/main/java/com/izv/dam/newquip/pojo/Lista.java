@@ -26,7 +26,7 @@ public class Lista implements Parcelable {
     }
 
     public Lista() {
-        this(0, 0, "", false);
+        this(0, 0, null, false);
     }
 
     public long getId_lista() {
@@ -36,7 +36,6 @@ public class Lista implements Parcelable {
     public void setId_lista(long id_lista) {
         this.id_lista = id_lista;
     }
-
 
     public long getId_nota() {
         return id_nota;
