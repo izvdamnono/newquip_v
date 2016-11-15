@@ -100,43 +100,43 @@
                             android:layout_weight="1"
                             app:srcCompat="@mipmap/ic_add_list_color"
                             android:contentDescription="@string/add" />
-
-                        <ImageButton
-                            android:id="@+id/id_eliminar_ultima_lista"
-                            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            app:srcCompat="@mipmap/ic_delete_list_color" />
-
                         <!--
-                        <Button
-                            android:id="@+id/id_eliminar_ultima_lista"
-                            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/eliminar_ltima_lista" />
+                                                <ImageButton
+                                                    android:id="@+id/id_eliminar_ultima_lista"
+                                                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_weight="1"
+                                                    app:srcCompat="@mipmap/ic_delete_list_color" />
 
 
-                        <Button
-                            android:id="@+id/id_aniadir_lista"
-                            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/a_adir_lista" />
+                                                <Button
+                                                    android:id="@+id/id_eliminar_ultima_lista"
+                                                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_weight="1"
+                                                    android:text="@string/eliminar_ltima_lista" />
 
 
-                        <ImageButton
-                            android:id="@+id/id_ok_lista"
-                            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.86"
-                            android:contentDescription="@string/add"
-                            app:srcCompat="@mipmap/ic_save_color" />
-                        -->
+                                                <Button
+                                                    android:id="@+id/id_aniadir_lista"
+                                                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_weight="1"
+                                                    android:text="@string/a_adir_lista" />
+
+
+                                                <ImageButton
+                                                    android:id="@+id/id_ok_lista"
+                                                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_weight="0.86"
+                                                    android:contentDescription="@string/add"
+                                                    app:srcCompat="@mipmap/ic_save_color" />
+                                                  -->
 
                     </LinearLayout>
 

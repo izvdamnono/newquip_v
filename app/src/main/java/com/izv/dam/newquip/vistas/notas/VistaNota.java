@@ -128,7 +128,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
         /*------ RECYCLER VIEW ------*/
 
-        delete_lista = (ImageButton) findViewById(R.id.id_eliminar_ultima_lista);
+//        delete_lista = (ImageButton) findViewById(R.id.id_eliminar_ultima_lista);
         add_lista = (ImageButton) findViewById(R.id.id_aniadir_lista);
 //        ok_lista = (ImageButton) findViewById(R.id.id_ok_lista);
 
@@ -182,6 +182,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         });
 
         /*------ RECYCLER VIEW ------*/
+      /*
         if (listaList.size() == 0) {
             delete_lista.setEnabled(false);
         }
@@ -196,14 +197,14 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                 }
             }
         });
-
+      */
         add_lista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editTextNota.requestFocus();
                 adaptadorLista.addLista();
                 if (listaList.size() > 0) {
-                    delete_lista.setEnabled(true);
+//                    delete_lista.setEnabled(true);
                 }
             }
         });
@@ -346,7 +347,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                 listaList = listas;
             }
             if (listaList.size() > 0) {
-                delete_lista.setEnabled(true);
+//                delete_lista.setEnabled(true);
             }
         }
 

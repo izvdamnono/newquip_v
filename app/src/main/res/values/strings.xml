@@ -46,6 +46,7 @@
     <string name="hint">hint</string>
     <string name="eliminar_ltima_lista">Eliminar última lista</string>
     <string name="a_adir_lista">Añadir lista</string>
+    <string name="texto">Lista</string>
 
 
 </resources>
