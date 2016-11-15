@@ -118,6 +118,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         }
         editTextTitulo = (EditText) findViewById(R.id.etTitulo);
         editTextNota = (EditText) findViewById(R.id.etNota);
+
         //Control imagen
         imgBtn_img_add = (ImageButton) findViewById(R.id.id_imagen_btn);
         imgBtn_img_delete = (ImageButton) findViewById(R.id.id_imagen_btn_delete);
@@ -129,7 +130,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
         delete_lista = (ImageButton) findViewById(R.id.id_eliminar_ultima_lista);
         add_lista = (ImageButton) findViewById(R.id.id_aniadir_lista);
-        ok_lista = (ImageButton) findViewById(R.id.id_ok_lista);
+//        ok_lista = (ImageButton) findViewById(R.id.id_ok_lista);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.id_recycler_view_listas);
 
@@ -181,15 +182,18 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         });
 
         /*------ RECYCLER VIEW ------*/
-
+        if (listaList.size() == 0) {
+            delete_lista.setEnabled(false);
+        }
         delete_lista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println(listaList.get(listaList.size()-1).toString());
-//                VistaNota.this.presentadorNota.onDeleteLista(listaList.get(listaList.size()-1));
+                presentadorNota.onDeleteLista(listaList.get(listaList.size() - 1));
                 adaptadorLista.deleteUltimaLista();
                 editTextNota.requestFocus();
-                presentadorNota.onDeleteLista(listaList.get(listaList.size()-1));
+                if (listaList.size() == 0) {
+                    delete_lista.setEnabled(false);
+                }
             }
         });
 
@@ -198,36 +202,18 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             public void onClick(View v) {
                 editTextNota.requestFocus();
                 adaptadorLista.addLista();
-            }
-        });
-
-        ok_lista.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int index = 0;
-                long id_lista = 0, id_nota = 0;
-                String texto_lista = "";
-                boolean hecho = false;
-                Lista insert;
-
-                System.out.println("---For listaList---");
-                for (Lista lista : listaList) {
-                    System.out.println("I: " + (index++) + " " + lista.toString());
-
-                    id_lista = lista.getId_lista();
-                    id_nota = nota.getId();
-                    texto_lista = lista.getTexto_lista();
-                    hecho = lista.isHecho();
-
-                    VistaNota.this.presentadorNota.onSaveLista(
-                            new Lista(id_lista, id_nota, texto_lista, hecho)
-                    );
-
+                if (listaList.size() > 0) {
+                    delete_lista.setEnabled(true);
                 }
-                System.out.println("---end listaList---");
-
             }
         });
+
+//        ok_lista.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -352,20 +338,15 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     public void mostrarListas(ArrayList<Lista> ls) {
         long id_nota = nota.getId();
         if (id_nota != 0) {
-            System.out.println("id_nota: " + id_nota);
 
             GestionLista gestionLista = new GestionLista(this);
             ArrayList<Lista> listas = gestionLista.getListas(id_nota);
 
             if (listas != null) {
-                System.out.println("listas NOT NULL");
-
-                for (Lista lista : listas) {
-                    System.out.println("ToString: " + lista.toString());
-                }
                 listaList = listas;
-            } else {
-                System.out.println("listas IS NULL");
+            }
+            if (listaList.size() > 0) {
+                delete_lista.setEnabled(true);
             }
         }
 
@@ -396,6 +377,28 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             nota.setId(r);
         }
 
+        saveLista();
+
+    }
+
+    private void saveLista() {
+        if (listaList.size() > 0) {
+            long id_lista, id_nota ;
+            String texto_lista;
+            boolean hecho;
+
+            for (Lista lista : listaList) {
+
+                id_lista = lista.getId_lista();
+                id_nota = nota.getId();
+                texto_lista = lista.getTexto_lista();
+                hecho = lista.isHecho();
+
+                VistaNota.this.presentadorNota.onSaveLista(
+                        new Lista(id_lista, id_nota, texto_lista, hecho));
+
+            }
+        }
     }
 
     private void saveRecordatorio(String fecha_recordatorio) {
@@ -509,7 +512,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File f = new File(mediaStorageDir.getPath() + File.separator + "IMG_" + timeStamp + ".jpg");
         temp_file_path = f.toString();
-        System.out.println("FILE getOutputMediaFile: " + f.toString());
         return f;
     }
 

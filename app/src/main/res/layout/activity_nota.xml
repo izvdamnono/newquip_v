@@ -126,7 +126,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@string/a_adir_lista" />
-                            -->
+
 
                         <ImageButton
                             android:id="@+id/id_ok_lista"
@@ -136,6 +136,7 @@
                             android:layout_weight="0.86"
                             android:contentDescription="@string/add"
                             app:srcCompat="@mipmap/ic_save_color" />
+                        -->
 
                     </LinearLayout>
 

@@ -18,6 +18,7 @@ public class ModeloNota implements ContratoNota.InterfaceModelo {
 
     public ModeloNota(Context c) {
         gestionNota = new GestionNota(c);
+        gestionLista = new GestionLista(c);
         context = c;
     }
 
@@ -66,7 +67,7 @@ public class ModeloNota implements ContratoNota.InterfaceModelo {
 
     @Override
     public long deleteLista(Lista l) {
-//        System.out.println("deleteLista" + l.toString());
+        System.out.println("l2:" + l.toString());
         return gestionLista.delete(l);
     }
 

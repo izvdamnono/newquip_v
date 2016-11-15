@@ -13,7 +13,7 @@ public class PresentadorNota implements ContratoNota.InterfacePresentador {
 
     public PresentadorNota(ContratoNota.InterfaceVista vista) {
         this.vista = vista;
-        this.modelo = new ModeloNota((Context)vista);
+        this.modelo = new ModeloNota((Context) vista);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class PresentadorNota implements ContratoNota.InterfacePresentador {
 
     @Override
     public long onSaveNota(Nota n) {
-       return this.modelo.saveNota(n);
+        return this.modelo.saveNota(n);
     }
 
     @Override
