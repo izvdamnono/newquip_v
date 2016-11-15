@@ -1,5 +1,7 @@
 package com.izv.dam.newquip.util;
 
+import android.util.Log;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

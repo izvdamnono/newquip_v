@@ -13,6 +13,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -25,16 +27,19 @@ import android.widget.Toast;
 
 import com.izv.dam.newquip.R;
 import com.izv.dam.newquip.adaptadores.AdaptadorNota;
+import com.izv.dam.newquip.contrato.ClickListener;
+import com.izv.dam.newquip.contrato.ClickListenerLong;
 import com.izv.dam.newquip.contrato.ContratoMain;
 import com.izv.dam.newquip.dialogo.OnBorrarDialogListener;
 import com.izv.dam.newquip.pojo.Nota;
 import com.izv.dam.newquip.dialogo.DialogoBorrar;
 import com.izv.dam.newquip.vistas.notas.VistaNota;
 
-public class VistaQuip extends AppCompatActivity implements ContratoMain.InterfaceVista,
+public class VistaQuip extends AppCompatActivity implements ContratoMain.InterfaceVista, ClickListener, ClickListenerLong,
         OnBorrarDialogListener,
         NavigationView.OnNavigationItemSelectedListener {
 
+    private RecyclerView mRecyclerView;
     private AdaptadorNota adaptador;
     private PresentadorQuip presentador;
     FloatingActionButton fab;
@@ -64,31 +69,31 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        lv = (ListView) findViewById(R.id.lvListaNotas);
         presentador = new PresentadorQuip(this);
+
+
+        //RECYCLERVIEW
+        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+        adaptador = new AdaptadorNota(null);
+        mRecyclerView.setAdapter(adaptador);
+        mRecyclerView.setLayoutManager(
+                new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+        adaptador.setOnItemClickListener(this);
+        adaptador.setOnItemLongClickListener(this);
+
+
+
+        //LIST VIEW ANTIGUO
+        /*
+        lv = (ListView) findViewById(R.id.lvListaNotas);
         adaptador = new AdaptadorNota(this, null);
-        lv.setAdapter(adaptador);
+        */
+        //lv.setAdapter(adaptador);
+
     }
 
 
     private void ejecutar() {
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(VistaQuip.this, "Editar", Toast.LENGTH_SHORT).show();
-                presentador.onEditNota(i);
-            }
-        });
-
-        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(VistaQuip.this, "Borrar", Toast.LENGTH_SHORT).show();
-                presentador.onShowBorrarNota(i);
-                return true;
-            }
-        });
-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -237,5 +242,16 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        presentador.onEditNota(position);
+    }
+
+    @Override
+    public void onItemLongClick(View view, int position) {
+        Toast.makeText(VistaQuip.this, "delete", Toast.LENGTH_SHORT).show();
+        presentador.onShowBorrarNota(position);
     }
 }
