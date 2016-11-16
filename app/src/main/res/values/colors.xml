@@ -35,4 +35,26 @@
     <color name="colorNota18">#CE93D8</color>
     <color name="colorNota19">#F48FB1</color>
     <color name="colorNota20">#EF9A9A</color>
+
+    <array name="default_rainbow">
+        <item>@color/colorNota1</item>
+        <item>@color/colorNota2</item>
+        <item>@color/colorNota3</item>
+        <item>@color/colorNota4</item>
+        <item>@color/colorNota5</item>
+        <item>@color/colorNota6</item>
+        <item>@color/colorNota8</item>
+        <item>@color/colorNota9</item>
+        <item>@color/colorNota10</item>
+        <item>@color/colorNota11</item>
+        <item>@color/colorNota12</item>
+        <item>@color/colorNota13</item>
+        <item>@color/colorNota14</item>
+        <item>@color/colorNota15</item>
+        <item>@color/colorNota16</item>
+        <item>@color/colorNota17</item>
+        <item>@color/colorNota18</item>
+        <item>@color/colorNota19</item>
+        <item>@color/colorNota20</item>
+    </array>
 </resources>

@@ -49,6 +49,10 @@ import com.izv.dam.newquip.pojo.Lista;
 import com.izv.dam.newquip.pojo.Nota;
 import com.izv.dam.newquip.util.UtilFecha;
 import com.izv.dam.newquip.vistas.notification.Notificacion;
+import com.izv.dam.newquip.vistas.settings.SettingsActivity;
+
+import org.xdty.preference.colorpicker.ColorPickerDialog;
+import org.xdty.preference.colorpicker.ColorPickerSwatch;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -88,7 +92,8 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     private AdaptadorLista adaptadorLista;
 
     ImageButton add_lista, delete_lista, ok_lista;
-
+    /*--Color--*/
+    private int mSelectedColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -267,20 +272,49 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
                 return true;
                 */
+            case R.id.id_palette:
+                mSelectedColor = ContextCompat.getColor(this, R.color.flamingo);
+
+                int[] mColors = getResources().getIntArray(R.array.default_rainbow);
+                ColorPickerDialog dialog = ColorPickerDialog.newInstance(R.string.color_picker_default_title,
+                        mColors,
+                        mSelectedColor,
+                        5,
+                        ColorPickerDialog.SIZE_SMALL);
+
+                dialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
+
+                    @Override
+                    public void onColorSelected(int color) {
+                        mSelectedColor = color;
+                        tvFechaRecordatorioDia.setTextColor(mSelectedColor);
+                    }
+
+                });
+
+                dialog.show(getFragmentManager(), "color_dialog_test");
+
+                return true;
+            case R.id.id_share:
+                Toast.makeText(this, "Share", Toast.LENGTH_SHORT).show();
+                return true;
 
             case R.id.ok_alert:
-                if (menu.getItem(0).getIcon() == item.getIcon()) {
-                    menu.getItem(0).setIcon(R.mipmap.ic_delete_alert);
+                System.out.println(nota.getFecha_recordatorio());
+                if (nota.getFecha_recordatorio() == null) {
+                    menu.getItem(2).setIcon(R.mipmap.ic_delete_alert);
                     fecha_recordatorio = tvFechaRecordatorioDia.getText().toString() + " " + tvFechaRecordatorioHora.getText().toString();
                     nuevo_formato = UtilFecha.cambiarFormato(fecha_recordatorio, 0);
 
                     addAlarmNotification(nuevo_formato);
                     saveRecordatorio(nuevo_formato);
-                    Toast.makeText(this, "Alert " + nuevo_formato, Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(this, "Alert ok", Toast.LENGTH_SHORT).show();
                 } else {
-                    menu.getItem(0).setIcon(R.mipmap.ic_ok_alert);
+                    menu.getItem(2).setIcon(R.mipmap.ic_ok_alert);
                     saveRecordatorio(null);
                     stopNotification();
+
                     Toast.makeText(this, "Alert Delete", Toast.LENGTH_SHORT).show();
                 }
 
