@@ -53,9 +53,9 @@ public class ModeloNota implements ContratoNota.InterfaceModelo {
 
     @Override
     public long saveLista(Lista l) {
-        Uri u = context.getContentResolver().insert(ContratoBaseDatos.CONTENT_URI_LISTA, l.getContentValues());
-        String s = u.getLastPathSegment();
-        return Long.parseLong(s);
+//        Uri u = context.getContentResolver().insert(ContratoBaseDatos.CONTENT_URI_LISTA, l.getContentValues());
+//        String s = u.getLastPathSegment();
+//        return Long.parseLong(s);
 //        long r;
 //        if (l.getId_lista() == 0) {
 //            r = this.insertLista(l);
@@ -63,6 +63,10 @@ public class ModeloNota implements ContratoNota.InterfaceModelo {
 //            r = this.updateLista(l);
 //        }
 //        return r;
+        if (l.getId_lista() == 0) {
+            return this.insertLista(l);
+        }
+        return this.updateLista(l);
     }
 
     @Override
@@ -97,7 +101,7 @@ public class ModeloNota implements ContratoNota.InterfaceModelo {
     }
 
     private long updateLista(Lista l) {
-        if (l.getTexto_lista().trim().compareTo("") == 0) {
+        if (l.getTexto_lista()!= null && l.getTexto_lista().trim().compareTo("") == 0) {
             this.deleteLista(l);
             gestionLista.delete(l);
             return 0;

@@ -8,6 +8,8 @@ import android.os.Parcelable;
 
 import com.izv.dam.newquip.contrato.ContratoBaseDatos;
 
+import java.util.Objects;
+
 /**
  * Created by Nono on 10/10/2016.
  * TERMINADA
@@ -143,7 +145,11 @@ public class Lista implements Parcelable {
         objeto.setTexto_lista(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaLista.TEXTO_LISTA)));
 
         String hecho = c.getString(c.getColumnIndex(ContratoBaseDatos.TablaLista.HECHO));
-        objeto.setHecho(Boolean.valueOf(hecho));
+        if (Objects.equals(hecho, "1")) {
+            objeto.setHecho(true);
+        } else {
+            objeto.setHecho(false);
+        }
 
         return objeto;
     }

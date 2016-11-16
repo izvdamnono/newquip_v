@@ -180,9 +180,17 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                 mostrarDialogoCamaraGaleria();
             }
         });
+        imgBtn_img_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nota.setImagen(null);
+                img_view.setImageURI(null);
+                img_view.setImageBitmap(null);
 
+            }
+        });
         /*------ RECYCLER VIEW ------*/
-      /*
+        /*
         if (listaList.size() == 0) {
             delete_lista.setEnabled(false);
         }
@@ -197,7 +205,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                 }
             }
         });
-      */
+        */
         add_lista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -344,6 +352,9 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             ArrayList<Lista> listas = gestionLista.getListas(id_nota);
 
             if (listas != null) {
+//                for (Lista l : listas) {
+//                    System.out.println("gestionLista" + l.toString());
+//                }
                 listaList = listas;
             }
             if (listaList.size() > 0) {
@@ -384,7 +395,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
     private void saveLista() {
         if (listaList.size() > 0) {
-            long id_lista, id_nota ;
+            long id_lista, id_nota;
             String texto_lista;
             boolean hecho;
 
@@ -395,8 +406,8 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                 texto_lista = lista.getTexto_lista();
                 hecho = lista.isHecho();
 
-                VistaNota.this.presentadorNota.onSaveLista(
-                        new Lista(id_lista, id_nota, texto_lista, hecho));
+                    VistaNota.this.presentadorNota.onSaveLista(
+                            new Lista(id_lista, id_nota, texto_lista, hecho));
 
             }
         }
