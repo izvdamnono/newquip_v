@@ -21,8 +21,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.izv.dam.newquip.R;
@@ -39,12 +37,10 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
         OnBorrarDialogListener,
         NavigationView.OnNavigationItemSelectedListener {
 
-    private RecyclerView mRecyclerView;
     private AdaptadorNota adaptador;
     private PresentadorQuip presentador;
     FloatingActionButton fab;
     Toolbar toolbar;
-    ListView lv;
     DrawerLayout drawer;
     NavigationView navigationView;
     ActionBarDrawerToggle toggle;
@@ -73,7 +69,7 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
 
 
         //RECYCLERVIEW
-        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         adaptador = new AdaptadorNota(null);
         mRecyclerView.setAdapter(adaptador);
         mRecyclerView.setLayoutManager(
