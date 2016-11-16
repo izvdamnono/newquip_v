@@ -62,7 +62,7 @@ public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.ViewHold
 
     public void addLista() {
         listaList.add(0, new Lista());
-        for (Lista l: listaList) {
+        for (Lista l : listaList) {
             System.out.println(l.toString());
         }
         notifyItemInserted(0);
@@ -124,6 +124,7 @@ public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.ViewHold
                     }
                 }
             });
+
             text_view_lista_texto.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -131,20 +132,22 @@ public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.ViewHold
                     return false;
                 }
             });
+
             delete_lista.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Lista lista = listaList.get(getAdapterPosition());
-                    System.out.println("text_view_lista_texto" + lista.toString());
-                    text_view_lista_texto.clearFocus();
-
+                    VistaNota vn = (VistaNota) context;
+                    vn.deleteListaAndFocus(lista);
                     deleteListaPosition(getAdapterPosition());
-//                    presentadorNota.onDeleteLista(listaList.get(getAdapterPosition()));
+
+
                 }
             });
 
 
         }
+
     }
 
 

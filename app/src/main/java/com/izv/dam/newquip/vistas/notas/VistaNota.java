@@ -60,13 +60,13 @@ import java.util.Locale;
 
 public class VistaNota extends AppCompatActivity implements ContratoNota.InterfaceVista {
 
-    Toolbar toolbar;
-    EditText editTextTitulo, editTextNota;
-    TextView tvFechaRecordatorioDia, tvFechaRecordatorioHora;
+    private Toolbar toolbar;
+    private EditText editTextTitulo, editTextNota;
+    private TextView tvFechaRecordatorioDia, tvFechaRecordatorioHora;
 
-    ImageButton imgBtn_img_add;
-    ImageButton imgBtn_img_delete;
-    ImageView img_view;
+    private ImageButton imgBtn_img_add;
+    private ImageButton imgBtn_img_delete;
+    private ImageView img_view;
 
     private Nota nota = new Nota();
     private PresentadorNota presentadorNota;
@@ -82,11 +82,12 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     public static final String BUNDLE_KEY = "nota";
     public static final String BUNDLE_KEY_LISTAS = "listas";
 
-    RecyclerView mRecyclerView;
-    List<Lista> listaList = new ArrayList<>();
-    AdaptadorLista adaptadorLista;
+    private RecyclerView mRecyclerView;
+    private List<Lista> listaList = new ArrayList<>();
+    private AdaptadorLista adaptadorLista;
 
     ImageButton add_lista, delete_lista, ok_lista;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,6 +185,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             @Override
             public void onClick(View v) {
                 nota.setImagen(null);
+                img_view.setImageURI(null);
                 img_view.setImageBitmap(null);
 
             }
@@ -285,7 +287,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     @Override
     protected void onPause() {
         saveNota();
-        overridePendingTransition(R.anim.anim_slide_out_right, R.anim.anim_slide_in_right);
+        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
         presentadorNota.onPause();
         super.onPause();
     }
@@ -293,7 +295,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     @Override
     protected void onResume() {
         presentadorNota.onResume();
-        overridePendingTransition(R.anim.anim_slide_out_right, R.anim.anim_slide_in_right);
         super.onResume();
     }
 
@@ -407,8 +408,8 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                 texto_lista = lista.getTexto_lista();
                 hecho = lista.isHecho();
 
-                    VistaNota.this.presentadorNota.onSaveLista(
-                            new Lista(id_lista, id_nota, texto_lista, hecho));
+                VistaNota.this.presentadorNota.onSaveLista(
+                        new Lista(id_lista, id_nota, texto_lista, hecho));
 
             }
         }
@@ -569,6 +570,12 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
         Bitmap bitmap = BitmapFactory.decodeFile(filePathAddGallery, bmOptions);
         img_view.setImageBitmap(bitmap);
+    }
+
+
+    public void deleteListaAndFocus(Lista l) {
+        presentadorNota.onDeleteLista(l);
+        editTextNota.requestFocus();
     }
 
     /*
