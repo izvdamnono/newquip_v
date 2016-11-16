@@ -184,7 +184,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             @Override
             public void onClick(View v) {
                 nota.setImagen(null);
-                img_view.setImageURI(null);
                 img_view.setImageBitmap(null);
 
             }
@@ -286,6 +285,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     @Override
     protected void onPause() {
         saveNota();
+        overridePendingTransition(R.anim.anim_slide_out_right, R.anim.anim_slide_in_right);
         presentadorNota.onPause();
         super.onPause();
     }
@@ -293,6 +293,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     @Override
     protected void onResume() {
         presentadorNota.onResume();
+        overridePendingTransition(R.anim.anim_slide_out_right, R.anim.anim_slide_in_right);
         super.onResume();
     }
 

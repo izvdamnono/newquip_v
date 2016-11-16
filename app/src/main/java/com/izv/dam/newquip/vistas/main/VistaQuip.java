@@ -116,6 +116,7 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
         //Toast.makeText(VistaQuip.this, "add", Toast.LENGTH_SHORT).show();
         Intent i = new Intent(this, VistaNota.class);
         startActivity(i);
+        overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
     }
 
     @Override
@@ -132,6 +133,7 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
         b.putParcelable("nota", n);
         i.putExtras(b);
         startActivity(i);
+        overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
     }
 
     @Override
