@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!--
     <item
         android:id="@+id/delete_alert"
         android:icon="@mipmap/ic_delete_alert"
         android:title="@string/alert_delete"
         app:showAsAction="always" />
-
+    -->
     <item
         android:id="@+id/ok_alert"
         android:icon="@mipmap/ic_ok_alert"
         android:title="@string/alert_ok"
         app:showAsAction="always" />
-<!--
-    <item
-        android:id="@+id/delete"
-        android:icon="@mipmap/ic_delete"
-        android:title="@string/delete"
-        app:showAsAction="always" />
--->
+    <!--
+        <item
+            android:id="@+id/delete"
+            android:icon="@mipmap/ic_delete"
+            android:title="@string/delete"
+            app:showAsAction="always" />
+    -->
     <item
         android:id="@+id/save"
         android:icon="@mipmap/ic_save"

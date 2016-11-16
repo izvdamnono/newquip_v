@@ -61,6 +61,7 @@ import java.util.Locale;
 public class VistaNota extends AppCompatActivity implements ContratoNota.InterfaceVista {
 
     private Toolbar toolbar;
+    private Menu menu;
     private EditText editTextTitulo, editTextNota;
     private TextView tvFechaRecordatorioDia, tvFechaRecordatorioHora;
 
@@ -107,6 +108,12 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         }
         mostrarNota(nota);
         ejecutar();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
     }
 
     private void init() {
@@ -246,6 +253,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
         getMenuInflater().inflate(R.menu.menu_nota, menu);
         return true;
     }
@@ -254,19 +262,28 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
         String fecha_recordatorio, nuevo_formato;
         switch (item.getItemId()) {
+            /*
             case R.id.delete_alert:
-                saveRecordatorio(null);
-                stopNotification();
-                Toast.makeText(this, "Alert Delete", Toast.LENGTH_SHORT).show();
+
                 return true;
+                */
 
             case R.id.ok_alert:
-                fecha_recordatorio = tvFechaRecordatorioDia.getText().toString() + " " + tvFechaRecordatorioHora.getText().toString();
-                nuevo_formato = UtilFecha.cambiarFormato(fecha_recordatorio, 0);
+                if (menu.getItem(0).getIcon() == item.getIcon()) {
+                    menu.getItem(0).setIcon(R.mipmap.ic_delete_alert);
+                    fecha_recordatorio = tvFechaRecordatorioDia.getText().toString() + " " + tvFechaRecordatorioHora.getText().toString();
+                    nuevo_formato = UtilFecha.cambiarFormato(fecha_recordatorio, 0);
 
-                addAlarmNotification(nuevo_formato);
-                saveRecordatorio(nuevo_formato);
-                Toast.makeText(this, "Alert " + nuevo_formato, Toast.LENGTH_SHORT).show();
+                    addAlarmNotification(nuevo_formato);
+                    saveRecordatorio(nuevo_formato);
+                    Toast.makeText(this, "Alert " + nuevo_formato, Toast.LENGTH_SHORT).show();
+                } else {
+                    menu.getItem(0).setIcon(R.mipmap.ic_ok_alert);
+                    saveRecordatorio(null);
+                    stopNotification();
+                    Toast.makeText(this, "Alert Delete", Toast.LENGTH_SHORT).show();
+                }
+
                 return true;
 /*
             case R.id.delete:
@@ -287,7 +304,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     @Override
     protected void onPause() {
         saveNota();
-        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
         presentadorNota.onPause();
         super.onPause();
     }
