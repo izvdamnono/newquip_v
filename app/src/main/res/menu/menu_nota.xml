@@ -39,7 +39,7 @@
         android:id="@+id/save"
         android:icon="@mipmap/ic_save"
         android:title="@string/save"
-        app:showAsAction="never" />
+        app:showAsAction="always" />
 
 
 </menu>

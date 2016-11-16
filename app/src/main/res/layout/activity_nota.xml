@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_nota_relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -9,11 +10,12 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:background="@color/colorNota1"
     tools:context="com.izv.dam.newquip.vistas.notas.VistaNota">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         tools:ignore="UselessParent">
 
         <LinearLayout
@@ -240,8 +242,8 @@
                         android:id="@+id/tvFechaRecordatorioDia"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
                         android:paddingTop="3dp"
+                        android:paddingLeft="8dp" android:layout_weight="1"
                         android:text="@string/fecha_recordatorio_dia"
                         android:textStyle="normal|bold"
                         tools:ignore="NestedWeights" />
@@ -249,9 +251,9 @@
                     <!-- Fecha hora minuto segundo ejemplo (12:52:30) -->
                     <TextView
                         android:id="@+id/tvFechaRecordatorioHora"
+                        android:layout_weight="1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
                         android:paddingTop="3dp"
                         android:text="@string/fecha_recordatorio_hora" />
                 </LinearLayout>

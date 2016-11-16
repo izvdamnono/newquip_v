@@ -275,7 +275,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             case R.id.id_palette:
                 mSelectedColor = ContextCompat.getColor(this, R.color.flamingo);
 
-                int[] mColors = getResources().getIntArray(R.array.default_rainbow);
+                final int[] mColors = getResources().getIntArray(R.array.paletteNewQuip);
                 ColorPickerDialog dialog = ColorPickerDialog.newInstance(R.string.color_picker_default_title,
                         mColors,
                         mSelectedColor,
@@ -288,6 +288,8 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                     public void onColorSelected(int color) {
                         mSelectedColor = color;
                         tvFechaRecordatorioDia.setTextColor(mSelectedColor);
+                        findViewById(R.id.id_include_layout).setBackgroundColor(mSelectedColor);
+                        nota.setColor("" + mSelectedColor);
                     }
 
                 });
