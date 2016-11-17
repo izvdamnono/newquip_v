@@ -2,6 +2,7 @@ package com.izv.dam.newquip.adaptadores;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +10,11 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
+import com.android.databinding.library.baseAdapters.BR;
 import com.izv.dam.newquip.R;
 import com.izv.dam.newquip.contrato.ClickListener;
 import com.izv.dam.newquip.contrato.ClickListenerLong;
+import com.izv.dam.newquip.databinding.ItemBinding;
 import com.izv.dam.newquip.pojo.Nota;
 import com.izv.dam.newquip.util.UtilFecha;
 
@@ -20,20 +23,28 @@ public class AdaptadorNota extends RecyclerView.Adapter<AdaptadorNota.ViewHolder
     private ClickListener mItemClickListener;
     private ClickListenerLong mItemClickListenerLong;
     private Cursor mCursor;
+    private ItemBinding binding;
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener {
 
+        /*
         TextView tv_titulo_nota, texo_nota, fecha_creacion, fecha_recordatorio;
         UtilFecha fecha_util;
+        */
         ClickListener mItemClickListener;
         ClickListenerLong mItemClickListenerLong;
 
+        ItemBinding binding;
+
         public ViewHolder(View itemView, ClickListener myItemClickListener, ClickListenerLong myItemClickListenerLong) {
             super(itemView);
+            binding = DataBindingUtil.bind(itemView);
+            /*
             tv_titulo_nota = (TextView)itemView.findViewById(R.id.tvTituloNota);
             texo_nota = (TextView)itemView.findViewById(R.id.tvTexoNota);
             fecha_creacion = (TextView)itemView.findViewById(R.id.tvFecha);
             fecha_recordatorio = (TextView)itemView.findViewById(R.id.tvFechaRecordatorio);
+            */
             this.mItemClickListener=myItemClickListener;
             this.mItemClickListenerLong=myItemClickListenerLong;
             itemView.setOnClickListener(this);
@@ -42,14 +53,17 @@ public class AdaptadorNota extends RecyclerView.Adapter<AdaptadorNota.ViewHolder
 
 
         }
-
+        public ItemBinding getBinding() {
+            return binding;
+        }
+        /*
         public void bindNota(String titulo,String texo,String creacion,String recordatorio) {
             tv_titulo_nota.setText(titulo);
             texo_nota.setText(texo);
             fecha_creacion.setText(creacion);
             fecha_recordatorio.setText(fecha_util.cambiarFormato("2016-12-12", 1));
 
-        }
+        }*/
 
         @Override
         public void onClick(View v) {
@@ -88,13 +102,16 @@ public class AdaptadorNota extends RecyclerView.Adapter<AdaptadorNota.ViewHolder
     public void onBindViewHolder(AdaptadorNota.ViewHolder holder, int position) {
         mCursor.moveToPosition(position);
         Nota nota = Nota.getNota(mCursor);
+        /*
         String sTitulo= nota.getTitulo();
         String sTexo = nota.getNota();
         String sCreacion = nota.getFecha_creacion();
         String sRecordatorio = nota.getFecha_recordatorio();
+        */
+        holder.getBinding().setVariable(BR.nota,nota);
+        holder.getBinding().executePendingBindings();
 
-
-        holder.bindNota(sTitulo,sTexo,sCreacion,sRecordatorio);
+        //holder.bindNota(sTitulo,sTexo,sCreacion,sRecordatorio);
     }
 
     @Override
