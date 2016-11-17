@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
@@ -35,6 +36,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -260,6 +262,11 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;
         getMenuInflater().inflate(R.menu.menu_nota, menu);
+        if (nota.getFecha_creacion() == null) {
+            menu.getItem(2).setIcon(R.mipmap.ic_ok_alert);
+        } else {
+            menu.getItem(2).setIcon(R.mipmap.ic_delete_alert);
+        }
         return true;
     }
 
@@ -302,22 +309,22 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                 return true;
 
             case R.id.ok_alert:
-                System.out.println(nota.getFecha_recordatorio());
+                saveNota();
                 if (nota.getFecha_recordatorio() == null) {
                     menu.getItem(2).setIcon(R.mipmap.ic_delete_alert);
+                    saveNota();
                     fecha_recordatorio = tvFechaRecordatorioDia.getText().toString() + " " + tvFechaRecordatorioHora.getText().toString();
                     nuevo_formato = UtilFecha.cambiarFormato(fecha_recordatorio, 0);
 
                     addAlarmNotification(nuevo_formato);
                     saveRecordatorio(nuevo_formato);
 
-                    Toast.makeText(this, "Alert ok", Toast.LENGTH_SHORT).show();
                 } else {
                     menu.getItem(2).setIcon(R.mipmap.ic_ok_alert);
                     saveRecordatorio(null);
                     stopNotification();
+                    Snackbar.make(getCurrentFocus(), "Recordatorio borrado", Snackbar.LENGTH_LONG).show();
 
-                    Toast.makeText(this, "Alert Delete", Toast.LENGTH_SHORT).show();
                 }
 
                 return true;
@@ -391,6 +398,8 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             tvFechaRecordatorioDia.setText(fecha_recordatorio[0]);
             tvFechaRecordatorioHora.setText(fecha_recordatorio[1]);
         }
+
+
         if (nota.getImagen() != null) {
             Bitmap bMap = BitmapFactory.decodeFile(nota.getImagen());
             img_view.setImageBitmap(bMap);
@@ -665,6 +674,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     public void addAlarmNotification(String alarm) {
         Long date_alarm = UtilFecha.stringToLongTime(alarm);
         GregorianCalendar alertTime = new GregorianCalendar();
+        Snackbar.make(getCurrentFocus(), "Recordatorio: " + alarm, Snackbar.LENGTH_LONG).show();
         alertTime.setTimeInMillis(date_alarm);
 
         Intent alertIntent = new Intent(this, AlarmReceiver.class);
