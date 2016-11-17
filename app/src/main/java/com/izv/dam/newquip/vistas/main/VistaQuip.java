@@ -3,6 +3,7 @@ package com.izv.dam.newquip.vistas.main;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.databinding.DataBindingUtil;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -28,6 +29,7 @@ import com.izv.dam.newquip.adaptadores.AdaptadorNota;
 import com.izv.dam.newquip.contrato.ClickListener;
 import com.izv.dam.newquip.contrato.ClickListenerLong;
 import com.izv.dam.newquip.contrato.ContratoMain;
+import com.izv.dam.newquip.databinding.ItemBinding;
 import com.izv.dam.newquip.dialogo.OnBorrarDialogListener;
 import com.izv.dam.newquip.pojo.Nota;
 import com.izv.dam.newquip.dialogo.DialogoBorrar;
@@ -77,14 +79,15 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
         adaptador.setOnItemClickListener(this);
         adaptador.setOnItemLongClickListener(this);
 
-
-
-        //LIST VIEW ANTIGUO
+        //DATA BINDING
         /*
-        lv = (ListView) findViewById(R.id.lvListaNotas);
-        adaptador = new AdaptadorNota(this, null);
+        ItemBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        //Nota nota = new Nota(52354,"titulo","notaaa","","","","aaa","","aaa","");
+        Nota nota = new Nota(52354,"titulo","notaaa","","","","aaa","","aaa","");
+        binding.setNota(nota);
         */
-        //lv.setAdapter(adaptador);
+
+
 
     }
 
