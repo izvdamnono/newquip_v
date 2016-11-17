@@ -20,6 +20,7 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NavUtils;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
@@ -120,6 +121,8 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Notas");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -254,6 +257,9 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     public boolean onOptionsItemSelected(MenuItem item) {
         String fecha_recordatorio, nuevo_formato;
         switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
             /*
             case R.id.delete_alert:
 
@@ -319,6 +325,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
     @Override
     protected void onPause() {
+        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
         saveNota();
         presentadorNota.onPause();
         super.onPause();
@@ -506,7 +513,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                 if (resultCode == RESULT_OK) {
                     Uri selectedImage = data.getData();
                     temp_file_path = getRealPath(selectedImage);
-
                     setPic(temp_file_path);
                     saveImagen(temp_file_path);
                 }
@@ -536,9 +542,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
      */
     private static File getOutputMediaFile() {
         File mediaStorageDir = new File(
-                Environment.getExternalStoragePublicDirectory(
-                        Environment.DIRECTORY_PICTURES
-                ),
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
                 "NewQuipPictures");
 
         if (!mediaStorageDir.exists()) {
@@ -573,7 +577,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     }
 
     private void setPic(String filePathAddGallery) {
-        // Get the dimensions of the View
         int targetW = img_view.getWidth();
         int targetH = img_view.getHeight();
 

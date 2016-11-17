@@ -136,12 +136,12 @@ public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.ViewHold
             delete_lista.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Lista lista = listaList.get(getAdapterPosition());
-                    VistaNota vn = (VistaNota) context;
-                    vn.deleteListaAndFocus(lista);
-                    deleteListaPosition(getAdapterPosition());
-
-
+                    if (getAdapterPosition() != -1) {
+                        Lista lista = listaList.get(getAdapterPosition());
+                        VistaNota vn = (VistaNota) context;
+                        vn.deleteListaAndFocus(lista);
+                        deleteListaPosition(getAdapterPosition());
+                    }
                 }
             });
 

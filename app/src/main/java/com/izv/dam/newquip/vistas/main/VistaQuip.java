@@ -4,6 +4,7 @@ package com.izv.dam.newquip.vistas.main;
 import android.content.Intent;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -58,6 +59,8 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
     public void init() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
         fab = (FloatingActionButton) findViewById(R.id.fabAdd);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
