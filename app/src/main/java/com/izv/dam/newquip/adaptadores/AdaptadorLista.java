@@ -62,9 +62,9 @@ public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.ViewHold
 
     public void addLista() {
         listaList.add(0, new Lista());
-        for (Lista l : listaList) {
-            System.out.println(l.toString());
-        }
+//        for (Lista l : listaList) {
+//            System.out.println(l.toString());
+//        }
         notifyItemInserted(0);
     }
 

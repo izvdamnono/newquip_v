@@ -71,7 +71,6 @@ public class ModeloNota implements ContratoNota.InterfaceModelo {
 
     @Override
     public long deleteLista(Lista l) {
-        System.out.println("l2:" + l.toString());
         return gestionLista.delete(l);
     }
 

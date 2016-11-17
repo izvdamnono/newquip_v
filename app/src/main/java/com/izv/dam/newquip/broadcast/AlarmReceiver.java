@@ -63,8 +63,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         Bundle b = intentVistaNota.getExtras();
         if (b != null) {
             nota = b.getParcelable(BUNDLE_KEY);
-            System.out.println(nota.toString());
-
         }
 
         if (nota.getImagen() != null) {

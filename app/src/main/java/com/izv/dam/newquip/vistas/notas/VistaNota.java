@@ -260,7 +260,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;
         getMenuInflater().inflate(R.menu.menu_nota, menu);
-        if (nota.getFecha_creacion() == null) {
+        if (nota.getFecha_recordatorio() == null) {
             menu.getItem(2).setIcon(R.mipmap.ic_ok_alert);
         } else {
             menu.getItem(2).setIcon(R.mipmap.ic_delete_alert);
@@ -413,9 +413,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             ArrayList<Lista> listas = gestionLista.getListas(id_nota);
 
             if (listas != null) {
-//                for (Lista l : listas) {
-//                    System.out.println("gestionLista" + l.toString());
-//                }
                 listaList = listas;
             }
             if (listaList.size() > 0) {
