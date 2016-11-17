@@ -51,13 +51,14 @@
         android:id="@+id/item_detail_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorNota2"
+        android:background="@color/colorNota1"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <include
             layout="@layout/activity_nota"
+            android:id="@+id/id_include_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent" />
     </android.support.v4.widget.NestedScrollView>
 
 </android.support.design.widget.CoordinatorLayout>

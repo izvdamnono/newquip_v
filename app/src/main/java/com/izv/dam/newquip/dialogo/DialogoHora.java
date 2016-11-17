@@ -29,7 +29,7 @@ public class DialogoHora extends DialogFragment implements TimePickerDialog.OnTi
     @RequiresApi(api = Build.VERSION_CODES.N)
     public Dialog onCreateDialog(Bundle saveInstanceState) {
         final Calendar calendar = Calendar.getInstance();
-        int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
+        int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY) + 1;
         int minute = calendar.get(Calendar.MINUTE);
         boolean is24Hour = true;
 

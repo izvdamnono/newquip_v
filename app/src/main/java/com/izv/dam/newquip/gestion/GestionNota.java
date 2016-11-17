@@ -17,6 +17,21 @@ public class GestionNota extends Gestion<Nota> {
         super(c, write);
     }
 
+    @Override
+    public int deleteAll() {
+        return this.deleteAll(ContratoBaseDatos.TablaNota.TABLA);
+    }
+
+    @Override
+    public int delete(Nota objeto) {
+        String condicion = ContratoBaseDatos.TablaNota._ID + " = ?";
+        String[] argumentos = {objeto.getId() + ""};
+        return this.delete(ContratoBaseDatos.TablaNota.TABLA, condicion, argumentos);
+    }
+
+    public int delete(String condicion, String[] argumentos) {
+        return this.delete(ContratoBaseDatos.TablaNota.TABLA, condicion, argumentos);
+    }
 
     public Nota get(long id) {
         String where = ContratoBaseDatos.TablaNota._ID + " = ? ";
@@ -32,8 +47,7 @@ public class GestionNota extends Gestion<Nota> {
 
     @Override
     public Cursor getCursor() {
-        return this.getCursor(
-                ContratoBaseDatos.TablaNota.TABLA,
+        return this.getCursor(ContratoBaseDatos.TablaNota.TABLA,
                 ContratoBaseDatos.TablaNota.PROJECTION_ALL,
                 ContratoBaseDatos.TablaNota.SORT_ORDER_DEFAULT
         );
@@ -46,10 +60,6 @@ public class GestionNota extends Gestion<Nota> {
                 groupBy, having, orderBy);
     }
 
-
-
-
-
     @Override
     public long insert(ContentValues objeto) {
         return this.insert(ContratoBaseDatos.TablaNota.TABLA, objeto);
@@ -58,22 +68,6 @@ public class GestionNota extends Gestion<Nota> {
     @Override
     public long insert(Nota objeto) {
         return this.insert(ContratoBaseDatos.TablaNota.TABLA, objeto.getContentValues());
-    }
-
-    @Override
-    public int deleteAll() {
-        return this.deleteAll(ContratoBaseDatos.TablaNota.TABLA);
-    }
-
-    @Override
-    public int delete(Nota objeto) {
-        String condicion = ContratoBaseDatos.TablaNota._ID + " = ?";
-        String[] argumentos = {objeto.getId() + ""};
-        return this.delete(ContratoBaseDatos.TablaNota.TABLA, condicion, argumentos);
-    }
-
-    public int delete(String condicion, String[] argumentos) {
-        return this.delete(ContratoBaseDatos.TablaNota.TABLA, condicion, argumentos);
     }
 
     @Override

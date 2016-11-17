@@ -15,12 +15,13 @@
     <color name="divider">#BDBDBD</color>
 
     <color name="colorNota1">#B0BEC5</color>
-    <color name="colorNota2">#eeeeee</color>
+    <color name="colorNota2">#EEEEEE</color>
     <color name="colorNota3">#BCAAA4</color>
 
     <color name="colorNota4">#FFAB91</color>
     <color name="colorNota5">#FFCC80</color>
     <color name="colorNota6">#FFE082</color>
+    <color name="colorNota7">#FFE28A</color>
     <color name="colorNota8">#FFF59D</color>
     <color name="colorNota9">#E6EE9C</color>
     <color name="colorNota10">#C5E1A5</color>
@@ -35,4 +36,27 @@
     <color name="colorNota18">#CE93D8</color>
     <color name="colorNota19">#F48FB1</color>
     <color name="colorNota20">#EF9A9A</color>
+
+    <array name="paletteNewQuip">
+        <item>@color/colorNota1</item>
+        <item>@color/colorNota2</item>
+        <item>@color/colorNota3</item>
+        <item>@color/colorNota4</item>
+        <item>@color/colorNota5</item>
+        <item>@color/colorNota6</item>
+        <item>@color/colorNota7</item>
+        <item>@color/colorNota8</item>
+        <item>@color/colorNota9</item>
+        <item>@color/colorNota10</item>
+        <item>@color/colorNota11</item>
+        <item>@color/colorNota12</item>
+        <item>@color/colorNota13</item>
+        <item>@color/colorNota14</item>
+        <item>@color/colorNota15</item>
+        <item>@color/colorNota16</item>
+        <item>@color/colorNota17</item>
+        <item>@color/colorNota18</item>
+        <item>@color/colorNota19</item>
+        <item>@color/colorNota20</item>
+    </array>
 </resources>

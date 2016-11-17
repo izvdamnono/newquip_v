@@ -30,6 +30,10 @@ public interface ContratoMain {
 
         void onAddNota();
 
+        void onPause();
+
+        void onResume();
+
         void onDeleteNota(int position);
 
         void onDeleteNota(Nota n);
@@ -37,10 +41,6 @@ public interface ContratoMain {
         void onEditNota(int position);
 
         void onEditNota(Nota n);
-
-        void onPause();
-
-        void onResume();
 
         void onShowBorrarNota(int position);
 

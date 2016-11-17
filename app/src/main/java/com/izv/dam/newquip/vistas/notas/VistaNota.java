@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
@@ -35,6 +36,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +51,10 @@ import com.izv.dam.newquip.pojo.Lista;
 import com.izv.dam.newquip.pojo.Nota;
 import com.izv.dam.newquip.util.UtilFecha;
 import com.izv.dam.newquip.vistas.notification.Notificacion;
+import com.izv.dam.newquip.vistas.settings.SettingsActivity;
+
+import org.xdty.preference.colorpicker.ColorPickerDialog;
+import org.xdty.preference.colorpicker.ColorPickerSwatch;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -60,13 +66,14 @@ import java.util.Locale;
 
 public class VistaNota extends AppCompatActivity implements ContratoNota.InterfaceVista {
 
-    Toolbar toolbar;
-    EditText editTextTitulo, editTextNota;
-    TextView tvFechaRecordatorioDia, tvFechaRecordatorioHora;
+    private Toolbar toolbar;
+    private Menu menu;
+    private EditText editTextTitulo, editTextNota;
+    private TextView tvFechaRecordatorioDia, tvFechaRecordatorioHora;
 
-    ImageButton imgBtn_img_add;
-    ImageButton imgBtn_img_delete;
-    ImageView img_view;
+    private ImageButton imgBtn_img_add;
+    private ImageButton imgBtn_img_delete;
+    private ImageView img_view;
 
     private Nota nota = new Nota();
     private PresentadorNota presentadorNota;
@@ -82,11 +89,13 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     public static final String BUNDLE_KEY = "nota";
     public static final String BUNDLE_KEY_LISTAS = "listas";
 
-    RecyclerView mRecyclerView;
-    List<Lista> listaList = new ArrayList<>();
-    AdaptadorLista adaptadorLista;
+    private RecyclerView mRecyclerView;
+    private List<Lista> listaList = new ArrayList<>();
+    private AdaptadorLista adaptadorLista;
 
     ImageButton add_lista, delete_lista, ok_lista;
+    /*--Color--*/
+    private int mSelectedColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,15 +106,19 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         if (savedInstanceState != null) {
             nota = savedInstanceState.getParcelable(BUNDLE_KEY);
         } else {
-
             Bundle b = getIntent().getExtras();
             if (b != null) {
                 nota = b.getParcelable(BUNDLE_KEY);
-
             }
         }
         mostrarNota(nota);
         ejecutar();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
     }
 
     private void init() {
@@ -118,6 +131,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         }
         editTextTitulo = (EditText) findViewById(R.id.etTitulo);
         editTextNota = (EditText) findViewById(R.id.etNota);
+
         //Control imagen
         imgBtn_img_add = (ImageButton) findViewById(R.id.id_imagen_btn);
         imgBtn_img_delete = (ImageButton) findViewById(R.id.id_imagen_btn_delete);
@@ -127,9 +141,9 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
         /*------ RECYCLER VIEW ------*/
 
-        delete_lista = (ImageButton) findViewById(R.id.id_eliminar_ultima_lista);
+//        delete_lista = (ImageButton) findViewById(R.id.id_eliminar_ultima_lista);
         add_lista = (ImageButton) findViewById(R.id.id_aniadir_lista);
-        ok_lista = (ImageButton) findViewById(R.id.id_ok_lista);
+//        ok_lista = (ImageButton) findViewById(R.id.id_ok_lista);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.id_recycler_view_listas);
 
@@ -179,52 +193,49 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                 mostrarDialogoCamaraGaleria();
             }
         });
+        imgBtn_img_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nota.setImagen(null);
+                img_view.setImageURI(null);
+                img_view.setImageBitmap(null);
 
+            }
+        });
         /*------ RECYCLER VIEW ------*/
-
+        /*
+        if (listaList.size() == 0) {
+            delete_lista.setEnabled(false);
+        }
         delete_lista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editTextNota.requestFocus();
+                presentadorNota.onDeleteLista(listaList.get(listaList.size() - 1));
                 adaptadorLista.deleteUltimaLista();
+                editTextNota.requestFocus();
+                if (listaList.size() == 0) {
+                    delete_lista.setEnabled(false);
+                }
             }
         });
-
+        */
         add_lista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editTextNota.requestFocus();
                 adaptadorLista.addLista();
-            }
-        });
-
-        ok_lista.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int index = 0;
-                long id_lista = 0, id_nota = 0;
-                String texto_lista = "";
-                boolean hecho = false;
-                Lista insert;
-
-                System.out.println("---For listaList---");
-                for (Lista lista : listaList) {
-                    System.out.println("I: " + (index++) + " " + lista.toString());
-
-                    id_lista = lista.getId_lista();
-                    id_nota = nota.getId();
-                    texto_lista = lista.getTexto_lista();
-                    hecho = lista.isHecho();
-
-                    VistaNota.this.presentadorNota.onSaveLista(
-                            new Lista(id_lista, id_nota, texto_lista, hecho)
-                    );
-
+                if (listaList.size() > 0) {
+//                    delete_lista.setEnabled(true);
                 }
-                System.out.println("---end listaList---");
-
             }
         });
+
+//        ok_lista.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -247,7 +258,13 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
         getMenuInflater().inflate(R.menu.menu_nota, menu);
+        if (nota.getFecha_creacion() == null) {
+            menu.getItem(2).setIcon(R.mipmap.ic_ok_alert);
+        } else {
+            menu.getItem(2).setIcon(R.mipmap.ic_delete_alert);
+        }
         return true;
     }
 
@@ -255,19 +272,59 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
         String fecha_recordatorio, nuevo_formato;
         switch (item.getItemId()) {
+            /*
             case R.id.delete_alert:
-                saveRecordatorio(null);
-                stopNotification();
-                Toast.makeText(this, "Alert Delete", Toast.LENGTH_SHORT).show();
+
+                return true;
+                */
+            case R.id.id_palette:
+                mSelectedColor = ContextCompat.getColor(this, R.color.flamingo);
+
+                final int[] mColors = getResources().getIntArray(R.array.paletteNewQuip);
+                ColorPickerDialog dialog = ColorPickerDialog.newInstance(R.string.color_picker_default_title,
+                        mColors,
+                        mSelectedColor,
+                        5,
+                        ColorPickerDialog.SIZE_SMALL);
+
+                dialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
+
+                    @Override
+                    public void onColorSelected(int color) {
+                        mSelectedColor = color;
+                        tvFechaRecordatorioDia.setTextColor(mSelectedColor);
+                        findViewById(R.id.id_include_layout).setBackgroundColor(mSelectedColor);
+                        nota.setColor("" + mSelectedColor);
+                    }
+
+                });
+
+                dialog.show(getFragmentManager(), "color_dialog_test");
+
+                return true;
+            case R.id.id_share:
+                Toast.makeText(this, "Share", Toast.LENGTH_SHORT).show();
                 return true;
 
             case R.id.ok_alert:
-                fecha_recordatorio = tvFechaRecordatorioDia.getText().toString() + " " + tvFechaRecordatorioHora.getText().toString();
-                nuevo_formato = UtilFecha.cambiarFormato(fecha_recordatorio, 0);
+                saveNota();
+                if (nota.getFecha_recordatorio() == null) {
+                    menu.getItem(2).setIcon(R.mipmap.ic_delete_alert);
+                    saveNota();
+                    fecha_recordatorio = tvFechaRecordatorioDia.getText().toString() + " " + tvFechaRecordatorioHora.getText().toString();
+                    nuevo_formato = UtilFecha.cambiarFormato(fecha_recordatorio, 0);
 
-                addAlarmNotification(nuevo_formato);
-                saveRecordatorio(nuevo_formato);
-                Toast.makeText(this, "Alert " + nuevo_formato, Toast.LENGTH_SHORT).show();
+                    addAlarmNotification(nuevo_formato);
+                    saveRecordatorio(nuevo_formato);
+
+                } else {
+                    menu.getItem(2).setIcon(R.mipmap.ic_ok_alert);
+                    saveRecordatorio(null);
+                    stopNotification();
+                    Snackbar.make(getCurrentFocus(), "Recordatorio borrado", Snackbar.LENGTH_LONG).show();
+
+                }
+
                 return true;
 /*
             case R.id.delete:
@@ -339,6 +396,8 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             tvFechaRecordatorioDia.setText(fecha_recordatorio[0]);
             tvFechaRecordatorioHora.setText(fecha_recordatorio[1]);
         }
+
+
         if (nota.getImagen() != null) {
             Bitmap bMap = BitmapFactory.decodeFile(nota.getImagen());
             img_view.setImageBitmap(bMap);
@@ -349,20 +408,18 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     public void mostrarListas(ArrayList<Lista> ls) {
         long id_nota = nota.getId();
         if (id_nota != 0) {
-            System.out.println("id_nota: " + id_nota);
 
             GestionLista gestionLista = new GestionLista(this);
             ArrayList<Lista> listas = gestionLista.getListas(id_nota);
 
             if (listas != null) {
-                System.out.println("listas NOT NULL");
-
-                for (Lista lista : listas) {
-                    System.out.println("ToString: " + lista.toString());
-                }
+//                for (Lista l : listas) {
+//                    System.out.println("gestionLista" + l.toString());
+//                }
                 listaList = listas;
-            } else {
-                System.out.println("listas IS NULL");
+            }
+            if (listaList.size() > 0) {
+//                delete_lista.setEnabled(true);
             }
         }
 
@@ -393,6 +450,28 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             nota.setId(r);
         }
 
+        saveLista();
+
+    }
+
+    private void saveLista() {
+        if (listaList.size() > 0) {
+            long id_lista, id_nota;
+            String texto_lista;
+            boolean hecho;
+
+            for (Lista lista : listaList) {
+
+                id_lista = lista.getId_lista();
+                id_nota = nota.getId();
+                texto_lista = lista.getTexto_lista();
+                hecho = lista.isHecho();
+
+                VistaNota.this.presentadorNota.onSaveLista(
+                        new Lista(id_lista, id_nota, texto_lista, hecho));
+
+            }
+        }
     }
 
     private void saveRecordatorio(String fecha_recordatorio) {
@@ -506,7 +585,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File f = new File(mediaStorageDir.getPath() + File.separator + "IMG_" + timeStamp + ".jpg");
         temp_file_path = f.toString();
-        System.out.println("FILE getOutputMediaFile: " + f.toString());
         return f;
     }
 
@@ -553,6 +631,12 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         img_view.setImageBitmap(bitmap);
     }
 
+
+    public void deleteListaAndFocus(Lista l) {
+        presentadorNota.onDeleteLista(l);
+        editTextNota.requestFocus();
+    }
+
     /*
      * Notificaciones
      */
@@ -588,6 +672,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     public void addAlarmNotification(String alarm) {
         Long date_alarm = UtilFecha.stringToLongTime(alarm);
         GregorianCalendar alertTime = new GregorianCalendar();
+        Snackbar.make(getCurrentFocus(), "Recordatorio: " + alarm, Snackbar.LENGTH_LONG).show();
         alertTime.setTimeInMillis(date_alarm);
 
         Intent alertIntent = new Intent(this, AlarmReceiver.class);

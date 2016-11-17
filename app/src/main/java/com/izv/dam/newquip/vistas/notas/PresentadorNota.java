@@ -13,7 +13,7 @@ public class PresentadorNota implements ContratoNota.InterfacePresentador {
 
     public PresentadorNota(ContratoNota.InterfaceVista vista) {
         this.vista = vista;
-        this.modelo = new ModeloNota((Context)vista);
+        this.modelo = new ModeloNota((Context) vista);
     }
 
     @Override
@@ -31,8 +31,18 @@ public class PresentadorNota implements ContratoNota.InterfacePresentador {
     }
 
     @Override
-    public long onSaveLista(Lista l) {
-        return this.modelo.saveLista(l);
+    public void onDeleteNota(Nota n) {
+        this.modelo.deleteNota(n);
+    }
+
+    @Override
+    public void onSaveLista(Lista l) {
+        this.modelo.saveLista(l);
+    }
+
+    @Override
+    public void onDeleteLista(Lista l) {
+        this.modelo.deleteLista(l);
     }
 
 }

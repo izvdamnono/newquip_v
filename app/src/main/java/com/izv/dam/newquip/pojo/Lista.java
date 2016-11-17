@@ -8,6 +8,8 @@ import android.os.Parcelable;
 
 import com.izv.dam.newquip.contrato.ContratoBaseDatos;
 
+import java.util.Objects;
+
 /**
  * Created by Nono on 10/10/2016.
  * TERMINADA
@@ -26,7 +28,7 @@ public class Lista implements Parcelable {
     }
 
     public Lista() {
-        this(0, 0, "", false);
+        this(0, 0, null, false);
     }
 
     public long getId_lista() {
@@ -36,7 +38,6 @@ public class Lista implements Parcelable {
     public void setId_lista(long id_lista) {
         this.id_lista = id_lista;
     }
-
 
     public long getId_nota() {
         return id_nota;
@@ -144,7 +145,11 @@ public class Lista implements Parcelable {
         objeto.setTexto_lista(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaLista.TEXTO_LISTA)));
 
         String hecho = c.getString(c.getColumnIndex(ContratoBaseDatos.TablaLista.HECHO));
-        objeto.setHecho(Boolean.valueOf(hecho));
+        if (Objects.equals(hecho, "1")) {
+            objeto.setHecho(true);
+        } else {
+            objeto.setHecho(false);
+        }
 
         return objeto;
     }
