@@ -119,6 +119,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     private void init() {
         toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Notas");
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
