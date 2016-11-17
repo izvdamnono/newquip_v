@@ -12,10 +12,11 @@
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#757575</color>
     <color name="icons">#FFFFFF</color>
+    <color name="white">#FFFFFF</color>
     <color name="divider">#BDBDBD</color>
 
-    <color name="colorNota1">#B0BEC5</color>
-    <color name="colorNota2">#EEEEEE</color>
+    <color name="colorNota1">#EEEEEE</color>
+    <color name="colorNota2">#B0BEC5</color>
     <color name="colorNota3">#BCAAA4</color>
 
     <color name="colorNota4">#FFAB91</color>
