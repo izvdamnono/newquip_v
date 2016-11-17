@@ -58,6 +58,8 @@ public class AlarmReceiver extends BroadcastReceiver {
                 .setDefaults(NotificationCompat.DEFAULT_SOUND)
                 .setAutoCancel(true);
 
+
+
         Bundle b = intentVistaNota.getExtras();
         if (b != null) {
             nota = b.getParcelable(BUNDLE_KEY);

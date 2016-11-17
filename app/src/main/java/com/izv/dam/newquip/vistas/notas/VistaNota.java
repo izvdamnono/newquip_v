@@ -106,11 +106,9 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         if (savedInstanceState != null) {
             nota = savedInstanceState.getParcelable(BUNDLE_KEY);
         } else {
-
             Bundle b = getIntent().getExtras();
             if (b != null) {
                 nota = b.getParcelable(BUNDLE_KEY);
-
             }
         }
         mostrarNota(nota);
