@@ -315,7 +315,14 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
             case R.id.save:
                 saveNota();
-                Snackbar.make(getCurrentFocus(), "Nota guardada", Snackbar.LENGTH_LONG).show();
+//                Snackbar.make(getCurrentFocus(), "Nota guardada", Snackbar.LENGTH_LONG).show();
+                Snackbar snackbar;
+                snackbar = Snackbar.make(getCurrentFocus(), "Nota guardada", Snackbar.LENGTH_SHORT);
+                View snackBarView = snackbar.getView();
+                snackBarView.setBackgroundColor(ContextCompat.getColor(this, R.color.primary));
+                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(ContextCompat.getColor(this, R.color.white));
+                snackbar.show();
 
                 return true;
             default:
