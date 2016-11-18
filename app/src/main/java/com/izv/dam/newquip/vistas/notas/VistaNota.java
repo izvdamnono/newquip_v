@@ -24,6 +24,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -39,6 +40,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.izv.dam.newquip.BuildConfig;
 import com.izv.dam.newquip.R;
 import com.izv.dam.newquip.adaptadores.AdaptadorLista;
 import com.izv.dam.newquip.broadcast.AlarmReceiver;
@@ -50,6 +52,7 @@ import com.izv.dam.newquip.pojo.Lista;
 import com.izv.dam.newquip.pojo.Nota;
 import com.izv.dam.newquip.util.UtilFecha;
 import com.izv.dam.newquip.vistas.notification.Notificacion;
+import com.squareup.picasso.Picasso;
 
 //Libreria de ColorPickerDialog :D
 import org.xdty.preference.colorpicker.ColorPickerDialog;
@@ -94,6 +97,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     private AdaptadorLista adaptadorLista;
 
     private ImageButton add_lista, delete_lista, ok_lista;
+    private static final int widthImg = 600, heightImg = 600;
 
     /*------ COLOR PICKER DIALOG ------*/
     private int mSelectedColor;
@@ -198,27 +202,13 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         });
 
         /*------ RECYCLER VIEW ------*/
-        /*
-        if (listaList.size() == 0) {
-            delete_lista.setEnabled(false);
-        }
-        delete_lista.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presentadorNota.onDeleteLista(listaList.get(listaList.size() - 1));
-                adaptadorLista.deleteUltimaLista();
-                editTextNota.requestFocus();
-                if (listaList.size() == 0) {
-                    delete_lista.setEnabled(false);
-                }
-            }
-        });
-        */
+
         add_lista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editTextNota.requestFocus();
-                adaptadorLista.addLista();
+//                editTextNota.requestFocus();
+//                adaptadorLista.addLista();
+                showNotification();
             }
         });
 
@@ -390,11 +380,10 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             tvFechaRecordatorioDia.setText(fecha_recordatorio[0]);
             tvFechaRecordatorioHora.setText(fecha_recordatorio[1]);
         }
-
         if (nota.getImagen() != null) {
-            Bitmap bMap = BitmapFactory.decodeFile(nota.getImagen());
-            img_view.setImageBitmap(bMap);
+            setPic(nota.getImagen());
         }
+
     }
 
     @Override
@@ -566,7 +555,9 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
     public void takePicture() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        file = Uri.fromFile(getOutputMediaFile());
+        file = FileProvider.getUriForFile(VistaNota.this,
+                BuildConfig.APPLICATION_ID + ".provider",
+                getOutputMediaFile());
         intent.putExtra(MediaStore.EXTRA_OUTPUT, file);
         intent.putExtra("data", file);
 
@@ -584,6 +575,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     }
 
     private void setPic(String filePathAddGallery) {
+        /*
         int targetW = img_view.getWidth();
         int targetH = img_view.getHeight();
 
@@ -601,6 +593,13 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
         Bitmap bitmap = BitmapFactory.decodeFile(filePathAddGallery, bmOptions);
         img_view.setImageBitmap(bitmap);
+        */
+        Picasso.with(this)
+                .load(new File(filePathAddGallery))
+                .resize(widthImg, heightImg)
+//                .fit()
+                .into(img_view);
+
     }
 
 
@@ -619,6 +618,14 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                 .setTicker("Alarma de prueba")
                 .setSmallIcon(R.mipmap.ic_alarm)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_add_note));
+
+        if (nota.getImagen() != null) {
+            String imagenString = nota.getImagen();
+            File imagenFile = new File(imagenString);
+            Bitmap imagenBitmap = BitmapFactory.decodeFile(imagenFile.getAbsolutePath());
+            notificBuilder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(imagenBitmap));
+        }
+
         Intent intentNotification = new Intent(this, Notificacion.class);
 
         TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(this);
@@ -673,4 +680,5 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             }
         }
     }
+
 }
