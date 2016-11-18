@@ -62,9 +62,9 @@ public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.ViewHold
 
     public void addLista() {
         listaList.add(0, new Lista());
-        for (Lista l : listaList) {
-            System.out.println(l.toString());
-        }
+//        for (Lista l : listaList) {
+//            System.out.println(l.toString());
+//        }
         notifyItemInserted(0);
     }
 
@@ -136,12 +136,12 @@ public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.ViewHold
             delete_lista.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Lista lista = listaList.get(getAdapterPosition());
-                    VistaNota vn = (VistaNota) context;
-                    vn.deleteListaAndFocus(lista);
-                    deleteListaPosition(getAdapterPosition());
-
-
+                    if (getAdapterPosition() != -1) {
+                        Lista lista = listaList.get(getAdapterPosition());
+                        VistaNota vn = (VistaNota) context;
+                        vn.deleteListaAndFocus(lista);
+                        deleteListaPosition(getAdapterPosition());
+                    }
                 }
             });
 

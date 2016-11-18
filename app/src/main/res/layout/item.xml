@@ -1,58 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:baselineAligned="false"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <data>
+
+        <variable
+            name="nota"
+            type="com.izv.dam.newquip.pojo.Nota" />
+    </data>
+
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="1">
+        android:layout_margin="8dp"
+        android:layout_marginBottom="80dp"
+        app:cardBackgroundColor="@color/colorNota2">
 
-        <TextView
-            android:id="@+id/tvTituloNota"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.99"
-            android:textAllCaps="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionMode.Title"
-            tools:text="Lorem" />
+            android:baselineAligned="false"
+            android:orientation="vertical"
+            android:padding="@dimen/activity_horizontal_margin">
 
-        <TextView
-            android:id="@+id/tvFecha"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Fecha YYYY/MM/DD" />
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
+                <TextView
+                    android:id="@+id/tvTituloNota"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:textAllCaps="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionMode.Title"
+                    tools:text="@{nota.titulo}"
+                    android:textAlignment="textStart" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tvFecha"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:textAlignment="textEnd"
+                    tools:text="@{nota.fecha_creacion}" />
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvTexoNota"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            tools:text="TextView" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tvFechaRecordatorio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            tools:text="Fecha YYYY/MM/DD HH:mm:ss"
-            android:textAlignment="textEnd" />
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/tvTexoNota"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    tools:text="@{nota.nota}"
+                    android:textAlignment="textStart" />
 
+                <TextView
+                    android:id="@+id/tvFechaRecordatorio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:textAlignment="textEnd"
+                    tools:text="@{nota.fecha_recordatorio}" />
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 
-</LinearLayout>
+</layout>

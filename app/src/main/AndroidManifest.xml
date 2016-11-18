@@ -63,7 +63,7 @@
 
         <activity
             android:name=".vistas.settings.SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings" />
     </application>
 
 </manifest>
