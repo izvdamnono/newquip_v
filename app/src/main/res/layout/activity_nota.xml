@@ -88,59 +88,6 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-
-                    <ImageButton
-                        android:id="@+id/id_aniadir_lista"
-                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:contentDescription="@string/add"
-                        app:srcCompat="@mipmap/ic_add_list_color" />
-                    <!--
-                    <ImageButton
-                        android:id="@+id/id_eliminar_ultima_lista"
-                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:srcCompat="@mipmap/ic_delete_list_color" />
-
-
-                    <Button
-                        android:id="@+id/id_eliminar_ultima_lista"
-                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/eliminar_ltima_lista" />
-
-
-                    <Button
-                        android:id="@+id/id_aniadir_lista"
-                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/a_adir_lista" />
-
-
-                    <ImageButton
-                        android:id="@+id/id_ok_lista"
-                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.86"
-                        android:contentDescription="@string/add"
-                        app:srcCompat="@mipmap/ic_save_color" />
-                      -->
-
-                </LinearLayout>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/id_recycler_view_listas"
@@ -163,55 +110,18 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <LinearLayout
+
+                    <ImageView
+                        android:id="@+id/id_imagen"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/add"
+                        android:cropToPadding="true"
+                        android:paddingBottom="16dp"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingTop="4dp" />
 
-                        <ImageButton
-                            android:id="@+id/id_imagen_btn"
-                            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.86"
-                            android:contentDescription="@string/add"
-                            app:srcCompat="@mipmap/ic_save_image_color" />
-
-                        <ImageButton
-                            android:id="@+id/id_imagen_btn_delete"
-                            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.86"
-                            android:contentDescription="@string/add"
-                            app:srcCompat="@mipmap/ic_delete_color" />
-
-                        <!--
-                        <Button
-                            android:id="@+id/id_imagen_btn"
-                            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/mas" />
-                            -->
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:id="@+id/id_imagen"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:contentDescription="@string/add"
-                            android:cropToPadding="true"
-                            android:paddingBottom="16dp"
-                            android:paddingLeft="8dp"
-                            android:paddingRight="8dp"
-                            android:paddingTop="4dp" />
-                    </LinearLayout>
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>
@@ -258,69 +168,54 @@
                         android:text="@string/fecha_recordatorio_hora" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
+            <!-- Bottom Sheet -->
+            <!-- <include layout="@layout/bottom_sheet_main" /> DESCOMENTAR PARA USAR -->
+            <!-- La BtnSheet va antes que el proximo LinearLayout por tema de que en android el z-index se decide conforme se leen los widgets -->
+            <!-- BottomBar -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="1"
+                android:orientation="horizontal"
+                android:background="@color/primary"
+                android:paddingBottom="16dp"
+                android:layout_marginTop="16dp"
+                android:paddingTop="16dp"
+                android:layout_gravity="bottom">
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/a_adir_imagen"
+                    android:id="@+id/anadir_imagen"
+                    android:layout_weight="0.33"
+                    android:background="@drawable/ic_insert_photo_white_24dp"
+                    android:scaleX="0.4"/>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/ic_palette"
+                    android:contentDescription="@string/elijecolor"
+                    android:id="@+id/id_palette"
+                    android:layout_weight="0.33"
+                    android:scaleX="0.4"
+                    android:scaleY="0.7"
+                    android:layout_marginTop="-10dp"/>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_list_white_24dp"
+                    android:contentDescription="@string/a_adir_lista"
+                    android:id="@+id/anadir_lista"
+                    android:layout_weight="0.33"
+                    android:scaleX="0.4"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
     </ScrollView>
-    <!-- Bottom Sheet -->
-    <!-- <include layout="@layout/bottom_sheet_main" /> DESCOMENTAR PARA USAR -->
-    <!-- La BtnSheet va antes que el proximo LinearLayout por tema de que en android el z-index se decide conforme se leen los widgets -->
-    <!-- BottomBar -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="1"
-        android:orientation="horizontal"
-        android:background="@color/primary"
-        android:layout_gravity="bottom"
-        android:paddingBottom="16dp"
-        android:paddingTop="16dp" >
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/a_adir_imagen"
-            android:id="@+id/anadir_imagen"
-            android:layout_weight="0.2"
-            android:background="@drawable/ic_insert_photo_white_24dp"
-            android:scaleX="0.4"/>
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_play_circle_filled_white_24dp"
-            android:contentDescription="@string/a_adir_video"
-            android:id="@+id/anadir_video"
-            android:layout_weight="0.2"
-            android:scaleX="0.4"/>
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_mic_white_24dp"
-            android:contentDescription="@string/a_adir_audio"
-            android:id="@+id/anadir_audio"
-            android:layout_weight="0.2"
-            android:scaleX="0.4"/>
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_format_color_fill_white_24dp"
-            android:contentDescription="@string/elijecolor"
-            android:id="@+id/btnSheet"
-            android:layout_weight="0.2"
-            android:scaleX="0.4"/>
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_list_white_24dp"
-            android:contentDescription="@string/a_adir_lista"
-            android:id="@+id/anadir_lista"
-            android:layout_weight="0.2"
-            android:scaleX="0.4"/>
-
-    </LinearLayout>
 
 </RelativeLayout>
