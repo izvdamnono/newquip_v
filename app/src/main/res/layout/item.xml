@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="nota"
             type="com.izv.dam.newquip.pojo.Nota" />
@@ -13,10 +11,12 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/id_card_view_item"
         android:layout_margin="8dp"
+        app:cardBackgroundColor="@color/colorNota1"
         android:layout_marginBottom="80dp"
-        app:cardBackgroundColor="@color/colorNota2">
-
+        >
+<!--app:cardBackgroundColor="@color/colorNota1"-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
                     android:layout_weight=".5"
                     android:textAllCaps="true"
                     android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionMode.Title"
-                    tools:text="@{nota.titulo}"
+                    android:text="@{nota.titulo}"
                     android:textAlignment="textStart" />
 
                 <TextView
@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
                     android:textAlignment="textEnd"
-                    tools:text="@{nota.fecha_creacion}" />
+                    android:text="@{nota.fecha_creacion}" />
             </LinearLayout>
 
             <LinearLayout
@@ -59,7 +59,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
-                    tools:text="@{nota.nota}"
+                    android:text="@{nota.nota}"
                     android:textAlignment="textStart" />
 
                 <TextView
@@ -68,7 +68,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
                     android:textAlignment="textEnd"
-                    tools:text="@{nota.fecha_recordatorio}" />
+                    android:text="@{nota.fecha_recordatorio}" />
             </LinearLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>

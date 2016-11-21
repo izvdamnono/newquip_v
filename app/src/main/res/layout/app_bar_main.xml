@@ -25,10 +25,11 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabAdd"
+        app:layout_behavior="com.izv.dam.newquip.vistas.main.FAB_Hide_on_Scroll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/ic_add_black_24dp" />
+        app:srcCompat="@mipmap/ic_add" />
 
 </android.support.design.widget.CoordinatorLayout>

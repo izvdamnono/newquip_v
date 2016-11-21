@@ -17,12 +17,10 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/detail_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:layout_height="wrap_content"
+            android:background="@color/primary" />
 
     </android.support.design.widget.AppBarLayout>
-
 
 
     <android.support.v4.widget.NestedScrollView
@@ -40,18 +38,11 @@
 
     </android.support.v4.widget.NestedScrollView>
 
-    <!-- Bottom Sheet -->
-    <!-- <include layout="@layout/bottom_sheet_main" /> DESCOMENTAR PARA USAR -->
-    <!-- La BtnSheet va antes que el proximo LinearLayout por tema de que en android el z-index se decide conforme se leen los widgets -->
-    <!-- BottomBar -->
     <LinearLayout
-
         android:id="@+id/footer"
         style="@android:style/ButtonBar"
-        android:layout_width="fill_parent"
-
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
         android:layout_gravity="bottom"
         android:background="@color/primary"
         android:orientation="horizontal"
@@ -73,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:contentDescription="@string/elijecolor"
+            android:contentDescription="@string/contentdescription"
             android:src="@mipmap/ic_palette"
             android:text="@string/color_texto" />
 
@@ -86,6 +77,5 @@
             android:contentDescription="@string/a_adir_lista"
             android:src="@mipmap/ic_add_list"
             android:text="@string/a_adir_lista" />
-
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

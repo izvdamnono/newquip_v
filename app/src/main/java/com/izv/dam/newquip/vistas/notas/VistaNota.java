@@ -18,8 +18,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NavUtils;
@@ -72,9 +70,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
-import static android.Manifest.permission.CAMERA;
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-
 
 public class VistaNota extends AppCompatActivity implements ContratoNota.InterfaceVista {
 
@@ -123,7 +118,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail_nota);
+        setContentView(R.layout.app_bar_nota);
 
         init();
         if (savedInstanceState != null) {
@@ -382,7 +377,9 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         editTextTitulo.setText(nota.getTitulo());
         editTextNota.setText(nota.getNota());
         String formato_a_cortar = nota.getFecha_recordatorio();
-
+        if (nota.getColor() != null) {
+            findViewById(R.id.id_scroll_view).setBackgroundColor(Integer.parseInt(nota.getColor()));
+        }
         if (formato_a_cortar != null) {
             formato_a_cortar = UtilFecha.cambiarFormato(formato_a_cortar, 1);
             String[] fecha_recordatorio = UtilFecha.cortarFormato(formato_a_cortar);
@@ -393,6 +390,11 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             setPic(nota.getImagen());
         }
 
+        if (img_view.getDrawable() != null) {
+            anadir_imagen.setImageResource(R.mipmap.ic_delete);
+        } else {
+            anadir_imagen.setImageResource(R.mipmap.ic_insert_photo);
+        }
     }
 
     @Override
@@ -501,6 +503,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                         takePicture();
                         break;
                 }
+
             }
         });
         AlertDialog alert = alert_builder.create();
@@ -564,9 +567,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
     public void takePicture() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        file = FileProvider.getUriForFile(VistaNota.this,
-                BuildConfig.APPLICATION_ID + ".provider",
-                getOutputMediaFile());
+        file = Uri.fromFile(getOutputMediaFile());
         intent.putExtra(MediaStore.EXTRA_OUTPUT, file);
         intent.putExtra("data", file);
 
@@ -725,15 +726,18 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
             @Override
             public void onClick(View v) {
-                if (nota.getImagen() != null) {
+
+                if (img_view.getDrawable() != null) {
                     nota.setImagen(null);
-                    img_view.setImageURI(null);
-                    img_view.setImageBitmap(null);
+                    img_view.setImageResource(0);
+                } else {
+                    mostrarDialogoCamaraGaleria();
+                }
+
+                if (img_view.getDrawable() != null) {
                     anadir_imagen.setImageResource(R.mipmap.ic_insert_photo);
                 } else {
                     anadir_imagen.setImageResource(R.mipmap.ic_delete);
-                    mostrarDialogoCamaraGaleria();
-
                 }
             }
         });
@@ -751,7 +755,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                     @Override
                     public void onColorSelected(int color) {
                         mSelectedColor = color;
-                        tvFechaRecordatorioDia.setTextColor(mSelectedColor);
+//                        tvFechaRecordatorioDia.setTextColor(mSelectedColor);
                         findViewById(R.id.id_include_layout).setBackgroundColor(mSelectedColor);
                         nota.setColor("" + mSelectedColor);
                     }

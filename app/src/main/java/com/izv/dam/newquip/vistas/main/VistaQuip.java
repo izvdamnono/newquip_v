@@ -3,8 +3,6 @@ package com.izv.dam.newquip.vistas.main;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.databinding.DataBindingUtil;
-import android.graphics.Color;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -30,7 +28,6 @@ import com.izv.dam.newquip.adaptadores.AdaptadorNota;
 import com.izv.dam.newquip.contrato.ClickListener;
 import com.izv.dam.newquip.contrato.ClickListenerLong;
 import com.izv.dam.newquip.contrato.ContratoMain;
-import com.izv.dam.newquip.databinding.ItemBinding;
 import com.izv.dam.newquip.dialogo.OnBorrarDialogListener;
 import com.izv.dam.newquip.pojo.Nota;
 import com.izv.dam.newquip.dialogo.DialogoBorrar;
@@ -255,7 +252,17 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
 
     @Override
     public void onItemLongClick(View view, int position) {
+        /*
         Toast.makeText(VistaQuip.this, "delete", Toast.LENGTH_SHORT).show();
+        Snackbar snackbar;
+        snackbar = Snackbar.make(getCurrentFocus(), "Delete", Snackbar.LENGTH_SHORT);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundColor(ContextCompat.getColor(this, R.color.primary));
+        TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(ContextCompat.getColor(this, R.color.white));
+        snackbar.show();
+        */
+
         presentador.onShowBorrarNota(position);
     }
 }
