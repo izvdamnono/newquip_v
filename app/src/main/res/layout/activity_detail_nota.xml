@@ -23,6 +23,8 @@
 
     </android.support.design.widget.AppBarLayout>
 
+
+
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/item_detail_container"
         android:layout_width="match_parent"
@@ -31,10 +33,59 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <include
-            layout="@layout/activity_nota"
             android:id="@+id/id_include_layout"
+            layout="@layout/activity_nota"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
     </android.support.v4.widget.NestedScrollView>
 
+    <!-- Bottom Sheet -->
+    <!-- <include layout="@layout/bottom_sheet_main" /> DESCOMENTAR PARA USAR -->
+    <!-- La BtnSheet va antes que el proximo LinearLayout por tema de que en android el z-index se decide conforme se leen los widgets -->
+    <!-- BottomBar -->
+    <LinearLayout
+
+        android:id="@+id/footer"
+        style="@android:style/ButtonBar"
+        android:layout_width="fill_parent"
+
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:background="@color/primary"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <ImageButton
+            android:id="@+id/anadir_imagen"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@string/a_adir_imagen"
+            android:src="@mipmap/ic_insert_photo"
+            android:text="@string/a_adir_imagen" />
+
+        <ImageButton
+            android:id="@+id/id_palette"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@string/elijecolor"
+            android:src="@mipmap/ic_palette"
+            android:text="@string/color_texto" />
+
+        <ImageButton
+            android:id="@+id/anadir_lista"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@string/a_adir_lista"
+            android:src="@mipmap/ic_add_list"
+            android:text="@string/a_adir_lista" />
+
+    </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

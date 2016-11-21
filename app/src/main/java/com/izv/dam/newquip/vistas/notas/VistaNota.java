@@ -1,7 +1,6 @@
 package com.izv.dam.newquip.vistas.notas;
 
 import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.FragmentTransaction;
@@ -15,7 +14,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
@@ -44,6 +42,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.izv.dam.newquip.BuildConfig;
 
 import com.izv.dam.newquip.R;
@@ -109,20 +108,9 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
     private ImageButton add_lista, delete_lista, ok_lista;
     //NUEVO
-    private ImageButton color1;
-    private ImageButton color2;
-    private ImageButton color3;
-    private ImageButton color4;
-    private ImageButton color5;
-    private ImageButton color6;
-    private int contador = 0;
-    private int contadorImg = 0;
-    private int contadorVideo = 0;
-    private int contadorAudio = 0;
-    private int contadorLista = 0;
+
     private static final String PDFS = "PDFGenerados";
     RelativeLayout relativeLayout;
-    private final int MY_PERMISSIONS = 100;
     private ImageButton anadir_imagen;
     private ImageButton anadir_color;
 
@@ -219,23 +207,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                     Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
         }
 
-        /*imgBtn_img_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mostrarDialogoCamaraGaleria();
-            }
-        });*/
-
-        /*imgBtn_img_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                nota.setImagen(null);
-                img_view.setImageURI(null);
-                img_view.setImageBitmap(null);
-
-            }
-        });*/
-
         /*------ RECYCLER VIEW ------*/
 
         add_lista.setOnClickListener(new View.OnClickListener() {
@@ -243,32 +214,9 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             public void onClick(View v) {
                 editTextNota.requestFocus();
                 adaptadorLista.addLista();
-//                showNotification();
             }
         });
-        /*
-        if (listaList.size() == 0) {
-            delete_lista.setEnabled(false);
-        }
-        delete_lista.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presentadorNota.onDeleteLista(listaList.get(listaList.size() - 1));
-                adaptadorLista.deleteUltimaLista();
-                editTextNota.requestFocus();
-                if (listaList.size() == 0) {
-                    delete_lista.setEnabled(false);
-                }
-            }
-        });
-        */
 
-//        ok_lista.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -742,7 +690,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         }
     }
 
-    public void generarThreadPDF(){
+    public void generarThreadPDF() {
         editTextNota = (EditText) findViewById(R.id.etNota);
         String textoNota = editTextNota.getText().toString();
         editTextTitulo = (EditText) findViewById(R.id.etTitulo);
@@ -750,7 +698,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         String imagen = nota.getImagen();
         //final Context contexto = getApplicationContext();
         String extension = ".pdf";
-        String NOMBRE_PDF =  UtilFecha.formatDate(Calendar.getInstance().getTime()) + extension;
+        String NOMBRE_PDF = UtilFecha.formatDate(Calendar.getInstance().getTime()) + extension;
         String nombre = NOMBRE_PDF.replace(":", "-");
         String tarjetaSD = Environment.getExternalStorageDirectory().toString();
         File DIRECTORIO_PDF = new File(tarjetaSD + File.separator + PDFS);
@@ -758,7 +706,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             DIRECTORIO_PDF.mkdir();
         }
         String nombre_completo = Environment.getExternalStorageDirectory() + File.separator + PDFS + File.separator + nombre;
-        Runnable crearPDF = new GeneratePDFFileIText(textoNota,textoTitulo,imagen,nombre_completo);
+        Runnable crearPDF = new GeneratePDFFileIText(textoNota, textoTitulo, imagen, nombre_completo);
         Thread hilo = new Thread(crearPDF);
         hilo.start();
         try {
@@ -771,43 +719,22 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         PDF.mostrarPDF(nombre_completo, this);
     }
 
-    /*public void generarPDF(){
-        editTextTitulo = (EditText) findViewById(R.id.etTitulo);
-        final String textoTitulo = editTextTitulo.getText().toString();
-        editTextNota = (EditText) findViewById(R.id.etNota);
-        final String textoNota = editTextNota.getText().toString();
-        final String imagen = nota.getImagen();
-        String extension = ".pdf";
-        String NOMBRE_PDF =  UtilFecha.formatDate(Calendar.getInstance().getTime()) + extension;
-        String nombre = NOMBRE_PDF.replace(":", "-");
-        String tarjetaSD = Environment.getExternalStorageDirectory().toString();
-        File DIRECTORIO_PDF = new File(tarjetaSD + File.separator + PDFS);
-        if (!DIRECTORIO_PDF.exists()) {
-            DIRECTORIO_PDF.mkdir();
-        }
-        final String nombre_completo = Environment.getExternalStorageDirectory() + File.separator + PDFS + File.separator + nombre;
-        final File outputfile = new File(nombre_completo);
-        if (outputfile.exists()) {
-            outputfile.delete();
-        }
-        final Context contexto = getApplicationContext();
-        GeneratePDFFileIText nuevoPDF = new GeneratePDFFileIText();
-        nuevoPDF.createPDF(outputfile, contexto, nombre_completo, textoNota, textoTitulo, imagen);
-    }*/
 
-    private void bottomBarFunction(){
+    private void bottomBarFunction() {
         anadir_imagen.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                if(contadorImg % 2 == 0) {
-                    mostrarDialogoCamaraGaleria();
-                }else{
+                if (nota.getImagen() != null) {
                     nota.setImagen(null);
                     img_view.setImageURI(null);
                     img_view.setImageBitmap(null);
+                    anadir_imagen.setImageResource(R.mipmap.ic_insert_photo);
+                } else {
+                    anadir_imagen.setImageResource(R.mipmap.ic_delete);
+                    mostrarDialogoCamaraGaleria();
+
                 }
-                contadorImg++;
             }
         });
         anadir_color.setOnClickListener(new View.OnClickListener() {
@@ -843,99 +770,5 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         });
     }
 
-    /*public void bottomSheetFunction() {
-        LinearLayout bottomSheet = (LinearLayout) findViewById(R.id.bottomSheet);
-        final BottomSheetBehavior bsb = BottomSheetBehavior.from(bottomSheet);
-        onCheckedColor();
-        final ImageButton btnSheet = (ImageButton) findViewById(R.id.btnSheet);
-        btnSheet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (contador % 2 == 0) {
-                    bsb.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                    btnSheet.setBackgroundResource(R.drawable.ic_format_color_fill_white_24dp);
-                } else {
-                    bsb.setState(BottomSheetBehavior.STATE_EXPANDED);
-                    btnSheet.setBackgroundResource(R.drawable.ic_format_color_fill_black_24dp);
-                }
-                contador++;
-            }
-        });
-    }
 
-    public void onCheckedColor() {
-        color1 = (ImageButton) findViewById(R.id.imageButton);
-        color2 = (ImageButton) findViewById(R.id.imageButton2);
-        color3 = (ImageButton) findViewById(R.id.imageButton3);
-        color4 = (ImageButton) findViewById(R.id.imageButton4);
-        color5 = (ImageButton) findViewById(R.id.imageButton5);
-        color6 = (ImageButton) findViewById(R.id.imageButton6);
-        color1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                color1.setImageResource(R.mipmap.ic_color1_check);
-                color2.setImageResource(R.mipmap.ic_color2);
-                color3.setImageResource(R.mipmap.ic_color3);
-                color4.setImageResource(R.mipmap.ic_color4);
-                color5.setImageResource(R.mipmap.ic_color5);
-                color6.setImageResource(R.mipmap.ic_color6);
-            }
-        });
-        color2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                color1.setImageResource(R.mipmap.ic_color1);
-                color2.setImageResource(R.mipmap.ic_color2_check);
-                color3.setImageResource(R.mipmap.ic_color3);
-                color4.setImageResource(R.mipmap.ic_color4);
-                color5.setImageResource(R.mipmap.ic_color5);
-                color6.setImageResource(R.mipmap.ic_color6);
-            }
-        });
-        color3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                color1.setImageResource(R.mipmap.ic_color1);
-                color2.setImageResource(R.mipmap.ic_color2);
-                color3.setImageResource(R.mipmap.ic_color3_check);
-                color4.setImageResource(R.mipmap.ic_color4);
-                color5.setImageResource(R.mipmap.ic_color5);
-                color6.setImageResource(R.mipmap.ic_color6);
-            }
-        });
-        color4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                color1.setImageResource(R.mipmap.ic_color1);
-                color2.setImageResource(R.mipmap.ic_color2);
-                color3.setImageResource(R.mipmap.ic_color3);
-                color4.setImageResource(R.mipmap.ic_color4_check);
-                color5.setImageResource(R.mipmap.ic_color5);
-                color6.setImageResource(R.mipmap.ic_color6);
-            }
-        });
-        color5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                color1.setImageResource(R.mipmap.ic_color1);
-                color2.setImageResource(R.mipmap.ic_color2);
-                color3.setImageResource(R.mipmap.ic_color3);
-                color4.setImageResource(R.mipmap.ic_color4);
-                color5.setImageResource(R.mipmap.ic_color5_check);
-                color6.setImageResource(R.mipmap.ic_color6);
-            }
-        });
-        color6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                color1.setImageResource(R.mipmap.ic_color1);
-                color2.setImageResource(R.mipmap.ic_color2);
-                color3.setImageResource(R.mipmap.ic_color3);
-                color4.setImageResource(R.mipmap.ic_color4);
-                color5.setImageResource(R.mipmap.ic_color5);
-                color6.setImageResource(R.mipmap.ic_color6_check);
-
-            }
-        });
-    }*/
 }
