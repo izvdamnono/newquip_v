@@ -322,7 +322,8 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
                 return true;*/
             case R.id.pdf:
-                generarPDF();
+                generarThreadPDF();
+                //generarPDF();
 
                 return true;
             case R.id.ok_alert:
@@ -702,7 +703,39 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         }
     }
 
-    public void generarPDF(){
+    public void generarThreadPDF(){
+        editTextNota = (EditText) findViewById(R.id.etNota);
+        String textoNota = editTextNota.getText().toString();
+        editTextTitulo = (EditText) findViewById(R.id.etTitulo);
+        String textoTitulo = editTextTitulo.getText().toString();
+        String imagen = nota.getImagen();
+        //final Context contexto = getApplicationContext();
+        String extension = ".pdf";
+        String NOMBRE_PDF =  UtilFecha.formatDate(Calendar.getInstance().getTime()) + extension;
+        String nombre = NOMBRE_PDF.replace(":", "-");
+        String tarjetaSD = Environment.getExternalStorageDirectory().toString();
+        File DIRECTORIO_PDF = new File(tarjetaSD + File.separator + PDFS);
+        if (!DIRECTORIO_PDF.exists()) {
+            DIRECTORIO_PDF.mkdir();
+        }
+        String nombre_completo = Environment.getExternalStorageDirectory() + File.separator + PDFS + File.separator + nombre;
+        Runnable crearPDF = new GeneratePDFFileIText(textoNota,textoTitulo,imagen,nombre_completo);
+        Thread hilo = new Thread(crearPDF);
+        hilo.start();
+        if(hilo.isInterrupted()){
+            Toast.makeText(this, "Error al generar el documento", Toast.LENGTH_LONG).show();
+        }
+        try {
+            hilo.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Toast.makeText(this, "El PDF ha sido guardado", Toast.LENGTH_LONG).show();
+        GeneratePDFFileIText PDF = new GeneratePDFFileIText();
+        PDF.mostrarPDF(nombre_completo, this);
+    }
+
+    /*public void generarPDF(){
         editTextTitulo = (EditText) findViewById(R.id.etTitulo);
         final String textoTitulo = editTextTitulo.getText().toString();
         editTextNota = (EditText) findViewById(R.id.etNota);
@@ -724,7 +757,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         final Context contexto = getApplicationContext();
         GeneratePDFFileIText nuevoPDF = new GeneratePDFFileIText();
         nuevoPDF.createPDF(outputfile, contexto, nombre_completo, textoNota, textoTitulo, imagen);
-    }
+    }*/
 
     private void bottomBarFunction(){
         anadir_imagen.setOnClickListener(new View.OnClickListener() {
