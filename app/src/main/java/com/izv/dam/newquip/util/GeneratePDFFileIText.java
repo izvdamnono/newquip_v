@@ -40,7 +40,6 @@ public class GeneratePDFFileIText implements Runnable{
     private String nota;
     private String imagen;
     private String nombre_completo;
-    private Context contexto;
 
     public GeneratePDFFileIText(String titulo, String nota, String imagen, String nombre_completo){
         this.titulo = titulo;
@@ -94,6 +93,7 @@ public class GeneratePDFFileIText implements Runnable{
             documentException.printStackTrace();
         }
     }
+
 
     public void mostrarPDF(String archivo, Context c) {
         Toast.makeText(c, "Cargando el documento",Toast.LENGTH_LONG).show();

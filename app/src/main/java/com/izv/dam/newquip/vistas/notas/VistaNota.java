@@ -722,13 +722,10 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         Runnable crearPDF = new GeneratePDFFileIText(textoNota,textoTitulo,imagen,nombre_completo);
         Thread hilo = new Thread(crearPDF);
         hilo.start();
-        if(hilo.isInterrupted()){
-            Toast.makeText(this, "Error al generar el documento", Toast.LENGTH_LONG).show();
-        }
         try {
             hilo.join();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Toast.makeText(this, "Error al generar el documento", Toast.LENGTH_LONG).show();
         }
         Toast.makeText(this, "El PDF ha sido guardado", Toast.LENGTH_LONG).show();
         GeneratePDFFileIText PDF = new GeneratePDFFileIText();
