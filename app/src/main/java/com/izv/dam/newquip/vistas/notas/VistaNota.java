@@ -123,6 +123,9 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     private ImageButton anadir_imagen;
     private ImageButton anadir_color;
 
+    /*--- PICASSO ---*/
+    private static final int widthImg = 600, heightImg = 600;
+
     /*------ COLOR PICKER DIALOG ------*/
     private int mSelectedColor;
 
@@ -208,7 +211,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         });
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            img_view.setEnabled(false);
+            anadir_imagen.setEnabled(false);
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
         }
@@ -231,6 +234,15 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         });*/
 
         /*------ RECYCLER VIEW ------*/
+
+        add_lista.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editTextNota.requestFocus();
+                adaptadorLista.addLista();
+//                showNotification();
+            }
+        });
         /*
         if (listaList.size() == 0) {
             delete_lista.setEnabled(false);
@@ -351,7 +363,14 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
             case R.id.save:
                 saveNota();
-                Snackbar.make(getCurrentFocus(), "Nota guardada", Snackbar.LENGTH_LONG).show();
+//                Snackbar.make(getCurrentFocus(), "Nota guardada", Snackbar.LENGTH_LONG).show();
+                Snackbar snackbar;
+                snackbar = Snackbar.make(getCurrentFocus(), "Nota guardada", Snackbar.LENGTH_SHORT);
+                View snackBarView = snackbar.getView();
+                snackBarView.setBackgroundColor(ContextCompat.getColor(this, R.color.primary));
+                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(ContextCompat.getColor(this, R.color.white));
+                snackbar.show();
 
                 return true;
             default:
@@ -419,11 +438,10 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             tvFechaRecordatorioDia.setText(fecha_recordatorio[0]);
             tvFechaRecordatorioHora.setText(fecha_recordatorio[1]);
         }
-
         if (nota.getImagen() != null) {
-            Bitmap bMap = BitmapFactory.decodeFile(nota.getImagen());
-            img_view.setImageBitmap(bMap);
+            setPic(nota.getImagen());
         }
+
     }
 
     @Override
@@ -595,7 +613,9 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
     public void takePicture() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        file = Uri.fromFile(getOutputMediaFile());
+        file = FileProvider.getUriForFile(VistaNota.this,
+                BuildConfig.APPLICATION_ID + ".provider",
+                getOutputMediaFile());
         intent.putExtra(MediaStore.EXTRA_OUTPUT, file);
         intent.putExtra("data", file);
 
@@ -613,6 +633,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     }
 
     private void setPic(String filePathAddGallery) {
+        /*
         int targetW = img_view.getWidth();
         int targetH = img_view.getHeight();
 
@@ -630,6 +651,13 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
         Bitmap bitmap = BitmapFactory.decodeFile(filePathAddGallery, bmOptions);
         img_view.setImageBitmap(bitmap);
+        */
+        Picasso.with(this)
+                .load(new File(filePathAddGallery))
+                .resize(widthImg, heightImg)
+//                .fit()
+                .into(img_view);
+
     }
 
 
@@ -648,6 +676,14 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                 .setTicker("Alarma de prueba")
                 .setSmallIcon(R.mipmap.ic_alarm)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_add_note));
+
+        if (nota.getImagen() != null) {
+            String imagenString = nota.getImagen();
+            File imagenFile = new File(imagenString);
+            Bitmap imagenBitmap = BitmapFactory.decodeFile(imagenFile.getAbsolutePath());
+            notificBuilder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(imagenBitmap));
+        }
+
         Intent intentNotification = new Intent(this, Notificacion.class);
 
         TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(this);
@@ -698,7 +734,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED
                     && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                img_view.setEnabled(true);
+                anadir_imagen.setEnabled(true);
             }
         }
     }
