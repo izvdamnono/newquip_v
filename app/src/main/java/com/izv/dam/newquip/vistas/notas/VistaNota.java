@@ -28,6 +28,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -43,6 +44,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.izv.dam.newquip.BuildConfig;
 
 import com.izv.dam.newquip.R;
 import com.izv.dam.newquip.adaptadores.AdaptadorLista;
@@ -56,6 +58,7 @@ import com.izv.dam.newquip.pojo.Nota;
 import com.izv.dam.newquip.util.GeneratePDFFileIText;
 import com.izv.dam.newquip.util.UtilFecha;
 import com.izv.dam.newquip.vistas.notification.Notificacion;
+import com.squareup.picasso.Picasso;
 
 //Libreria de ColorPickerDialog :D
 import org.xdty.preference.colorpicker.ColorPickerDialog;
