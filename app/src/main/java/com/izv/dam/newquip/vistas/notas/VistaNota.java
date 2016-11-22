@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NavUtils;
@@ -36,6 +37,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,7 +51,7 @@ import com.izv.dam.newquip.dialogo.DialogoHora;
 import com.izv.dam.newquip.gestion.GestionLista;
 import com.izv.dam.newquip.pojo.Lista;
 import com.izv.dam.newquip.pojo.Nota;
-import com.izv.dam.newquip.util.GeneratePDFFileIText;
+import com.izv.dam.newquip.util.GeneratePDFFile;
 import com.izv.dam.newquip.util.UtilFecha;
 import com.izv.dam.newquip.vistas.notification.Notificacion;
 import com.squareup.picasso.Picasso;
@@ -74,9 +76,8 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     private Menu menu;
     private EditText editTextTitulo, editTextNota;
     private TextView tvFechaRecordatorioDia, tvFechaRecordatorioHora;
-
-    //private ImageButton imgBtn_img_add;
-    //private ImageButton imgBtn_img_delete;
+    private LinearLayout bottom_sheet;
+    private BottomSheetBehavior bsb;
     private ImageView img_view;
 
     private Nota nota = new Nota();
@@ -98,13 +99,13 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     private List<Lista> listaList = new ArrayList<>();
     private AdaptadorLista adaptadorLista;
 
-    private ImageButton add_lista, delete_lista, ok_lista;
-    //NUEVO
+    private ImageButton add_list, add_alarm;
 
+    //NUEVO
     private static final String PDFS = "PDFGenerados";
     RelativeLayout relativeLayout;
     private ImageButton add_imagen;
-    private ImageButton anadir_color;
+    private ImageButton add_color;
 
     /*--- PICASSO ---*/
     private static final int widthImg = 600, heightImg = 600;
@@ -133,6 +134,8 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     }
 
     private void init() {
+        bottom_sheet = (LinearLayout) findViewById(R.id.bottom_sheet);
+
         toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Notas");
@@ -147,52 +150,39 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         editTextTitulo = (EditText) findViewById(R.id.etTitulo);
         editTextNota = (EditText) findViewById(R.id.etNota);
 
-        //Control imagen NUEVO
+        //CONTROL IMAGEN
         add_imagen = (ImageButton) findViewById(R.id.anadir_imagen);
-        //imgBtn_img_add = (ImageButton) findViewById(R.id.id_imagen_btn);
-        //imgBtn_img_delete = (ImageButton) findViewById(R.id.id_imagen_btn_delete);
 
-        //CONTROL DIALOGO COLOR NUEVO
-        anadir_color = (ImageButton) findViewById(R.id.id_palette);
+        //CONTROL DIALOGO COLOR
+        add_color = (ImageButton) findViewById(R.id.id_palette);
+
+        //CONTROL DIALOGO ALARMA
+        add_alarm = (ImageButton) findViewById(R.id.id_add_alarm);
 
         //Imagen
         img_view = (ImageView) findViewById(R.id.id_imagen);
 
         /*------ RECYCLER VIEW ------*/
-//        delete_lista = (ImageButton) findViewById(R.id.id_eliminar_ultima_lista);
-        add_lista = (ImageButton) findViewById(R.id.anadir_lista);
-//        ok_lista = (ImageButton) findViewById(R.id.id_ok_lista);
+        add_list = (ImageButton) findViewById(R.id.id_add_lista);
         mRecyclerView = (RecyclerView) findViewById(R.id.id_recycler_view_listas);
         /*-----------*/
 
         tvFechaRecordatorioDia = (TextView) findViewById(R.id.tvFechaRecordatorioDia);
         tvFechaRecordatorioHora = (TextView) findViewById(R.id.tvFechaRecordatorioHora);
+        relativeLayout = (RelativeLayout) findViewById(R.id.activity_nota_relativeLayout);
+
         presentadorNota = new PresentadorNota(this);
 
     }
 
 
     private void ejecutar() {
+        bsb = BottomSheetBehavior.from(bottom_sheet);
+        bsb.setState(BottomSheetBehavior.STATE_HIDDEN);
+
         tvFechaRecordatorioDia.setText(UtilFecha.fechaHoyDia());
         tvFechaRecordatorioHora.setText(UtilFecha.fechaHoyHora());
 
-        tvFechaRecordatorioDia.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogoFecha dialogFecha = new DialogoFecha(v);
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                dialogFecha.show(ft, "Fecha Recordatorio");
-            }
-        });
-
-        tvFechaRecordatorioHora.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogoHora dialog = new DialogoHora(v);
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                dialog.show(ft, "Hora Recordatorio");
-            }
-        });
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             add_imagen.setEnabled(false);
@@ -202,7 +192,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
         /*------ RECYCLER VIEW ------*/
 
-        add_lista.setOnClickListener(new View.OnClickListener() {
+        add_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editTextNota.requestFocus();
@@ -222,14 +212,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         /*-----------*/
 
         //NUEVO
-        relativeLayout = (RelativeLayout) findViewById(R.id.activity_nota_relativeLayout);
-        //bottomSheetFunction();
-
-        if (img_view.getDrawable() != null) {
-            add_imagen.setImageResource(R.mipmap.ic_delete);
-        } else {
-            add_imagen.setImageResource(R.mipmap.ic_insert_photo);
-        }
     }
 
 
@@ -252,36 +234,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
-            /*
-            case R.id.delete_alert:
-
-                return true;
-                */
-            /*case R.id.id_palette:
-                mSelectedColor = ContextCompat.getColor(this, R.color.flamingo);
-                final int[] mColors = getResources().getIntArray(R.array.paletteNewQuip);
-                ColorPickerDialog dialog = ColorPickerDialog.newInstance(R.string.color_picker_default_title,
-                        mColors, mSelectedColor, 5, ColorPickerDialog.SIZE_SMALL);
-
-                dialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
-
-                    @Override
-                    public void onColorSelected(int color) {
-                        mSelectedColor = color;
-                        tvFechaRecordatorioDia.setTextColor(mSelectedColor);
-                        findViewById(R.id.id_include_layout).setBackgroundColor(mSelectedColor);
-                        nota.setColor("" + mSelectedColor);
-                    }
-
-                });
-
-                dialog.show(getFragmentManager(), "color_dialog_test");
-
-                return true;
-            case R.id.id_share:
-                Toast.makeText(this, "Share", Toast.LENGTH_SHORT).show();
-
-                return true;*/
             case R.id.pdf:
                 generarThreadPDF();
                 //generarPDF();
@@ -306,9 +258,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                 }
 
                 return true;
-//            case R.id.delete:
-//
-//                return true;
 
             case R.id.save:
                 saveNota();
@@ -320,6 +269,15 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                 TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
                 textView.setTextColor(ContextCompat.getColor(this, R.color.white));
                 snackbar.show();
+
+                return true;
+            case R.id.bottom_sheet_item:
+
+                if (bsb.getState() == BottomSheetBehavior.STATE_HIDDEN) {
+                    bsb.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                } else if (bsb.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+                    bsb.setState(BottomSheetBehavior.STATE_HIDDEN);
+                }
 
                 return true;
             default:
@@ -348,8 +306,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable(BUNDLE_KEY, nota);
-        /*
-         * Ejemplo
+        /*  Ejemplo
             savedInstanceState.putBoolean("MyBoolean", true);
             savedInstanceState.putDouble("myDouble", 1.9);
             savedInstanceState.putInt("MyInt", 1);
@@ -393,11 +350,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             setPic(nota.getImagen());
         }
 
-        if (img_view.getDrawable() != null) {
-            add_imagen.setImageResource(R.mipmap.ic_delete);
-        } else {
-            add_imagen.setImageResource(R.mipmap.ic_insert_photo);
-        }
     }
 
     @Override
@@ -698,8 +650,8 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
     public void generarThreadPDF() {
         editTextNota = (EditText) findViewById(R.id.etNota);
-        String textoNota = editTextNota.getText().toString();
         editTextTitulo = (EditText) findViewById(R.id.etTitulo);
+        String textoNota = editTextNota.getText().toString();
         String textoTitulo = editTextTitulo.getText().toString();
         String imagen = nota.getImagen();
         //final Context contexto = getApplicationContext();
@@ -712,7 +664,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             DIRECTORIO_PDF.mkdir();
         }
         String nombre_completo = Environment.getExternalStorageDirectory() + File.separator + PDFS + File.separator + nombre;
-        Runnable crearPDF = new GeneratePDFFileIText(textoNota, textoTitulo, imagen, nombre_completo);
+        Runnable crearPDF = new GeneratePDFFile(textoTitulo, textoNota, imagen, nombre_completo);
         Thread hilo = new Thread(crearPDF);
         hilo.start();
         try {
@@ -721,7 +673,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             Toast.makeText(this, "Error al generar el documento", Toast.LENGTH_LONG).show();
         }
         Toast.makeText(this, "El PDF ha sido guardado", Toast.LENGTH_LONG).show();
-        GeneratePDFFileIText PDF = new GeneratePDFFileIText();
+        GeneratePDFFile PDF = new GeneratePDFFile();
         PDF.mostrarPDF(nombre_completo, this);
     }
 
@@ -734,18 +686,16 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
                 if (img_view.getDrawable() == null) {
                     mostrarDialogoCamaraGaleria();
-                    add_imagen.setImageResource(R.mipmap.ic_delete);
                 } else {
                     nota.setImagen(null);
                     img_view.setImageResource(0);
-                    add_imagen.setImageResource(R.mipmap.ic_insert_photo);
                 }
 
                 saveNota();
             }
         });
 
-        anadir_color.setOnClickListener(new View.OnClickListener() {
+        add_color.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Context contexto = getApplicationContext();
@@ -770,14 +720,48 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             }
         });
 
-        add_lista.setOnClickListener(new View.OnClickListener() {
+        add_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editTextNota.requestFocus();
                 adaptadorLista.addLista();
             }
         });
-    }
 
+
+        add_alarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String fecha = "Día: " + tvFechaRecordatorioDia.getText().toString();
+                String hora = "Hora: " + tvFechaRecordatorioHora.getText().toString();
+                final CharSequence[] items = {fecha, hora};
+                AlertDialog.Builder alert_builder = new AlertDialog.Builder(VistaNota.this);
+                alert_builder.setTitle("Editar alarma ");
+                alert_builder.setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+                        switch (item) {
+                            case 0:
+                                DialogoFecha dialogFecha = new DialogoFecha(tvFechaRecordatorioDia);
+                                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                                dialogFecha.show(ft, "Fecha Recordatorio");
+                                break;
+                            case 1:
+//                                DialogoHora dialog = new DialogoHora(tvFechaRecordatorioHora);
+//                                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                                new DialogoHora(tvFechaRecordatorioHora).show(getFragmentManager().beginTransaction(), "Hora Recordatorio");
+                                break;
+                        }
+
+                    }
+                });
+
+                AlertDialog alert = alert_builder.create();
+                alert.show();
+            }
+        });
+
+
+    }
 
 }

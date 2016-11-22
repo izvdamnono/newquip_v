@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottom_sheet"
+    style="@android:style/ButtonBar"
+    android:background="@color/primary"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    app:layout_behavior="@string/bottom_sheet_behavior"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="64dp"
+
+
+    android:weightSum="4">
+
+    <ImageButton
+        android:id="@+id/anadir_imagen"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:contentDescription="@string/a_adir_imagen"
+        android:src="@mipmap/ic_insert_photo"
+        android:text="@string/a_adir_imagen" />
+
+    <ImageButton
+        android:id="@+id/id_palette"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:contentDescription="@string/contentdescription"
+        android:src="@mipmap/ic_palette"
+        android:text="@string/color_texto" />
+
+    <ImageButton
+        android:id="@+id/id_add_lista"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:contentDescription="@string/a_adir_lista"
+        android:src="@mipmap/ic_add_list"
+        android:text="@string/a_adir_lista" />
+
+    <ImageButton
+        android:id="@+id/id_add_alarm"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:contentDescription="@string/add_alarm"
+        android:src="@mipmap/ic_alarm_white" />
+</LinearLayout>

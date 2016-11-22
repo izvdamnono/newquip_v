@@ -139,6 +139,7 @@
     <string name="color">Color</string>
     <string name="color_texto">Color texto</string>
     <string name="contentdescription">contentDescription</string>
+    <string name="add_alarm">Añadir alarma</string>
 
 
 </resources>
