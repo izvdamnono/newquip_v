@@ -24,7 +24,6 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -40,8 +39,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.izv.dam.newquip.BuildConfig;
 
 import com.izv.dam.newquip.R;
 import com.izv.dam.newquip.adaptadores.AdaptadorLista;
@@ -106,7 +103,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
     private static final String PDFS = "PDFGenerados";
     RelativeLayout relativeLayout;
-    private ImageButton anadir_imagen;
+    private ImageButton add_imagen;
     private ImageButton anadir_color;
 
     /*--- PICASSO ---*/
@@ -132,6 +129,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
         mostrarNota(nota);
         ejecutar();
+        bottomBarFunction();
     }
 
     private void init() {
@@ -150,7 +148,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         editTextNota = (EditText) findViewById(R.id.etNota);
 
         //Control imagen NUEVO
-        anadir_imagen = (ImageButton) findViewById(R.id.anadir_imagen);
+        add_imagen = (ImageButton) findViewById(R.id.anadir_imagen);
         //imgBtn_img_add = (ImageButton) findViewById(R.id.id_imagen_btn);
         //imgBtn_img_delete = (ImageButton) findViewById(R.id.id_imagen_btn_delete);
 
@@ -197,7 +195,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         });
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            anadir_imagen.setEnabled(false);
+            add_imagen.setEnabled(false);
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
         }
@@ -225,8 +223,13 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
         //NUEVO
         relativeLayout = (RelativeLayout) findViewById(R.id.activity_nota_relativeLayout);
-        bottomBarFunction();
         //bottomSheetFunction();
+
+        if (img_view.getDrawable() != null) {
+            add_imagen.setImageResource(R.mipmap.ic_delete);
+        } else {
+            add_imagen.setImageResource(R.mipmap.ic_insert_photo);
+        }
     }
 
 
@@ -391,9 +394,9 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         }
 
         if (img_view.getDrawable() != null) {
-            anadir_imagen.setImageResource(R.mipmap.ic_delete);
+            add_imagen.setImageResource(R.mipmap.ic_delete);
         } else {
-            anadir_imagen.setImageResource(R.mipmap.ic_insert_photo);
+            add_imagen.setImageResource(R.mipmap.ic_insert_photo);
         }
     }
 
@@ -506,6 +509,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
             }
         });
+
         AlertDialog alert = alert_builder.create();
         alert.show();
     }
@@ -533,6 +537,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                 }
                 break;
         }
+
     }
 
     /*
@@ -686,7 +691,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED
                     && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                anadir_imagen.setEnabled(true);
+                add_imagen.setEnabled(true);
             }
         }
     }
@@ -721,26 +726,25 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     }
 
 
-    private void bottomBarFunction() {
-        anadir_imagen.setOnClickListener(new View.OnClickListener() {
+    public void bottomBarFunction() {
+        add_imagen.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-                if (img_view.getDrawable() != null) {
+                if (img_view.getDrawable() == null) {
+                    mostrarDialogoCamaraGaleria();
+                    add_imagen.setImageResource(R.mipmap.ic_delete);
+                } else {
                     nota.setImagen(null);
                     img_view.setImageResource(0);
-                } else {
-                    mostrarDialogoCamaraGaleria();
+                    add_imagen.setImageResource(R.mipmap.ic_insert_photo);
                 }
 
-                if (img_view.getDrawable() != null) {
-                    anadir_imagen.setImageResource(R.mipmap.ic_insert_photo);
-                } else {
-                    anadir_imagen.setImageResource(R.mipmap.ic_delete);
-                }
+                saveNota();
             }
         });
+
         anadir_color.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -765,6 +769,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                 dialog.show(getFragmentManager(), "color_dialog_test");
             }
         });
+
         add_lista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
