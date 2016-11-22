@@ -72,6 +72,7 @@ import java.util.Locale;
 
 public class VistaNota extends AppCompatActivity implements ContratoNota.InterfaceVista {
 
+    private ActionBar actionBar;
     private Toolbar toolbar;
     private Menu menu;
     private EditText editTextTitulo, editTextNota;
@@ -138,14 +139,10 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
         toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Notas");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        actionBar = getSupportActionBar();
+        actionBar.setTitle("Nota ");
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
-
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
 
         editTextTitulo = (EditText) findViewById(R.id.etTitulo);
         editTextNota = (EditText) findViewById(R.id.etNota);
@@ -211,7 +208,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
         /*-----------*/
 
-        //NUEVO
+        actionBar.setSubtitle(nota.getTitulo());
     }
 
 
