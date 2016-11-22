@@ -20,6 +20,8 @@ import com.izv.dam.newquip.databinding.ItemBinding;
 import com.izv.dam.newquip.pojo.Nota;
 import com.izv.dam.newquip.util.UtilFecha;
 
+import java.util.Random;
+
 import static android.R.attr.radius;
 
 public class AdaptadorNota extends RecyclerView.Adapter<AdaptadorNota.ViewHolder> {
@@ -50,8 +52,8 @@ public class AdaptadorNota extends RecyclerView.Adapter<AdaptadorNota.ViewHolder
 
         holder.getBinding().setVariable(BR.nota, nota);
         holder.getBinding().executePendingBindings();
-
-        String color = (nota.getColor() != null) ? nota.getColor() : "-1118482";
+        System.out.println(nota.toString());
+        String color = (nota.getColor() != null) ? nota.getColor() : "-1";
         holder.bindNota(color);
     }
 
@@ -85,32 +87,6 @@ public class AdaptadorNota extends RecyclerView.Adapter<AdaptadorNota.ViewHolder
     }
 
 
-    /*
-    @Override
-    public void bindView(View view, Context context, Cursor cursor) {
-
-        //Cargamos los elementos que vamos a usar, id, titulo, texto
-
-        tv_titulo_nota = (TextView) view.findViewById(R.id.tvTituloNota);
-        texo_nota = (TextView) view.findViewById(R.id.tvTexoNota);
-        fecha_creacion = (TextView) view.findViewById(R.id.tvFecha);
-        fecha_recordatorio = (TextView) view.findViewById(R.id.tvFechaRecordatorio);
-
-        //Recogemos todos los datos del cursor de
-        Nota nota = Nota.getNota(cursor);
-
-        //Le damos los datos a los items del listView
-        tv_titulo_nota.setText(nota.getTitulo());
-        texo_nota.setText(nota.getNota());
-        fecha_creacion.setText(fecha_util.cambiarFormato(nota.getFecha_creacion(), 1));
-
-        if (nota.getFecha_recordatorio() != null){
-            fecha_recordatorio.setText(fecha_util.cambiarFormato(nota.getFecha_recordatorio(), 1));
-        } else {
-            fecha_recordatorio.setText("");
-        }
-    }
-    */
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
 
@@ -144,8 +120,11 @@ public class AdaptadorNota extends RecyclerView.Adapter<AdaptadorNota.ViewHolder
         }
 
         public void bindNota(String color) {
-            cardView.setCardBackgroundColor(Integer.parseInt(color));
-
+            int androidColor = Integer.parseInt((color));
+//            int[] androidColors = cardView.getResources().getIntArray(R.array.default_rainbow);
+//            androidColor = androidColors[new Random().nextInt(androidColors.length)];
+            System.out.println("int: " + androidColor);
+            cardView.setBackgroundColor(androidColor);
         }
 
         @Override

@@ -15,6 +15,7 @@
     <color name="white">#FFFFFF</color>
     <color name="divider">#BDBDBD</color>
 
+    <color name="colorNota0">#FFFFFF</color>
     <color name="colorNota1">#EEEEEE</color>
     <color name="colorNota2">#B0BEC5</color>
     <color name="colorNota3">#BCAAA4</color>
@@ -29,16 +30,15 @@
     <color name="colorNota11">#A5D6A7</color>
     <color name="colorNota12">#80CBC4</color>
     <color name="colorNota13">#80DEEA</color>
-    <color name="colorNota14">#81D4FA</color>
-    <color name="colorNota15">#90CAF9</color>
-    <color name="colorNota16">#9FA8DA</color>
-    <color name="colorNota17">#B39DDB</color>
-
-    <color name="colorNota18">#CE93D8</color>
-    <color name="colorNota19">#F48FB1</color>
-    <color name="colorNota20">#EF9A9A</color>
+    <color name="colorNota14">#90CAF9</color>
+    <color name="colorNota15">#9FA8DA</color>
+    <color name="colorNota16">#B39DDB</color>
+    <color name="colorNota17">#CE93D8</color>
+    <color name="colorNota18">#F48FB1</color>
+    <color name="colorNota19">#EF9A9A</color>
 
     <array name="paletteNewQuip">
+        <item>@color/colorNota0</item>
         <item>@color/colorNota1</item>
         <item>@color/colorNota2</item>
         <item>@color/colorNota3</item>
@@ -58,6 +58,5 @@
         <item>@color/colorNota17</item>
         <item>@color/colorNota18</item>
         <item>@color/colorNota19</item>
-        <item>@color/colorNota20</item>
     </array>
 </resources>
