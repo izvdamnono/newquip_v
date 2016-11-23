@@ -45,8 +45,6 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     public void createNotificaicon(Context context, String msgTitle, String msgText, String msgAlert, Intent intentVistaNota) {
 
-//        System.out.println(intentVistaNota.getExtras().getParcelable(BUNDLE_KEY));
-
         PendingIntent notifcIntent = PendingIntent.getActivity(context, NOTIFICATION_ID, intentVistaNota, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
         NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(context)
                 .setContentTitle(msgTitle)

@@ -252,17 +252,6 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
 
     @Override
     public void onItemLongClick(View view, int position) {
-        /*
-        Toast.makeText(VistaQuip.this, "delete", Toast.LENGTH_SHORT).show();
-        Snackbar snackbar;
-        snackbar = Snackbar.make(getCurrentFocus(), "Delete", Snackbar.LENGTH_SHORT);
-        View snackBarView = snackbar.getView();
-        snackBarView.setBackgroundColor(ContextCompat.getColor(this, R.color.primary));
-        TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(ContextCompat.getColor(this, R.color.white));
-        snackbar.show();
-        */
-
         presentador.onShowBorrarNota(position);
     }
 }

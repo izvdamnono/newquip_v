@@ -273,7 +273,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                 return true;
             case R.id.bottom_sheet_item:
 
-                if (bsb.getState() == BottomSheetBehavior.STATE_HIDDEN || bsb.getState() == BottomSheetBehavior.STATE_EXPANDED ) {
+                if (bsb.getState() == BottomSheetBehavior.STATE_HIDDEN || bsb.getState() == BottomSheetBehavior.STATE_EXPANDED) {
                     bsb.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 } else if (bsb.getState() == BottomSheetBehavior.STATE_COLLAPSED || bsb.getState() == BottomSheetBehavior.STATE_EXPANDED) {
                     bsb.setState(BottomSheetBehavior.STATE_HIDDEN);
@@ -388,10 +388,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         }
 
         nota.setFecha_modificacion(fecha_actual);
-        if (nota.getImagen() == null) {
-            System.out.println(temp_file_path);
-            nota.setImagen(temp_file_path);
-        }
 
         long r = presentadorNota.onSaveNota(nota);
         if (r > 0 & nota.getId() == 0) {
@@ -685,16 +681,13 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
             @Override
             public void onClick(View v) {
-                //
-
                 if (img_view.getDrawable() == null) {
                     mostrarDialogoCamaraGaleria();
                 } else {
-                    nota.setImagen(null);
                     img_view.setImageResource(0);
+                    saveImagen(null);
                     saveNota();
                 }
-
             }
         });
 
@@ -702,15 +695,12 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             @Override
             public void onClick(View v) {
                 //Añadimos un color a la nota
-
                 Context contexto = getApplicationContext();
                 mSelectedColor = ContextCompat.getColor(contexto, R.color.flamingo);
                 final int[] mColors = getResources().getIntArray(R.array.paletteNewQuip);
                 ColorPickerDialog dialog = ColorPickerDialog.newInstance(R.string.color_picker_default_title,
                         mColors, mSelectedColor, 5, ColorPickerDialog.SIZE_SMALL);
-
                 dialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
-
                     @Override
                     public void onColorSelected(int color) {
                         scroll_view.setBackgroundColor(color);
@@ -718,7 +708,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                     }
 
                 });
-
                 dialog.show(getFragmentManager(), "color_dialog_test");
             }
         });
@@ -727,7 +716,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             @Override
             public void onClick(View v) {
                 //Añadimos listas
-
                 editTextNota.requestFocus();
                 adaptadorLista.addLista();
             }
@@ -738,7 +726,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             @Override
             public void onClick(View v) {
                 //Creamos un dialogo de seleccion para el picker
-
                 String fecha = "Día: " + tvFechaRecordatorioDia.getText().toString();
                 String hora = "Hora: " + tvFechaRecordatorioHora.getText().toString();
                 final CharSequence[] items = {fecha, hora};
@@ -760,7 +747,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                                 dialogHora.show(ft, "Hora recordatorio");
                                 break;
                         }
-
                     }
                 });
 

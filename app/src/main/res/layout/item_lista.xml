@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp">
@@ -48,7 +49,7 @@
             android:hint="@string/texto"
             android:imeOptions="actionDone"
 
-            android:singleLine="true" />
+            android:maxLines="1" />
 
         <ImageButton
             android:id="@+id/item_lista_delete"
@@ -60,6 +61,8 @@
             android:layout_marginRight="8dp"
             android:layout_weight="0"
             android:padding="0dp"
-            app:srcCompat="@mipmap/ic_delete_list_color" />
+            app:srcCompat="@mipmap/ic_delete_list_color"
+            android:contentDescription=""
+            tools:ignore="ContentDescription" />
     </LinearLayout>
 </android.support.v7.widget.CardView>
