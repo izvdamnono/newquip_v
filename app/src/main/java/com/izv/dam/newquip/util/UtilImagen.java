@@ -67,7 +67,6 @@ public class UtilImagen {
         intent.putExtra("data", contentUri);
 
         activity.startActivityForResult(intent, IMAGE_CAPTURE);
-        System.out.println("takePicture" + contentUri.toString());
         return contentUri.toString();
     }
 
@@ -79,7 +78,6 @@ public class UtilImagen {
         Uri contentUri = Uri.fromFile(new File(pathFile));
         mediaScanIntent.setData(contentUri);
         activity.sendBroadcast(mediaScanIntent);
-        System.out.println("galleryAddPic" + contentUri.toString());
         return contentUri.toString();
     }
 

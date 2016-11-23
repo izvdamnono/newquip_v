@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -289,14 +290,12 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     protected void onPause() {
         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
         saveNota();
-        System.out.println("onPause " + nota.toString());
         presentadorNota.onPause();
         super.onPause();
     }
 
     @Override
     protected void onResume() {
-        System.out.println("onResume " + nota.toString());
         presentadorNota.onResume();
         super.onResume();
     }
@@ -339,7 +338,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         editTextNota.setText(nota.getNota());
         String formato_a_cortar = nota.getFecha_recordatorio();
         if (nota.getColor() != null) {
-            scroll_view.setBackgroundColor(Integer.parseInt(nota.getColor()));
+            scroll_view.setBackgroundColor(Color.parseColor(nota.getColor()));
         }
         if (formato_a_cortar != null) {
             formato_a_cortar = UtilFecha.cambiarFormato(formato_a_cortar, 1);
@@ -703,8 +702,10 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                 dialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                     @Override
                     public void onColorSelected(int color) {
+                        String hex = Integer.toHexString(color);
+
                         scroll_view.setBackgroundColor(color);
-                        nota.setColor("" + color);
+                        nota.setColor("#" + hex);
                     }
 
                 });
