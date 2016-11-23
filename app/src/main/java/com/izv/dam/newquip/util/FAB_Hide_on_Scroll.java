@@ -1,4 +1,4 @@
-package com.izv.dam.newquip.vistas.main;
+package com.izv.dam.newquip.util;
 
 
 import android.content.Context;

@@ -1,6 +1,5 @@
 package com.izv.dam.newquip.adaptadores;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
@@ -9,8 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CursorAdapter;
-import android.widget.TextView;
 
 import com.android.databinding.library.baseAdapters.BR;
 import com.izv.dam.newquip.R;
@@ -18,11 +15,6 @@ import com.izv.dam.newquip.contrato.ClickListener;
 import com.izv.dam.newquip.contrato.ClickListenerLong;
 import com.izv.dam.newquip.databinding.ItemBinding;
 import com.izv.dam.newquip.pojo.Nota;
-import com.izv.dam.newquip.util.UtilFecha;
-
-import java.util.Random;
-
-import static android.R.attr.radius;
 
 public class AdaptadorNota extends RecyclerView.Adapter<AdaptadorNota.ViewHolder> {
 

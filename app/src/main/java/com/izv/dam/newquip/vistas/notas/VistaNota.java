@@ -11,8 +11,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,8 +21,6 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NavUtils;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -32,7 +28,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Layout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,7 +37,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.izv.dam.newquip.R;
 import com.izv.dam.newquip.adaptadores.AdaptadorLista;
@@ -55,7 +49,6 @@ import com.izv.dam.newquip.pojo.Lista;
 import com.izv.dam.newquip.pojo.Nota;
 import com.izv.dam.newquip.util.GeneratePDFFile;
 import com.izv.dam.newquip.util.UtilFecha;
-import com.izv.dam.newquip.vistas.notification.Notificacion;
 import com.squareup.picasso.Picasso;
 
 //Libreria de ColorPickerDialog :D
@@ -134,7 +127,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
         mostrarNota(nota);
         ejecutar();
-        bottomBarFunction();
     }
 
     private void init() {
@@ -213,6 +205,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         /*-----------*/
 
         actionBar.setSubtitle(nota.getTitulo());
+        bottomSheetFunction();
     }
 
 
@@ -539,29 +532,9 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     }
 
     private void setPic(String filePathAddGallery) {
-        /*
-        int targetW = img_view.getWidth();
-        int targetH = img_view.getHeight();
-
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        bmOptions.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(filePathAddGallery, bmOptions);
-        int photoW = bmOptions.outWidth;
-        int photoH = bmOptions.outHeight;
-
-        int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
-
-        bmOptions.inJustDecodeBounds = false;
-        bmOptions.inSampleSize = scaleFactor;
-        bmOptions.inPurgeable = true;
-
-        Bitmap bitmap = BitmapFactory.decodeFile(filePathAddGallery, bmOptions);
-        img_view.setImageBitmap(bitmap);
-        */
         Picasso.with(this)
                 .load(new File(filePathAddGallery))
                 .resize(widthImg, heightImg)
-//                .fit()
                 .into(img_view);
 
     }
@@ -575,37 +548,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     /*
      * Notificaciones
      */
-    public void showNotification() {
-        NotificationCompat.Builder notificBuilder = new NotificationCompat.Builder(this)
-                .setContentTitle("Notificacion prueba")
-                .setContentText("Texto prueba")
-                .setTicker("Alarma de prueba")
-                .setSmallIcon(R.mipmap.ic_alarm)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_add_note));
-
-        if (nota.getImagen() != null) {
-            String imagenString = nota.getImagen();
-            File imagenFile = new File(imagenString);
-            Bitmap imagenBitmap = BitmapFactory.decodeFile(imagenFile.getAbsolutePath());
-            notificBuilder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(imagenBitmap));
-        }
-
-        Intent intentNotification = new Intent(this, Notificacion.class);
-
-        TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(this);
-        taskStackBuilder.addParentStack(Notificacion.class);
-        taskStackBuilder.addNextIntent(intentNotification);
-
-        PendingIntent pendingIntent = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-        //Permite que se borre cuando abrimos la notificacion
-        notificBuilder.setAutoCancel(true);
-        notificBuilder.setContentIntent(pendingIntent);
-
-        notification_manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notification_manager.notify(notifID, notificBuilder.build());
-        is_notific_active = true;
-    }
-
     public void stopNotification() {
         if (is_notific_active) {
             notification_manager.cancel(notifID);
@@ -675,7 +617,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     }
 
 
-    public void bottomBarFunction() {
+    public void bottomSheetFunction() {
         add_delete_imagen.setOnClickListener(new View.OnClickListener() {
 
             @Override
