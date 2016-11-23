@@ -35,7 +35,7 @@ public class GeneratePDFFile implements Runnable {
     private static final Font chapterFont = FontFactory.getFont(FontFactory.HELVETICA, 26, Font.BOLDITALIC);
     private static final Font paragraphFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.NORMAL);
     private static final String PDFS = "PDFGenerados";
-
+    private int indentation = 0;
     private String titulo;
     private String nota;
     private String imagen;
@@ -72,23 +72,28 @@ public class GeneratePDFFile implements Runnable {
             document.open();
 
             Chunk chunk = new Chunk(titulo, chapterFont);
-            chunk.setBackground(BaseColor.GRAY);
-            Chapter chapter = new Chapter(new Paragraph(chunk), 1);
+            Chapter chapter = new Chapter(new Paragraph(chunk), 0);
             chapter.setNumberDepth(0);
+
             chapter.add(new Paragraph(nota, paragraphFont));
+            document.add(chapter);
+//            Chapter chapter1 = new Chapter(new Paragraph(nota, paragraphFont), 0);
+//            document.add(chapter1);
             Image image;
             if (imagen != null) {
+                Chapter chapter2 = new Chapter(new Paragraph(), 1);
+                chapter2.setNumberDepth(0);
                 try {
                     image = Image.getInstance(imagen);
-                    image.setAbsolutePosition(2, 150);
-                    chapter.add(image);
-                } catch (BadElementException ex) {
-                    System.out.println("Image BadElementException" + ex);
-                } catch (IOException ex) {
-                    System.out.println("Image IOException " + ex);
+                    image.setAbsolutePosition(40, 200);
+                    float scaler = ((document.getPageSize().getWidth() - document.leftMargin() - document.rightMargin() - indentation) / image.getWidth()) * 100;
+                    image.scalePercent(scaler);
+                    chapter2.add(image);
+                } catch (BadElementException | IOException ex) {
+                    ex.printStackTrace();
                 }
+                document.add(chapter2);
             }
-            document.add(chapter);
             document.close();
         } catch (DocumentException documentException) {
             documentException.printStackTrace();
@@ -97,7 +102,7 @@ public class GeneratePDFFile implements Runnable {
 
 
     public void mostrarPDF(String archivo, Context c) {
-        Toast.makeText(c, "Cargando el documento", Toast.LENGTH_LONG).show();
+//        Toast.makeText(c, "Cargando el documento", Toast.LENGTH_LONG).show();
         File file = new File(archivo);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.fromFile(file), "application/pdf");

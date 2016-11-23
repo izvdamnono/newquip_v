@@ -52,7 +52,7 @@ public class AdaptadorNota extends RecyclerView.Adapter<AdaptadorNota.ViewHolder
 
         holder.getBinding().setVariable(BR.nota, nota);
         holder.getBinding().executePendingBindings();
-        System.out.println(nota.toString());
+
         String color = (nota.getColor() != null) ? nota.getColor() : "-1";
         holder.bindNota(color);
     }
@@ -123,7 +123,6 @@ public class AdaptadorNota extends RecyclerView.Adapter<AdaptadorNota.ViewHolder
             int androidColor = Integer.parseInt((color));
 //            int[] androidColors = cardView.getResources().getIntArray(R.array.default_rainbow);
 //            androidColor = androidColors[new Random().nextInt(androidColors.length)];
-            System.out.println("int: " + androidColor);
             cardView.setBackgroundColor(androidColor);
         }
 
