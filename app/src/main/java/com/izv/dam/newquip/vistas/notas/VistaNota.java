@@ -31,6 +31,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -80,6 +81,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     private LinearLayout bottom_sheet;
     private BottomSheetBehavior bsb;
     private ImageView img_view;
+    private View scroll_view;
 
     private Nota nota = new Nota();
     private PresentadorNota presentadorNota;
@@ -144,6 +146,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         actionBar.setDisplayHomeAsUpEnabled(true);
 
 
+        scroll_view = findViewById(R.id.id_scroll_view);
         editTextTitulo = (EditText) findViewById(R.id.etTitulo);
         editTextNota = (EditText) findViewById(R.id.etNota);
 
@@ -336,7 +339,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         editTextNota.setText(nota.getNota());
         String formato_a_cortar = nota.getFecha_recordatorio();
         if (nota.getColor() != null) {
-            findViewById(R.id.id_scroll_view).setBackgroundColor(Integer.parseInt(nota.getColor()));
+            scroll_view.setBackgroundColor(Integer.parseInt(nota.getColor()));
         }
         if (formato_a_cortar != null) {
             formato_a_cortar = UtilFecha.cambiarFormato(formato_a_cortar, 1);
@@ -710,9 +713,8 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
                     @Override
                     public void onColorSelected(int color) {
-                        mSelectedColor = color;
-                        findViewById(R.id.id_include_layout).setBackgroundColor(mSelectedColor);
-                        nota.setColor("" + mSelectedColor);
+                        scroll_view.setBackgroundColor(color);
+                        nota.setColor("" + color);
                     }
 
                 });
