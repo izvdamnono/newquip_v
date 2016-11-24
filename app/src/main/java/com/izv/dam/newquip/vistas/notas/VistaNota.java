@@ -73,7 +73,6 @@ import java.util.Locale;
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
-
 public class VistaNota extends AppCompatActivity implements ContratoNota.InterfaceVista {
 
     private Toolbar toolbar;
