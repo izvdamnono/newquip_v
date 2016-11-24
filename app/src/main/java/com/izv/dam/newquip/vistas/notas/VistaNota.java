@@ -53,7 +53,7 @@ import com.izv.dam.newquip.dialogo.DialogoHora;
 import com.izv.dam.newquip.gestion.GestionLista;
 import com.izv.dam.newquip.pojo.Lista;
 import com.izv.dam.newquip.pojo.Nota;
-import com.izv.dam.newquip.util.GeneratePDFFileIText;
+import com.izv.dam.newquip.util.GeneratePDFFile;
 import com.izv.dam.newquip.util.UtilFecha;
 import com.izv.dam.newquip.vistas.notification.Notificacion;
 
@@ -322,7 +322,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
                 return true;*/
             case R.id.pdf:
-                generarThreadPDF();
+                generarAsyncTaskPDF();
                 //generarPDF();
 
                 return true;
@@ -703,15 +703,15 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         }
     }
 
-    public void generarThreadPDF(){
+    public void generarAsyncTaskPDF() {
         editTextNota = (EditText) findViewById(R.id.etNota);
-        String textoNota = editTextNota.getText().toString();
         editTextTitulo = (EditText) findViewById(R.id.etTitulo);
+        String textoNota = editTextNota.getText().toString();
         String textoTitulo = editTextTitulo.getText().toString();
         String imagen = nota.getImagen();
-        //final Context contexto = getApplicationContext();
+        Context contexto = getApplicationContext();
         String extension = ".pdf";
-        String NOMBRE_PDF =  UtilFecha.formatDate(Calendar.getInstance().getTime()) + extension;
+        String NOMBRE_PDF = UtilFecha.formatDate(Calendar.getInstance().getTime()) + extension;
         String nombre = NOMBRE_PDF.replace(":", "-");
         String tarjetaSD = Environment.getExternalStorageDirectory().toString();
         File DIRECTORIO_PDF = new File(tarjetaSD + File.separator + PDFS);
@@ -719,19 +719,10 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             DIRECTORIO_PDF.mkdir();
         }
         String nombre_completo = Environment.getExternalStorageDirectory() + File.separator + PDFS + File.separator + nombre;
-        Runnable crearPDF = new GeneratePDFFileIText(textoNota,textoTitulo,imagen,nombre_completo);
-        Thread hilo = new Thread(crearPDF);
-        hilo.start();
-        try {
-            hilo.join();
-        } catch (InterruptedException e) {
-            Toast.makeText(this, "Error al generar el documento", Toast.LENGTH_LONG).show();
-        }
-        Toast.makeText(this, "El PDF ha sido guardado", Toast.LENGTH_LONG).show();
-        GeneratePDFFileIText PDF = new GeneratePDFFileIText();
-        PDF.mostrarPDF(nombre_completo, this);
+        GeneratePDFFile crearPDF = new GeneratePDFFile(textoTitulo, textoNota, imagen, nombre_completo, contexto);
+        crearPDF.execute();
+        //crearPDF.mostrarPDF(nombre_completo, this);
     }
-
     /*public void generarPDF(){
         editTextTitulo = (EditText) findViewById(R.id.etTitulo);
         final String textoTitulo = editTextTitulo.getText().toString();
