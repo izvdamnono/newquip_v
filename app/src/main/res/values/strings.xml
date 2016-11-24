@@ -140,6 +140,17 @@
     <string name="color_texto">Color texto</string>
     <string name="contentdescription">contentDescription</string>
     <string name="add_alarm">Añadir alarma</string>
+    <string name="hora_recordatorio">Hora recordatorio</string>
+    <string name="dia_recordatorio">Fecha recordatorio</string>
+    <string name="edit_alarm">"Editar alarma "</string>
+    <string name="hora_">"Hora: "</string>
+    <string name="dia_">"Día: "</string>
+    <string name="color_text">color_dialog_test</string>
+    <string name="_pdf">.pdf</string>
+    <string name="recordatorio_">"Recordatorio: "</string>
+    <string name="galeria">Galeria</string>
+    <string name="camara">Cámara</string>
+    <string name="opcion">Elige una opcion</string>
 
 
 </resources>
