@@ -722,6 +722,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         crearPDF.execute();
         //crearPDF.mostrarPDF(nombre_completo, this);
     }
+    
     /*public void generarPDF(){
         editTextTitulo = (EditText) findViewById(R.id.etTitulo);
         final String textoTitulo = editTextTitulo.getText().toString();
