@@ -1,18 +1,17 @@
 package com.izv.dam.newquip.dialogo;
 
+
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 @SuppressLint("ValidFragment")
@@ -43,5 +42,10 @@ public class DialogoFecha extends DialogFragment implements DatePickerDialog.OnD
         c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         String fecha = formato.format(c.getTime());
         tvFechaRecordatorioDia.setText(fecha);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 }
