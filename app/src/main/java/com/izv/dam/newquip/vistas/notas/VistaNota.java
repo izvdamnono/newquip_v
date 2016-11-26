@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -11,6 +12,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -41,6 +43,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +56,7 @@ import com.izv.dam.newquip.dialogo.DialogoHora;
 import com.izv.dam.newquip.gestion.GestionLista;
 import com.izv.dam.newquip.pojo.Lista;
 import com.izv.dam.newquip.pojo.Nota;
+import com.izv.dam.newquip.util.CompartirPDFFile;
 import com.izv.dam.newquip.util.GeneratePDFFile;
 import com.izv.dam.newquip.util.UtilFecha;
 import com.izv.dam.newquip.vistas.notification.Notificacion;
@@ -121,6 +125,8 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     private final int MY_PERMISSIONS = 100;
     private ImageButton anadir_imagen;
     private ImageButton anadir_color;
+    private static final int CREAR_PDF = 0;
+    private static final int COMPARTIR_PDF = 1;
 
     /*------ COLOR PICKER DIALOG ------*/
     private int mSelectedColor;
@@ -320,9 +326,8 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                 Toast.makeText(this, "Share", Toast.LENGTH_SHORT).show();
 
                 return true;*/
-            case R.id.pdf:
-                generarAsyncTaskPDF();
-                //generarPDF();
+            case R.id.id_share:
+                compartirNotaPDF();
 
                 return true;
             case R.id.ok_alert:
@@ -722,7 +727,50 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         crearPDF.execute();
         //crearPDF.mostrarPDF(nombre_completo, this);
     }
-    
+
+    public void crearYCompartirPDF() {
+        editTextNota = (EditText) findViewById(R.id.etNota);
+        editTextTitulo = (EditText) findViewById(R.id.etTitulo);
+        String textoNota = editTextNota.getText().toString();
+        String textoTitulo = editTextTitulo.getText().toString();
+        String imagen = nota.getImagen();
+        Context contexto = getApplicationContext();
+        String extension = ".pdf";
+        String NOMBRE_PDF = UtilFecha.formatDate(Calendar.getInstance().getTime()) + extension;
+        String nombre = NOMBRE_PDF.replace(":", "-");
+        String tarjetaSD = Environment.getExternalStorageDirectory().toString();
+        File DIRECTORIO_PDF = new File(tarjetaSD + File.separator + PDFS);
+        if (!DIRECTORIO_PDF.exists()) {
+            DIRECTORIO_PDF.mkdir();
+        }
+        String nombre_completo = Environment.getExternalStorageDirectory() + File.separator + PDFS + File.separator + nombre;
+        CompartirPDFFile crearPDF = new CompartirPDFFile(textoTitulo, textoNota, imagen, nombre_completo, contexto);
+        crearPDF.execute();
+        //crearPDF.mostrarPDF(nombre_completo, this);
+    }
+
+    public void compartirNotaPDF() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.elegir_opcion);
+        builder.setItems(R.array.opcionesPDF, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+                        switch (item) {
+                            case 0://CREAR PDF
+                                generarAsyncTaskPDF();
+                                break;
+                            case 1://COMPARTIR CON EL RESTO DE APPS
+                                crearYCompartirPDF();
+                                break;
+                        }
+                    }
+        });
+        Dialog dialog = builder.create();
+        dialog.show();
+    }
+
+
+
     /*public void generarPDF(){
         editTextTitulo = (EditText) findViewById(R.id.etTitulo);
         final String textoTitulo = editTextTitulo.getText().toString();

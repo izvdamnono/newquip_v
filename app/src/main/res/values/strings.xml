@@ -64,6 +64,11 @@
     <string name="listaAdd">Lista</string>
     <string name="pdf">Generar PDF</string>
     <string name="audioAdd">Audio adjunto</string>
+    <string name="elegir_opcion">Elija una opción:</string>
+    <string-array name="opcionesPDF">
+        <item>Crear PDF</item>
+        <item>Compartir PDF</item>
+    </string-array>
 
     <!-- Strings related to Settings -->
 
