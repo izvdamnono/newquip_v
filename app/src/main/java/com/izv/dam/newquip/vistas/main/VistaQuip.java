@@ -75,7 +75,7 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
         adaptador = new AdaptadorNota(null);
         mRecyclerView.setAdapter(adaptador);
         mRecyclerView.setLayoutManager(
-                new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         adaptador.setOnItemClickListener(this);
         adaptador.setOnItemLongClickListener(this);
 
@@ -86,7 +86,6 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
         Nota nota = new Nota(52354,"titulo","notaaa","","","","aaa","","aaa","");
         binding.setNota(nota);
         */
-
 
 
     }
@@ -218,7 +217,7 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        return id == R.id.action_settings || super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item);
     }
 
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

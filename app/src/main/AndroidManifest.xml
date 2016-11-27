@@ -12,9 +12,9 @@
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_add_note"
         android:label="@string/app_name"
-        android:hardwareAccelerated="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <!--
@@ -24,11 +24,9 @@
             -->
         <!-- QUIP -->
         <activity android:name=".vistas.main.VistaQuip"
-
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
@@ -60,6 +58,10 @@
                 android:value="com.izv.dam.newquip.vistas.main.VistaQuip" />
         </activity>
 
+        <activity
+            android:name=".vistas.settings.SettingsActivity"
+            android:label="@string/title_activity_settings" />
+
         <provider
             android:name=".proveedor.ProveedorQuip"
             android:authorities="com.izv.dam.newquip.proveedor"
@@ -71,10 +73,6 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
-        <activity
-            android:name=".vistas.settings.SettingsActivity"
-            android:label="@string/title_activity_settings" />
     </application>
 
 </manifest>
