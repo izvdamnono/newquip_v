@@ -9,9 +9,6 @@
         android:title="@string/share"
         app:showAsAction="always" />
 
-
-
-
     <item
         android:id="@+id/ok_alert"
         android:icon="@mipmap/ic_ok_alert"
@@ -24,5 +21,9 @@
         android:title="@string/save"
         app:showAsAction="always" />
 
-
+    <item
+        android:id="@+id/bottom_sheet_item"
+        android:icon="@mipmap/ic_box"
+        android:title="@string/bottom_sheet_behavior"
+        app:showAsAction="always" />
 </menu>

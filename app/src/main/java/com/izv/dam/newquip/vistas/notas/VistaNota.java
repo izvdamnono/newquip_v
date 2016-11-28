@@ -3,6 +3,7 @@ package com.izv.dam.newquip.vistas.notas;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -49,6 +50,7 @@ import com.izv.dam.newquip.dialogo.DialogoHora;
 import com.izv.dam.newquip.gestion.GestionLista;
 import com.izv.dam.newquip.pojo.Lista;
 import com.izv.dam.newquip.pojo.Nota;
+import com.izv.dam.newquip.util.CompartirPDFFile;
 import com.izv.dam.newquip.util.GeneratePDFFile;
 import com.izv.dam.newquip.util.UtilFecha;
 import com.squareup.picasso.Picasso;
@@ -80,6 +82,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     private static final int SELECT_FILE = 0;
     private static final int IMAGE_CAPTURE = 1;
     /*Ruta temporal para guardar la imagen*/
+    private static final String PDFS = "PDFGenerados";
     private static String temp_file_path = null;
 
     NotificationManager notification_manager;
@@ -117,9 +120,9 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         }
         mostrarNota(nota);
         ejecutar();
-        if(getResources().getBoolean(R.bool.landscape_only)){
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
+//        if(getResources().getBoolean(R.bool.landscape_only)){
+//            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+//        }
     }
 
     private void init() {
@@ -196,9 +199,9 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
-            case R.id.pdf:
+            case R.id.id_share:
                 /* GenerarPDF */
-                generarThreadPDF();
+                compartirNotaPDF();
                 return true;
             case R.id.ok_alert:
                 saveNota();
@@ -483,39 +486,66 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                 add_delete_imagen.setEnabled(true);
     }
 
-    public void generarThreadPDF() {
+    public void generarAsyncTaskPDF() {
         editTextNota = (EditText) findViewById(R.id.etNota);
         editTextTitulo = (EditText) findViewById(R.id.etTitulo);
         String textoNota = editTextNota.getText().toString();
         String textoTitulo = editTextTitulo.getText().toString();
         String imagen = nota.getImagen();
-        /*final Context contexto = getApplicationContext();*/
-        String extension = getString(R.string._pdf);
-        String nombre_pdf = UtilFecha.formatDate(Calendar.getInstance().getTime()) + extension;
-        String nombre = nombre_pdf.replace(":", "-");
-        String memoria_interna_publica = Environment.getExternalStorageDirectory().toString();
-        File directorio_pdf = new File(memoria_interna_publica + File.separator + Directory_NewQuipPDF);
-        boolean mkdir = false;
-        if (directorio_pdf.exists() && !directorio_pdf.isDirectory())
-            try {
-                mkdir = directorio_pdf.mkdir();
-            } catch (SecurityException ex) {
-                ex.printStackTrace();
+        Context contexto = getApplicationContext();
+        String extension = ".pdf";
+        String NOMBRE_PDF = UtilFecha.formatDate(Calendar.getInstance().getTime()) + extension;
+        String nombre = NOMBRE_PDF.replace(":", "-");
+        String tarjetaSD = Environment.getExternalStorageDirectory().toString();
+        File DIRECTORIO_PDF = new File(tarjetaSD + File.separator + PDFS);
+        if (!DIRECTORIO_PDF.exists()) {
+            DIRECTORIO_PDF.mkdir();
+        }
+        String nombre_completo = Environment.getExternalStorageDirectory() + File.separator + PDFS + File.separator + nombre;
+        GeneratePDFFile crearPDF = new GeneratePDFFile(textoTitulo, textoNota, imagen, nombre_completo, contexto);
+        crearPDF.execute();
+        //crearPDF.mostrarPDF(nombre_completo, this);
+    }
+
+    public void crearYCompartirPDF() {
+        editTextNota = (EditText) findViewById(R.id.etNota);
+        editTextTitulo = (EditText) findViewById(R.id.etTitulo);
+        String textoNota = editTextNota.getText().toString();
+        String textoTitulo = editTextTitulo.getText().toString();
+        String imagen = nota.getImagen();
+        Context contexto = getApplicationContext();
+        String extension = ".pdf";
+        String NOMBRE_PDF = UtilFecha.formatDate(Calendar.getInstance().getTime()) + extension;
+        String nombre = NOMBRE_PDF.replace(":", "-");
+        String tarjetaSD = Environment.getExternalStorageDirectory().toString();
+        File DIRECTORIO_PDF = new File(tarjetaSD + File.separator + PDFS);
+        if (!DIRECTORIO_PDF.exists()) {
+            DIRECTORIO_PDF.mkdir();
+        }
+        String nombre_completo = Environment.getExternalStorageDirectory() + File.separator + PDFS + File.separator + nombre;
+        CompartirPDFFile crearPDF = new CompartirPDFFile(textoTitulo, textoNota, imagen, nombre_completo, contexto);
+        crearPDF.execute();
+        //crearPDF.mostrarPDF(nombre_completo, this);
+    }
+
+    public void compartirNotaPDF() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.elegir_opcion);
+        builder.setItems(R.array.opcionesPDF, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                switch (item) {
+                    case 0://CREAR PDF
+                        generarAsyncTaskPDF();
+                        break;
+                    case 1://COMPARTIR CON EL RESTO DE APPS
+                        crearYCompartirPDF();
+                        break;
+                }
             }
-        if (mkdir) {
-            snackBarEdit("Carpeta PDF creada");
-        }
-        String ruta_completa = directorio_pdf + File.separator + nombre;
-        Runnable crearPDF = new GeneratePDFFile(textoTitulo, textoNota, imagen, ruta_completa);
-        Thread hilo = new Thread(crearPDF);
-        hilo.start();
-        try {
-            hilo.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        GeneratePDFFile generatePDFFile = new GeneratePDFFile();
-        generatePDFFile.mostrarPDF(ruta_completa, this);
+        });
+        Dialog dialog = builder.create();
+        dialog.show();
     }
 
     public void bottomSheetFunction() {
