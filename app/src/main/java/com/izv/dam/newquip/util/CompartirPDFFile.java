@@ -3,13 +3,11 @@ package com.izv.dam.newquip.util;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Environment;
-import android.util.Log;
 import android.widget.Toast;
 import com.itextpdf.text.BadElementException;
-import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chapter;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -18,20 +16,19 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.CFFFont;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.izv.dam.newquip.vistas.notas.VistaNota;
+import com.izv.dam.newquip.R;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+
+import static com.itextpdf.awt.geom.misc.Messages.getString;
 
 
-public class GeneratePDFFile extends AsyncTask<Void,Void,Void> {
+public class CompartirPDFFile extends AsyncTask<Void,Void,Void> {
 
     private static final Font chapterFont = FontFactory.getFont(FontFactory.HELVETICA, 26, Font.BOLDITALIC);
     private static final Font paragraphFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.NORMAL);
@@ -42,7 +39,7 @@ public class GeneratePDFFile extends AsyncTask<Void,Void,Void> {
     private String nombre_completo;
     private Context contexto;
 
-    public GeneratePDFFile(String titulo, String nota, String imagen, String nombre_completo, Context contexto) {
+    public CompartirPDFFile(String titulo, String nota, String imagen, String nombre_completo, Context contexto) {
         this.titulo = titulo;
         this.nota = nota;
         this.imagen = imagen;
@@ -51,7 +48,7 @@ public class GeneratePDFFile extends AsyncTask<Void,Void,Void> {
 
     }
 
-    public GeneratePDFFile() {
+    public CompartirPDFFile() {
 
     }
 
@@ -115,22 +112,23 @@ public class GeneratePDFFile extends AsyncTask<Void,Void,Void> {
 
     @Override
     protected void onPostExecute(Void aVoid){
-        mostrarPDF(nombre_completo,contexto);
+        compartirPDF(nombre_completo,contexto);
     }
 
-    private void mostrarPDF(String archivo, Context c) {
-//        Toast.makeText(c, "Cargando el documento", Toast.LENGTH_LONG).show();
+    private void compartirPDF(String archivo, Context c) {
         File file = new File(archivo);
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.fromFile(file), "application/pdf");
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Intent sendIntent = new Intent(Intent.ACTION_SEND);
+        Intent i = Intent.createChooser(sendIntent, "Elija una APP");
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        sendIntent.setType("application/pdf");
+        sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + file));
+        sendIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        sendIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         try {
-            c.startActivity(intent);
+            c.startActivity(i);
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(c, "No dispone de una APP para abrir este PDF", Toast.LENGTH_LONG).show();
+            Toast.makeText(c, "No dispone de una APP para compartir este PDF", Toast.LENGTH_LONG).show();
 
         }
     }
-
 }

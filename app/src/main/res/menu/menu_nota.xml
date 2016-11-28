@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/menu_notas">
 
-
     <item
-        android:id="@+id/pdf"
+        android:id="@+id/id_share"
         android:icon="@mipmap/ic_share"
-        android:title="@string/pdf"
+        android:title="@string/share"
         app:showAsAction="always" />
+
+
 
 
     <item
@@ -17,17 +18,10 @@
         android:title="@string/alert_ok"
         app:showAsAction="always" />
 
-
     <item
         android:id="@+id/save"
         android:icon="@mipmap/ic_save"
         android:title="@string/save"
-        app:showAsAction="always" />
-
-    <item
-        android:id="@+id/bottom_sheet_item"
-        android:icon="@mipmap/ic_box"
-        android:title="@string/bottom_sheet_behavior"
         app:showAsAction="always" />
 
 
