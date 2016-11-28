@@ -3,11 +3,13 @@ package com.izv.dam.newquip.adaptadores;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.android.databinding.library.baseAdapters.BR;
 import com.izv.dam.newquip.R;
@@ -21,7 +23,6 @@ public class AdaptadorNota extends RecyclerView.Adapter<AdaptadorNota.ViewHolder
     private ClickListener mItemClickListener;
     private ClickListenerLong mItemClickListenerLong;
     private Cursor mCursor;
-    private ItemBinding binding;
 
 
     public AdaptadorNota(Cursor c) {
@@ -29,8 +30,7 @@ public class AdaptadorNota extends RecyclerView.Adapter<AdaptadorNota.ViewHolder
     }
 
     @Override
-    public AdaptadorNota.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                       int viewType) {
+    public AdaptadorNota.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item, parent, false);
 
@@ -45,8 +45,8 @@ public class AdaptadorNota extends RecyclerView.Adapter<AdaptadorNota.ViewHolder
         holder.getBinding().setVariable(BR.nota, nota);
         holder.getBinding().executePendingBindings();
 
-        String color = (nota.getColor() != null) ? nota.getColor() : "#FFFFFF";
-        holder.bindNota(color);
+        holder.bindNota(nota.getColor());
+        holder.bindImagen(nota.getImagen());
     }
 
     @Override
@@ -79,17 +79,18 @@ public class AdaptadorNota extends RecyclerView.Adapter<AdaptadorNota.ViewHolder
     }
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
 
         CardView cardView;
+        ImageView imageView;
 
         ClickListener mItemClickListener;
         ClickListenerLong mItemClickListenerLong;
 
         ItemBinding binding;
 
-        public ViewHolder(View itemView, ClickListener myItemClickListener, ClickListenerLong myItemClickListenerLong) {
+        ViewHolder(View itemView, ClickListener myItemClickListener, ClickListenerLong myItemClickListenerLong) {
             super(itemView);
             binding = DataBindingUtil.bind(itemView);
             /*
@@ -98,6 +99,7 @@ public class AdaptadorNota extends RecyclerView.Adapter<AdaptadorNota.ViewHolder
             fecha_creacion = (TextView)itemView.findViewById(R.id.tvFecha);
             fecha_recordatorio = (TextView)itemView.findViewById(R.id.tvFechaRecordatorio);
             */
+            imageView = (ImageView) itemView.findViewById(R.id.imageView_item);
             cardView = (CardView) itemView.findViewById(R.id.id_card_view_item);
             this.mItemClickListener = myItemClickListener;
             this.mItemClickListenerLong = myItemClickListenerLong;
@@ -107,17 +109,27 @@ public class AdaptadorNota extends RecyclerView.Adapter<AdaptadorNota.ViewHolder
 
         }
 
-        public ItemBinding getBinding() {
+        ItemBinding getBinding() {
             return binding;
         }
 
-        public void bindNota(String color) {
+        void bindNota(String color) {
+            color = (color != null) ? color : "#FFFFFF";
             int androidColor = Color.parseColor(color);
 
 //            int androidColor = Integer.parseInt((color));
 //            int[] androidColors = cardView.getResources().getIntArray(R.array.default_rainbow);
 //            androidColor = androidColors[new Random().nextInt(androidColors.length)];
             cardView.setBackgroundColor(androidColor);
+        }
+
+        void bindImagen(String imagen) {
+            if (imagen != null) {
+                imageView.setImageURI(Uri.parse(imagen));
+            } else {
+                imageView.setImageURI(null);
+                imageView.setVisibility(View.GONE);
+            }
         }
 
         @Override
@@ -134,5 +146,7 @@ public class AdaptadorNota extends RecyclerView.Adapter<AdaptadorNota.ViewHolder
             }
             return true;
         }
+
+
     }
 }
