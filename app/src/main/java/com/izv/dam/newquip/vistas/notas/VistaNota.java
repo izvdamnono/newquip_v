@@ -10,7 +10,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -45,6 +44,7 @@ import com.izv.dam.newquip.R;
 import com.izv.dam.newquip.adaptadores.AdaptadorLista;
 import com.izv.dam.newquip.broadcast.AlarmReceiver;
 import com.izv.dam.newquip.contrato.ContratoNota;
+import com.izv.dam.newquip.dialogo.ComunicarActividadFragmentoFechaHora;
 import com.izv.dam.newquip.dialogo.DialogoFecha;
 import com.izv.dam.newquip.dialogo.DialogoHora;
 import com.izv.dam.newquip.gestion.GestionLista;
@@ -68,11 +68,11 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class VistaNota extends AppCompatActivity implements ContratoNota.InterfaceVista {
+public class VistaNota extends AppCompatActivity implements ContratoNota.InterfaceVista, ComunicarActividadFragmentoFechaHora {
     private ActionBar actionBar;
     private Menu menu;
     private EditText editTextTitulo, editTextNota;
-    private TextView tvFechaRecordatorioDia, tvFechaRecordatorioHora;
+    private TextView tvFechaRecordatorioFecha, tvFechaRecordatorioHora;
     private LinearLayout bottom_sheet;
     private BottomSheetBehavior bsb;
     private ImageView img_view;
@@ -149,7 +149,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         add_list = (ImageButton) findViewById(R.id.id_add_lista);
         mRecyclerView = (RecyclerView) findViewById(R.id.id_recycler_view_listas);
         /*-----------*/
-        tvFechaRecordatorioDia = (TextView) findViewById(R.id.tvFechaRecordatorioDia);
+        tvFechaRecordatorioFecha = (TextView) findViewById(R.id.tvFechaRecordatorioDia);
         tvFechaRecordatorioHora = (TextView) findViewById(R.id.tvFechaRecordatorioHora);
         relativeLayout = (RelativeLayout) findViewById(R.id.activity_nota_relativeLayout);
         presentadorNota = new PresentadorNota(this);
@@ -158,7 +158,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     private void ejecutar() {
         bsb = BottomSheetBehavior.from(bottom_sheet);
         bsb.setState(BottomSheetBehavior.STATE_HIDDEN);
-        tvFechaRecordatorioDia.setText(UtilFecha.fechaHoyDia());
+        tvFechaRecordatorioFecha.setText(UtilFecha.fechaHoyDia());
         tvFechaRecordatorioHora.setText(UtilFecha.fechaHoyHora());
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             add_delete_imagen.setEnabled(false);
@@ -208,7 +208,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                 if (nota.getFecha_recordatorio() == null) {
                     menu.getItem(1).setIcon(R.mipmap.ic_delete_alert);
                     saveNota();
-                    fecha_recordatorio = tvFechaRecordatorioDia.getText().toString() + " " + tvFechaRecordatorioHora.getText().toString();
+                    fecha_recordatorio = tvFechaRecordatorioFecha.getText().toString() + " " + tvFechaRecordatorioHora.getText().toString();
                     nuevo_formato = UtilFecha.cambiarFormato(fecha_recordatorio, 0);
                     addAlarmNotification(nuevo_formato);
                     saveRecordatorio(nuevo_formato);
@@ -251,10 +251,10 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     /* Ejemplos de guardar y restaurar la actividad */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putParcelable(BUNDLE_KEY, nota);
-        outState.putString("Dia", tvFechaRecordatorioDia.getText().toString());
-        outState.putString("Hora", tvFechaRecordatorioHora.getText().toString());
         super.onSaveInstanceState(outState);
+        outState.putParcelable(BUNDLE_KEY, nota);
+        outState.putString("Dia", tvFechaRecordatorioFecha.getText().toString());
+        outState.putString("Hora", tvFechaRecordatorioHora.getText().toString());
         /*
          * Ejemplo
             savedInstanceState.putBoolean("MyBoolean", true);
@@ -267,7 +267,8 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        tvFechaRecordatorioDia.setText(savedInstanceState.getString("Dia"));
+
+        tvFechaRecordatorioFecha.setText(savedInstanceState.getString("Dia"));
         tvFechaRecordatorioHora.setText(savedInstanceState.getString("Hora"));
     }
 
@@ -287,7 +288,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         if (formato_a_cortar != null) {
             formato_a_cortar = UtilFecha.cambiarFormato(formato_a_cortar, 1);
             String[] fecha_recordatorio = UtilFecha.cortarFormato(formato_a_cortar);
-            tvFechaRecordatorioDia.setText(fecha_recordatorio[0]);
+            tvFechaRecordatorioFecha.setText(fecha_recordatorio[0]);
             tvFechaRecordatorioHora.setText(fecha_recordatorio[1]);
         }
         if (nota.getImagen() != null)
@@ -592,7 +593,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             @Override
             public void onClick(View v) {
                 /*Creamos un dialogo de seleccion para el picker*/
-                String fecha = getString(R.string.dia_) + tvFechaRecordatorioDia.getText().toString();
+                String fecha = getString(R.string.dia_) + tvFechaRecordatorioFecha.getText().toString();
                 String hora = getString(R.string.hora_) + tvFechaRecordatorioHora.getText().toString();
                 final CharSequence[] items = {fecha, hora};
                 AlertDialog.Builder alert_builder = new AlertDialog.Builder(VistaNota.this);
@@ -603,12 +604,12 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                         FragmentTransaction ft;
                         switch (item) {
                             case 0:
-                                DialogoFecha dialogFecha = new DialogoFecha(tvFechaRecordatorioDia);
+                                DialogoFecha dialogFecha = new DialogoFecha();
                                 ft = getFragmentManager().beginTransaction();
                                 dialogFecha.show(ft, getString(R.string.dia_recordatorio));
                                 break;
                             case 1:
-                                DialogoHora dialogHora = new DialogoHora(tvFechaRecordatorioHora);
+                                DialogoHora dialogHora = new DialogoHora();
                                 ft = getFragmentManager().beginTransaction();
                                 dialogHora.show(ft, getString(R.string.hora_recordatorio));
                                 break;
@@ -619,6 +620,16 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                 alert.show();
             }
         });
+    }
+
+    @Override
+    public void setResultadoFecha(String s) {
+        tvFechaRecordatorioFecha.setText(s);
+    }
+
+    @Override
+    public void setResultadoHora(String s) {
+        tvFechaRecordatorioHora.setText(s);
     }
 
     public void snackBarEdit(String text){
@@ -633,4 +644,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             snackbar.show();
         }
     }
+
+
 }

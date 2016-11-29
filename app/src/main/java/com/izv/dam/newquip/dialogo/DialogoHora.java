@@ -4,12 +4,12 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.view.View;
-import android.widget.TextView;
+import android.util.Log;
 import android.widget.TimePicker;
 
 /**
@@ -20,10 +20,10 @@ import android.widget.TimePicker;
 @SuppressLint("ValidFragment")
 public class DialogoHora extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
-    TextView tvFechaRecordatorioHora;
+    private ComunicarActividadFragmentoFechaHora caf;
 
-    public DialogoHora(View view) {
-        tvFechaRecordatorioHora = (TextView) view;
+    public DialogoHora() {
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -40,6 +40,13 @@ public class DialogoHora extends DialogFragment implements TimePickerDialog.OnTi
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         String fecha = hourOfDay + ":" + minute + ":00";
-        tvFechaRecordatorioHora.setText(fecha);
+        this.caf.setResultadoHora(fecha);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+//        Log.v("Context", "Context");
+        this.caf = (ComunicarActividadFragmentoFechaHora) context;
     }
 }

@@ -5,7 +5,9 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
@@ -16,10 +18,9 @@ import java.util.Locale;
 
 @SuppressLint("ValidFragment")
 public class DialogoFecha extends DialogFragment implements DatePickerDialog.OnDateSetListener {
-    TextView tvFechaRecordatorioDia;
+    private ComunicarActividadFragmentoFechaHora caf;
 
-    public DialogoFecha(View view) {
-        tvFechaRecordatorioDia = (TextView) view;
+    public DialogoFecha() {
     }
 
     public Dialog onCreateDialog(Bundle saveInstanceState) {
@@ -41,11 +42,19 @@ public class DialogoFecha extends DialogFragment implements DatePickerDialog.OnD
         c.set(Calendar.MONTH, month);
         c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         String fecha = formato.format(c.getTime());
-        tvFechaRecordatorioDia.setText(fecha);
+
+        this.caf.setResultadoFecha(fecha);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+//        Log.v("Context", "Context");
+        this.caf = (ComunicarActividadFragmentoFechaHora) context;
     }
 }

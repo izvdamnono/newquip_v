@@ -88,7 +88,7 @@ public class CompartirPDFFile extends AsyncTask<Void,Void,Void> {
                 chapter2.setNumberDepth(0);
                 try {
                     image = Image.getInstance(imagen);
-                    image.setAbsolutePosition(40, 200);
+                    image.setAbsolutePosition(40, 25);
                     int indentation = 0;
                     float scaler = ((document.getPageSize().getWidth() - document.leftMargin() - document.rightMargin() - indentation) / image.getWidth()) * 100;
                     image.scalePercent(scaler);
