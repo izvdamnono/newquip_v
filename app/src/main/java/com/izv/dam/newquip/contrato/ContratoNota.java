@@ -16,9 +16,9 @@ public interface ContratoNota {
 
         void close();
 
-        Nota getNota(long id);
+        Nota getNota(int id);
 
-        Lista getListas(long id);
+        Lista getListas(int id);
 
         long saveNota(Nota n);
 
@@ -28,6 +28,11 @@ public interface ContratoNota {
 
         long deleteLista(Lista l);
 
+        void loadData(OnDataLoadListener listener);
+
+        interface OnDataLoadListener {
+            public void setCursor(Cursor c);
+        }
     }
 
     interface InterfacePresentador {

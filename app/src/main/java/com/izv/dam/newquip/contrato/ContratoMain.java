@@ -13,11 +13,11 @@ public interface ContratoMain {
 
         void close();
 
+        Nota getNota(int position);
+
         long deleteNota(int position);
 
         long deleteNota(Nota n);
-
-        Nota getNota(int position);
 
         void loadData(OnDataLoadListener listener);
 

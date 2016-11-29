@@ -24,7 +24,19 @@ public class ModeloQuip implements ContratoMain.InterfaceModelo {
     @Override
     public void close() {
 //        gn.close();
+    }
 
+    @Override
+    public void loadData(OnDataLoadListener listener) {
+        cursor = c.getContentResolver().query(uri, null, null, null, null);
+        listener.setCursor(cursor);
+    }
+
+    @Override
+    public Nota getNota(int position) {
+        cursor.moveToPosition(position);
+        Nota n = Nota.getNota(cursor);
+        return n;
     }
 
     @Override
@@ -41,18 +53,6 @@ public class ModeloQuip implements ContratoMain.InterfaceModelo {
         return this.deleteNota(n);
     }
 
-    @Override
-    public Nota getNota(int position) {
-        cursor.moveToPosition(position);
-        Nota n = Nota.getNota(cursor);
-        return n;
-    }
 
-    @Override
-    public void loadData(OnDataLoadListener listener) {
-//        cursor = gn.getCursor();
-//        listener.setCursor(cursor);
-        cursor = c.getContentResolver().query(uri, null, null, null, null);
-        listener.setCursor(cursor);
-    }
+
 }
