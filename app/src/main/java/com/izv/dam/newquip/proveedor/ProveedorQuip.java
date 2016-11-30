@@ -107,7 +107,7 @@ public class ProveedorQuip extends ContentProvider {
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         String id;
         String[] newSelectionArgs;
-        int valor = 0;
+        int update = 0;
         switch (URI_MATCHER.match(uri)) {
             case CONCRETO_NOTA:
                 id = uri.getLastPathSegment();
@@ -118,21 +118,29 @@ public class ProveedorQuip extends ContentProvider {
 //                System.out.println("values " + values.toString());
 //                System.out.println("selectionArgs " + Arrays.toString(newSelectionArgs));
 
-                valor = gestionNota.update(values, selection, newSelectionArgs);
+                update = gestionNota.update(values, selection, newSelectionArgs);
+                break;
+
+            case TODO_NOTA:
+                update = gestionNota.update(values, selection, selectionArgs);
+                System.out.println(update);
                 break;
             case CONCRETO_LISTA:
                 id = uri.getLastPathSegment();
                 selection = UtilCadenas.getCondicionesSql(selection, ContratoBaseDatos.TablaLista._ID + " = ? ");
                 newSelectionArgs = UtilCadenas.getNewArray(selectionArgs, id);
 
-                valor = gestionLista.update(values, selection, newSelectionArgs);
+                update = gestionLista.update(values, selection, newSelectionArgs);
+                break;
+            case TODO_LISTA:
+                update = gestionLista.update(values, selection, selectionArgs);
                 break;
         }
-//        System.out.println("valor " + valor);
-        if (valor > 0) {
+//        System.out.println("update " + update);
+        if (update > 0) {
             getContext().getContentResolver().notifyChange(uri, null);
         }
-        return valor;
+        return update;
     }
 
 

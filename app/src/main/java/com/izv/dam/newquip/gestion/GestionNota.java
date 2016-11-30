@@ -71,8 +71,8 @@ public class GestionNota extends Gestion<Nota> {
     }
 
     @Override
-    public int update(ContentValues valores, String condicion, String[] argumentos) {
-        return this.update(ContratoBaseDatos.TablaNota.TABLA, valores, condicion, argumentos);
+    public int update(ContentValues values, String condicion, String[] argumentos) {
+        return this.update(ContratoBaseDatos.TablaNota.TABLA, values, condicion, argumentos);
     }
 
     @Override

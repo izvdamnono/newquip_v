@@ -122,7 +122,7 @@ public class ModeloNota implements ContratoNota.InterfaceModelo {
 
 //        return gestionNota.update(n);
         String where = "_ID = " + n.getId();
-        return c.getContentResolver().update(uri_nota, n.getContentValues(), null, null);
+        return c.getContentResolver().update(uri_nota, n.getContentValues(), where, null);
     }
 
     private long updateLista(Lista l) {
@@ -134,6 +134,6 @@ public class ModeloNota implements ContratoNota.InterfaceModelo {
         }
 //        return gestionLista.update(l);
         String where = "_ID = " + l.getId_lista();
-        return c.getContentResolver().update(uri_lista, l.getContentValues(), null, null);
+        return c.getContentResolver().update(uri_lista, l.getContentValues(), where, null);
     }
 }
