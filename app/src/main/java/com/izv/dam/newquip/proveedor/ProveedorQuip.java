@@ -74,7 +74,6 @@ public class ProveedorQuip extends ContentProvider {
                 throw new IllegalArgumentException("Error, la cagaste wey! :/");
         }
         if (delete > 0) {
-            System.out.println("delete " + delete);
             getContext().getContentResolver().notifyChange(uri, null);
         }
         return delete;
@@ -123,7 +122,6 @@ public class ProveedorQuip extends ContentProvider {
 
             case TODO_NOTA:
                 update = gestionNota.update(values, selection, selectionArgs);
-                System.out.println(update);
                 break;
             case CONCRETO_LISTA:
                 id = uri.getLastPathSegment();

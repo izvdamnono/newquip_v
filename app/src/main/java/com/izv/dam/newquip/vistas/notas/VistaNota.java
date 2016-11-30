@@ -359,7 +359,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         String id = wholeID.split(":")[1];
         String[] column = {MediaStore.Images.Media.DATA};
         String sel = MediaStore.Images.Media._ID + "=?";
-        Cursor cursor = VistaNota.this.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, column, sel, new String[]{id}, null);
+        Cursor cursor = this.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, column, sel, new String[]{id}, null);
 
         if (cursor != null) {
             int columnIndex = cursor.getColumnIndex(column[0]);
