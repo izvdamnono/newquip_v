@@ -35,8 +35,7 @@ public class ModeloQuip implements ContratoMain.InterfaceModelo {
     @Override
     public Nota getNota(int position) {
         cursor.moveToPosition(position);
-        Nota n = Nota.getNota(cursor);
-        return n;
+        return Nota.getNota(cursor);
     }
 
     @Override

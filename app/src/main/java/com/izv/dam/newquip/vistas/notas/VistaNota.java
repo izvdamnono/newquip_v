@@ -14,11 +14,13 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -350,6 +352,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         nota.setImagen(imagen);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private String getRealPath(Uri datos) {
         String filePath = "";
         String wholeID = DocumentsContract.getDocumentId(datos);
@@ -393,6 +396,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     }
 
     /* Se ejecuta cada vez que seleccionamos una imagen desde la galerio o desde la cámara */
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {

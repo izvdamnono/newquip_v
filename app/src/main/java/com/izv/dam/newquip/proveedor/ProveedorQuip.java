@@ -12,6 +12,8 @@ import com.izv.dam.newquip.gestion.GestionLista;
 import com.izv.dam.newquip.gestion.GestionNota;
 import com.izv.dam.newquip.util.UtilCadenas;
 
+import java.util.Arrays;
+
 import static com.izv.dam.newquip.contrato.ContratoBaseDatos.TablaNota.CONTENT_ITEM_TYPE_NOTA;
 import static com.izv.dam.newquip.contrato.ContratoBaseDatos.TablaNota.CONTENT_TYPE_NOTA;
 
@@ -50,9 +52,9 @@ public class ProveedorQuip extends ContentProvider {
                 id = uri.getLastPathSegment();
                 newSelectionArgs = UtilCadenas.getNewArray(selectionArgs, id);
                 delete = gestionNota.delete(selection, newSelectionArgs);
-
 //                delete = gestionNota.delete(ContratoBaseDatos.TablaNota._ID + " = ?", new String[]{id});
                 break;
+
             case TODO_NOTA:
                 delete = gestionNota.delete(selection, selectionArgs);
                 break;
@@ -63,6 +65,7 @@ public class ProveedorQuip extends ContentProvider {
                 delete = gestionLista.delete(selection, newSelectionArgs);
 //                delete = gestionLista.delete(ContratoBaseDatos.TablaLista._ID + " = ?", new String[]{id});
                 break;
+
             case TODO_LISTA:
                 delete = gestionLista.delete(selection, selectionArgs);
                 break;
@@ -71,6 +74,7 @@ public class ProveedorQuip extends ContentProvider {
                 throw new IllegalArgumentException("Error, la cagaste wey! :/");
         }
         if (delete > 0) {
+            System.out.println("delete " + delete);
             getContext().getContentResolver().notifyChange(uri, null);
         }
         return delete;
@@ -102,21 +106,29 @@ public class ProveedorQuip extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         String id;
+        String[] newSelectionArgs;
         int valor = 0;
         switch (URI_MATCHER.match(uri)) {
             case CONCRETO_NOTA:
                 id = uri.getLastPathSegment();
-                selection = UtilCadenas.getCondicionesSql(selection, ContratoBaseDatos.TablaNota._ID + " = ?");
-                selectionArgs = UtilCadenas.getNewArray(selectionArgs, id);
-                valor = gestionNota.update(values, selection, selectionArgs);
+                selection = UtilCadenas.getCondicionesSql(selection, ContratoBaseDatos.TablaNota._ID + " = ? ");
+                newSelectionArgs = UtilCadenas.getNewArray(selectionArgs, id);
+
+//                System.out.println("selection " + selection);
+//                System.out.println("values " + values.toString());
+//                System.out.println("selectionArgs " + Arrays.toString(newSelectionArgs));
+
+                valor = gestionNota.update(values, selection, newSelectionArgs);
                 break;
             case CONCRETO_LISTA:
                 id = uri.getLastPathSegment();
-                selection = UtilCadenas.getCondicionesSql(selection, ContratoBaseDatos.TablaLista._ID + " = ?");
-                selectionArgs = UtilCadenas.getNewArray(selectionArgs, id);
-                valor = gestionLista.update(values, selection, selectionArgs);
+                selection = UtilCadenas.getCondicionesSql(selection, ContratoBaseDatos.TablaLista._ID + " = ? ");
+                newSelectionArgs = UtilCadenas.getNewArray(selectionArgs, id);
+
+                valor = gestionLista.update(values, selection, newSelectionArgs);
                 break;
         }
+//        System.out.println("valor " + valor);
         if (valor > 0) {
             getContext().getContentResolver().notifyChange(uri, null);
         }
