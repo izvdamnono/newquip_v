@@ -106,11 +106,10 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
         super.onResume();
     }
 
-    protected void onResume(String filtro) {
-        presentador.onResume(filtro);
+    protected void onResume(String s) {
+        presentador.onResume(s);
         super.onResume();
     }
-
 
     @Override
     public void mostrarAgregarNota() {
@@ -122,7 +121,7 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
     }
 
     @Override
-    public void mostrarDatosOrdenados(Cursor c) {
+    public void mostrarDatosFiltrados(Cursor c) {
         adaptador.changeCursor(c);
     }
 
@@ -228,18 +227,17 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
         // Handle navigation view item clicks here.
         int id_menu = item.getItemId();
         switch (id_menu) {
-            case R.id.order_l:
-                System.out.println("Ordenado por listas");
+            case R.id.filtrar_todo:
+                System.out.println("Ordenado por todo");
+                onResume();
                 break;
-            case R.id.order_i:
+            case R.id.filtrar_imagenes:
                 System.out.println("Ordenado por imagenes");
-                break;
-            case R.id.order_v:
-                System.out.println("Ordenado por videos");
-                break;
-            case R.id.order_a:
-                System.out.println("Ordenado por audio");
                 onResume("imagen != null");
+                break;
+            case R.id.filtrar_recordatorio:
+                System.out.println("Ordenado por videos");
+                onResume();
                 break;
             case 0:
                 break;

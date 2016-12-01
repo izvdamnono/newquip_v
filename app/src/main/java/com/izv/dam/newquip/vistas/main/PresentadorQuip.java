@@ -31,13 +31,13 @@ public class PresentadorQuip implements ContratoMain.InterfacePresentador {
     @Override
     public void onDeleteNota(Nota n) {
         this.modelo.deleteNota(n);
-        this.modelo.loadData(oyente);
+        this.modelo.loadData(oyente, null);
     }
 
     @Override
     public void onDeleteNota(int position) {
         this.modelo.deleteNota(position);
-        this.modelo.loadData(oyente);
+        this.modelo.loadData(oyente, null);
     }
 
     @Override
@@ -51,12 +51,12 @@ public class PresentadorQuip implements ContratoMain.InterfacePresentador {
 
     @Override
     public void onResume() {
-        this.modelo.loadData(oyente);
+        this.modelo.loadData(oyente, null);
     }
 
     @Override
-    public void onResume(String filtro) {
-        this.modelo.loadData(oyente, filtro);
+    public void onResume(String s) {
+        this.modelo.loadData(oyente, s);
     }
 
     @Override

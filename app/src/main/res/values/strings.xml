@@ -156,6 +156,8 @@
     <string name="galeria">Galeria</string>
     <string name="camara">Cámara</string>
     <string name="opcion">Elige una opcion</string>
+    <string name="recordatorio">Recordatorio</string>
+    <string name="todo">Todo</string>
 
 
 </resources>

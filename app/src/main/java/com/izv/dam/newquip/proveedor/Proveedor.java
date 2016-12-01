@@ -144,24 +144,34 @@ public class Proveedor extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         Cursor c = null;
         String id;
+        c = gestionNota.getCursor(projection, selection, selectionArgs, null, null, sortOrder);
         switch (URI_MATCHER.match(uri)) {
             case CONCRETO_NOTA:
+                System.out.println("CONCRETO_NOTA");
                 id = uri.getLastPathSegment();
                 selection = UtilCadenas.getCondicionesSql(selection, ContratoBaseDatos.TablaNota._ID + " = ?");
                 selectionArgs = UtilCadenas.getNewArray(selectionArgs, id);
 
                 c = gestionNota.getCursor(projection, selection, selectionArgs, null, null, sortOrder);
                 break;
-
             case CONCRETO_LISTA:
+                System.out.println("CONCRETO_LISTA");
                 id = uri.getLastPathSegment();
                 selection = UtilCadenas.getCondicionesSql(selection, ContratoBaseDatos.TablaNota._ID + " = ?");
                 selectionArgs = UtilCadenas.getNewArray(selectionArgs, id);
 
                 c = gestionLista.getCursor(projection, selection, selectionArgs, null, null, sortOrder);
                 break;
+            case TODO_NOTA:
+                System.out.println("TODO_NOTA");
+                c = gestionNota.getCursor(projection, selection, selectionArgs, null, null, sortOrder);
+                break;
+            case TODO_LISTA:
+                System.out.println("TODO_LISTA");
+//                selection = UtilCadenas.getCondicionesSql(selection, ContratoBaseDatos.TablaLista._ID + " = ?");
+                c = gestionLista.getCursor(projection, selection, null, null, null, sortOrder);
+                break;
         }
-        c = gestionNota.getCursor(projection, selection, selectionArgs, null, null, sortOrder);
         c.setNotificationUri(getContext().getContentResolver(), uri);
 
         return c;
