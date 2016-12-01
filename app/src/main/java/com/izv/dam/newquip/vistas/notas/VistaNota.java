@@ -83,7 +83,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     private PresentadorNota presentadorNota;
     private static final int SELECT_FILE = 0;
     private static final int IMAGE_CAPTURE = 1;
-    /*Ruta temporal para guardar la imagen*/
+    /*------ Ruta temporal para guardar la imagen ------*/
     private static final String PDFS = "PDFGenerados";
     private static String temp_file_path = null;
 
@@ -91,7 +91,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     boolean is_notific_active = false;
     private static final int notifID = 1;
     public static final String BUNDLE_KEY = "nota";
-    //    public static final String BUNDLE_KEY_LISTAS = "listas";
     private RecyclerView mRecyclerView;
     private List<Lista> listaList = new ArrayList<>();
     private AdaptadorLista adaptadorLista;
@@ -100,7 +99,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     private static final String Directory_NewQuipPDF = "PDFGenerados";
     private static final String Directory_NewQuipPicture = "NewQuipPictures";
 
-    RelativeLayout relativeLayout;
+    private RelativeLayout relativeLayout;
     private ImageButton add_delete_imagen;
     private ImageButton add_color;
     /*------ PICASSO ------*/
@@ -136,7 +135,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             actionBar.setTitle("Nota ");
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        scroll_view = findViewById(R.id.id_scroll_view);
+//        scroll_view = findViewById(R.id.id_scroll_view);
         editTextTitulo = (EditText) findViewById(R.id.etTitulo);
         editTextNota = (EditText) findViewById(R.id.etNota);
         /*CONTROL IMAGEN*/
@@ -153,7 +152,11 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         /*-----------*/
         tvFechaRecordatorioFecha = (TextView) findViewById(R.id.tvFechaRecordatorioDia);
         tvFechaRecordatorioHora = (TextView) findViewById(R.id.tvFechaRecordatorioHora);
-        relativeLayout = (RelativeLayout) findViewById(R.id.activity_nota_relativeLayout);
+
+        relativeLayout = (RelativeLayout) findViewById(R.id.id_include_layout);
+        if (relativeLayout == null) {
+            System.out.println("WTF");
+        }
         presentadorNota = new PresentadorNota(this);
     }
 
@@ -286,7 +289,8 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         editTextNota.setText(nota.getNota());
         String formato_a_cortar = nota.getFecha_recordatorio();
         if (nota.getColor() != null)
-            scroll_view.setBackgroundColor(Color.parseColor(nota.getColor()));
+            relativeLayout.setBackgroundColor(Color.parseColor(nota.getColor()));
+//            relativeLayout.setBackgroundColor(0xFFEE3333);
         if (formato_a_cortar != null) {
             formato_a_cortar = UtilFecha.cambiarFormato(formato_a_cortar, 1);
             String[] fecha_recordatorio = UtilFecha.cortarFormato(formato_a_cortar);
@@ -577,9 +581,10 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                 dialog.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
                     @Override
                     public void onColorSelected(int color) {
-                        String hex = Integer.toHexString(color);
-                        scroll_view.setBackgroundColor(color);
-                        nota.setColor("#" + hex);
+                        String hex = "#" + Integer.toHexString(color);
+                        System.out.println(hex);
+                        relativeLayout.setBackgroundColor(Color.parseColor(hex));
+                        nota.setColor(hex);
                     }
                 });
                 dialog.show(getFragmentManager(), getString(R.string.color_text));
@@ -636,7 +641,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         tvFechaRecordatorioHora.setText(s);
     }
 
-    public void snackBarEdit(String text){
+    public void snackBarEdit(String text) {
         View v = getCurrentFocus();
         if (v != null) {
             Snackbar snackbar;

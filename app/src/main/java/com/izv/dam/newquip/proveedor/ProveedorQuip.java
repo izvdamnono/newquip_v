@@ -113,16 +113,13 @@ public class ProveedorQuip extends ContentProvider {
                 selection = UtilCadenas.getCondicionesSql(selection, ContratoBaseDatos.TablaNota._ID + " = ? ");
                 newSelectionArgs = UtilCadenas.getNewArray(selectionArgs, id);
 
-//                System.out.println("selection " + selection);
-//                System.out.println("values " + values.toString());
-//                System.out.println("selectionArgs " + Arrays.toString(newSelectionArgs));
-
                 update = gestionNota.update(values, selection, newSelectionArgs);
                 break;
 
             case TODO_NOTA:
                 update = gestionNota.update(values, selection, selectionArgs);
                 break;
+
             case CONCRETO_LISTA:
                 id = uri.getLastPathSegment();
                 selection = UtilCadenas.getCondicionesSql(selection, ContratoBaseDatos.TablaLista._ID + " = ? ");
@@ -130,6 +127,7 @@ public class ProveedorQuip extends ContentProvider {
 
                 update = gestionLista.update(values, selection, newSelectionArgs);
                 break;
+
             case TODO_LISTA:
                 update = gestionLista.update(values, selection, selectionArgs);
                 break;

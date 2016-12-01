@@ -17,6 +17,7 @@ import com.izv.dam.newquip.contrato.ClickListener;
 import com.izv.dam.newquip.contrato.ClickListenerLong;
 import com.izv.dam.newquip.databinding.ItemBinding;
 import com.izv.dam.newquip.pojo.Nota;
+import com.squareup.picasso.Picasso;
 
 public class AdaptadorNota extends RecyclerView.Adapter<AdaptadorNota.ViewHolder> {
 
@@ -125,6 +126,7 @@ public class AdaptadorNota extends RecyclerView.Adapter<AdaptadorNota.ViewHolder
 
         void bindImagen(String imagen) {
             if (imagen != null) {
+//                Picasso.with(imageView.getContext()).load(imagen).resize(400, 400).into(imageView);
                 imageView.setImageURI(Uri.parse(imagen));
             } else {
                 imageView.setImageURI(null);
