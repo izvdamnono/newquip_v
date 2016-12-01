@@ -20,7 +20,7 @@ import static com.izv.dam.newquip.contrato.ContratoBaseDatos.TablaNota.CONTENT_T
 import static com.izv.dam.newquip.contrato.ContratoBaseDatos.TablaLista.CONTENT_ITEM_TYPE_LISTA;
 import static com.izv.dam.newquip.contrato.ContratoBaseDatos.TablaLista.CONTENT_TYPE_LISTA;
 
-public class ProveedorQuip extends ContentProvider {
+public class Proveedor extends ContentProvider {
     private static final UriMatcher URI_MATCHER;
     private static final int TODO_NOTA = 0;
     private static final int CONCRETO_NOTA = 1;
@@ -37,7 +37,7 @@ public class ProveedorQuip extends ContentProvider {
         URI_MATCHER.addURI(ContratoBaseDatos.AUTORIDAD, ContratoBaseDatos.TablaLista.TABLA + "/#", CONCRETO_LISTA);//Un item
     }
 
-    public ProveedorQuip() {
+    public Proveedor() {
 //        gestionNota = new GestionNota(getContext());
 //        gestionLista = new GestionLista(getContext());
     }

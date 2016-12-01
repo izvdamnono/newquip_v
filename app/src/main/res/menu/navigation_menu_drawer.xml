@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="@string/ordenar">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/order_l"
+            android:icon="@mipmap/ic_list"
+            android:title="@string/lista" />
+        <item
+            android:id="@+id/order_i"
+            android:icon="@mipmap/ic_image"
+            android:title="@string/imagenes" />
+        <item
+            android:id="@+id/order_v"
+            android:icon="@mipmap/ic_video"
+            android:title="@string/videos" />
+        <item
+            android:id="@+id/order_a"
+            android:icon="@mipmap/ic_voice"
+            android:title="@string/audio" />
+    </group>
+
+    <item android:title="item_menu">
         <menu>
             <item
-                android:icon="@mipmap/ic_list"
-                android:id="@+id/order_l"
-                android:title="@string/lista" />
-            <item
-                android:id="@+id/order_i"
-                android:icon="@mipmap/ic_image"
-                android:title="@string/imagenes" />
-            <item
-                android:id="@+id/order_v"
-                android:icon="@mipmap/ic_video"
-                android:title="@string/videos" />
-            <item
-                android:id="@+id/order_a"
-                android:icon="@mipmap/ic_voice"
-                android:title="@string/audio" />
+                android:id="@+id/nav_map"
+                android:icon="@mipmap/ic_map_"
+                android:title="Share" />
         </menu>
     </item>
 </menu>

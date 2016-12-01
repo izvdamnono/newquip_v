@@ -39,11 +39,12 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
 
     private AdaptadorNota adaptador;
     private PresentadorQuip presentador;
-    FloatingActionButton fab;
-    Toolbar toolbar;
-    DrawerLayout drawer;
-    NavigationView navigationView;
-    ActionBarDrawerToggle toggle;
+
+    private FloatingActionButton fab;
+    private Toolbar toolbar;
+    private DrawerLayout drawer;
+    private NavigationView navigationView;
+    private ActionBarDrawerToggle toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +61,7 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
 
         fab = (FloatingActionButton) findViewById(R.id.fabAdd);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -80,12 +80,6 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
         adaptador.setOnItemLongClickListener(this);
 
         //DATA BINDING
-        /*
-        ItemBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        //Nota nota = new Nota(52354,"titulo","notaaa","","","","aaa","","aaa","");
-        Nota nota = new Nota(52354,"titulo","notaaa","","","","aaa","","aaa","");
-        binding.setNota(nota);
-        */
 
 
     }
@@ -112,6 +106,11 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
         super.onResume();
     }
 
+    protected void onResume(String filtro) {
+        presentador.onResume(filtro);
+        super.onResume();
+    }
+
 
     @Override
     public void mostrarAgregarNota() {
@@ -120,6 +119,11 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
         Intent i = new Intent(this, VistaNota.class);
         startActivity(i);
         overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
+    }
+
+    @Override
+    public void mostrarDatosOrdenados(Cursor c) {
+        adaptador.changeCursor(c);
     }
 
     @Override
@@ -225,13 +229,17 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
         int id_menu = item.getItemId();
         switch (id_menu) {
             case R.id.order_l:
+                System.out.println("Ordenado por listas");
                 break;
             case R.id.order_i:
+                System.out.println("Ordenado por imagenes");
                 break;
             case R.id.order_v:
+                System.out.println("Ordenado por videos");
                 break;
             case R.id.order_a:
-
+                System.out.println("Ordenado por audio");
+                onResume("imagen != null");
                 break;
             case 0:
                 break;

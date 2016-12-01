@@ -56,7 +56,7 @@
             android:label="@string/title_activity_settings" />
 
         <provider
-            android:name=".proveedor.ProveedorQuip"
+            android:name=".proveedor.Proveedor"
             android:authorities="com.izv.dam.newquip.proveedor"
             android:enabled="true"
             android:exported="true" />

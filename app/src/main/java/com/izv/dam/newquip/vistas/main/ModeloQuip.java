@@ -33,6 +33,25 @@ public class ModeloQuip implements ContratoMain.InterfaceModelo {
     }
 
     @Override
+    public void loadData(OnDataLoadListener listener, String filtro) {
+
+        String[] strings = {filtro};
+
+        cursor = c.getContentResolver().query(uri, null, filtro, null, null);
+        //query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder)
+        //dao
+        // select proyeccion from tabla where seleccion order by ordenacion
+        //seleccion: campo = ? and otrocampo = ?
+        //selectionArgs: {st1, st2}
+        //select campo
+        //from tabla
+        //where condicion/es
+        //order by campos
+        //clase DataBase -> db->query()->where()->order()
+        listener.setCursor(cursor);
+    }
+
+    @Override
     public Nota getNota(int position) {
         cursor.moveToPosition(position);
         return Nota.getNota(cursor);
@@ -51,7 +70,6 @@ public class ModeloQuip implements ContratoMain.InterfaceModelo {
         Nota n = Nota.getNota(cursor);
         return this.deleteNota(n);
     }
-
 
 
 }

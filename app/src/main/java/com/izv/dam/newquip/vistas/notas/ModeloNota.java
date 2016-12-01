@@ -89,7 +89,6 @@ public class ModeloNota implements ContratoNota.InterfaceModelo {
             return 0;
         }
 //        return gestionNota.insert(n);
-        String where = "_ID = " + n.getId();
         Uri u = c.getContentResolver().insert(uri_nota, n.getContentValues());
         if (u.toString() != null) {
             return 1;

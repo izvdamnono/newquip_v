@@ -154,9 +154,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         tvFechaRecordatorioHora = (TextView) findViewById(R.id.tvFechaRecordatorioHora);
 
         relativeLayout = (RelativeLayout) findViewById(R.id.id_include_layout);
-        if (relativeLayout == null) {
-            System.out.println("WTF");
-        }
         presentadorNota = new PresentadorNota(this);
     }
 
@@ -408,6 +405,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             case SELECT_FILE:
                 if (resultCode == RESULT_OK) {
                     Uri selectedImage = data.getData();
+                    System.out.println(selectedImage);
                     temp_file_path = getRealPath(selectedImage);
                     setPic(temp_file_path);
                     saveImagen(temp_file_path);
@@ -582,7 +580,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                     @Override
                     public void onColorSelected(int color) {
                         String hex = "#" + Integer.toHexString(color);
-                        System.out.println(hex);
                         relativeLayout.setBackgroundColor(Color.parseColor(hex));
                         nota.setColor(hex);
                     }

@@ -55,6 +55,11 @@ public class PresentadorQuip implements ContratoMain.InterfacePresentador {
     }
 
     @Override
+    public void onResume(String filtro) {
+        this.modelo.loadData(oyente, filtro);
+    }
+
+    @Override
     public void onShowBorrarNota(int position) {
         Nota n = this.modelo.getNota(position);
         this.vista.mostrarConfirmarBorrarNota(n);
