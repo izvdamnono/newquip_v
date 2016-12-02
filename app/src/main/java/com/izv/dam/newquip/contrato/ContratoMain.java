@@ -19,7 +19,7 @@ public interface ContratoMain {
 
         long deleteNota(Nota n);
 
-        void loadData(OnDataLoadListener listener);
+//        void loadData(OnDataLoadListener listener);
 
         void loadData(OnDataLoadListener listener, String filtro);
 
@@ -35,7 +35,8 @@ public interface ContratoMain {
         void onPause();
 
         void onResume();
-        void onResume(String orderBy);
+
+        void onResume(String filtro);
 
         void onDeleteNota(int position);
 
@@ -53,7 +54,7 @@ public interface ContratoMain {
 
         void mostrarAgregarNota();
 
-        void mostrarDatosOrdenados(Cursor c);
+        void mostrarDatosFiltrados(Cursor c);
 
         void mostrarDatos(Cursor c);
 

@@ -41,6 +41,11 @@ public class AdaptadorNota extends RecyclerView.Adapter<AdaptadorNota.ViewHolder
     @Override
     public void onBindViewHolder(AdaptadorNota.ViewHolder holder, int position) {
         mCursor.moveToPosition(position);
+//        if (mCursor == null) {
+//            System.out.println("mCursor is null");
+//        } else {
+//            System.out.println("mCursor not null");
+//        }
         Nota nota = Nota.getNota(mCursor);
 
         holder.getBinding().setVariable(BR.nota, nota);

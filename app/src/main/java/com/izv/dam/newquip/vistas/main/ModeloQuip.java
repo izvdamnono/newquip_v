@@ -26,18 +26,28 @@ public class ModeloQuip implements ContratoMain.InterfaceModelo {
 //        gn.close();
     }
 
-    @Override
-    public void loadData(OnDataLoadListener listener) {
-        cursor = c.getContentResolver().query(uri, null, null, null, null);
-        listener.setCursor(cursor);
-    }
-
+    /*
+        @Override
+        public void loadData(OnDataLoadListener listener) {
+            cursor = c.getContentResolver().query(uri, null, null, null, null);
+            listener.setCursor(cursor);
+        }
+    */
     @Override
     public void loadData(OnDataLoadListener listener, String filtro) {
-
-        String[] strings = {filtro};
-
+        String[] s = {filtro};
         cursor = c.getContentResolver().query(uri, null, filtro, null, null);
+
+        if (cursor != null) {
+            for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                System.out.println(Nota.getNota(cursor).toString());
+            }
+        } else {
+            System.out.println("cursor is null");
+        }
+
+        listener.setCursor(cursor);
+
         //query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder)
         //dao
         // select proyeccion from tabla where seleccion order by ordenacion
@@ -47,8 +57,7 @@ public class ModeloQuip implements ContratoMain.InterfaceModelo {
         //from tabla
         //where condicion/es
         //order by campos
-        //clase DataBase -> db->query()->where()->order()
-        listener.setCursor(cursor);
+        //clase DataBase -> db->select()->from()->where()->order()
     }
 
     @Override
