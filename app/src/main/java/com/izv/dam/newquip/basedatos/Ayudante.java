@@ -19,7 +19,7 @@ public class Ayudante extends SQLiteOpenHelper {
      * TERMINADA la nueva base de datos
      */
 
-    private static final int VERSION = 8;
+    private static final int VERSION = 9;
 
     public Ayudante(Context context) {
         super(context, ContratoBaseDatos.BASEDATOS, null, VERSION);
@@ -27,7 +27,7 @@ public class Ayudante extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql_NOTA, sql_LISTA;
+        String sql_NOTA, sql_LISTA, sql_MAPA;
         sql_NOTA = "create table if not exists " + ContratoBaseDatos.TablaNota.TABLA +
                 " (" +
                 ContratoBaseDatos.TablaNota._ID + " integer primary key autoincrement, " +
@@ -54,6 +54,17 @@ public class Ayudante extends SQLiteOpenHelper {
                 ")";
         Log.v("sql_lista", sql_LISTA);
         db.execSQL(sql_LISTA);
+
+        sql_MAPA = "create table if not exists " + ContratoBaseDatos.TablaMapa.TABLA +
+                " (" +
+                ContratoBaseDatos.TablaMapa._ID + " integer primary key autoincrement, " +
+                ContratoBaseDatos.TablaMapa.ID_NOTA + " integer, " +
+                ContratoBaseDatos.TablaMapa.HISTORIA + " text, " +
+                ContratoBaseDatos.TablaMapa.LATITUD + " text, " +
+                ContratoBaseDatos.TablaMapa.LONGITUD + " text " +
+                ")";
+        Log.v("sql_MAPA", sql_MAPA);
+        db.execSQL(sql_MAPA);
     }
 
     @Override
@@ -64,15 +75,14 @@ public class Ayudante extends SQLiteOpenHelper {
         //Crear tablas nuevas
         //llevar datos a las tablas nuevas
 
-
-
-
-        String sql_nota = "drop table if exists " + ContratoBaseDatos.TablaNota.TABLA;
-        String sql_lista = "drop table if exists " + ContratoBaseDatos.TablaLista.TABLA;
-        Log.v("sql_nota2", sql_nota);
-        Log.v("sql_lista2", sql_lista);
-        db.execSQL(sql_nota);
-        db.execSQL(sql_lista);
+        String TablaNota = "drop table if exists " + ContratoBaseDatos.TablaNota.TABLA;
+        String TablaLista = "drop table if exists " + ContratoBaseDatos.TablaLista.TABLA;
+        String TablaMapa = "drop table if exists " + ContratoBaseDatos.TablaMapa.TABLA;
+        Log.v("TablaNota", TablaNota);
+        Log.v("TablaLista", TablaLista);
+        db.execSQL(TablaNota);
+        db.execSQL(TablaLista);
+        db.execSQL(TablaMapa);
         onCreate(db);
     }
 }

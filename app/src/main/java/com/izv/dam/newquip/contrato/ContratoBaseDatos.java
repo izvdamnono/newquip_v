@@ -8,11 +8,11 @@ import android.provider.BaseColumns;
  * Generamos la clase abstracta de la base de datos
  */
 public class ContratoBaseDatos {
-    /*/storage/emulated/0/databaseIZV/*/
+    /* /storage/emulated/0/databaseIZV/ */
     public final static String BASEDATOS = "quiip.sqlite";
-    /*ProveedorNota*/
+    /* ProveedorNota */
     public static final String AUTORIDAD = "com.izv.dam.newquip.proveedor";
-    /*Autoridad*/
+    /* Autoridad */
     private static final Uri CONTENT_URI = Uri.parse("content://" + AUTORIDAD);
     public static final Uri CONTENT_URI_NOTA = Uri.withAppendedPath(CONTENT_URI, TablaNota.TABLA);
     public static final Uri CONTENT_URI_LISTA = Uri.withAppendedPath(CONTENT_URI, TablaLista.TABLA);
@@ -62,7 +62,7 @@ public class ContratoBaseDatos {
         public static final String[] PROJECTION_ALL = {_ID, ID_NOTA, HISTORIA, LATITUD, LONGITUD};
         public static final String SORT_ORDER_DEFAULT = _ID + " desc";
         /*Tipos MIME*/
-        public final static String CONTENT_ITEM_TYPE_LISTA = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd" + AUTORIDAD + "." + TABLA;
-        public final static String CONTENT_TYPE_LISTA = ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd" + AUTORIDAD + "." + TABLA;
+        public final static String CONTENT_ITEM_TYPE_MAPA = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd" + AUTORIDAD + "." + TABLA;
+        public final static String CONTENT_TYPE_MAPA = ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd" + AUTORIDAD + "." + TABLA;
     }
 }
