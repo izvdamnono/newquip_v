@@ -18,6 +18,16 @@ public class GestionNota extends Gestion<Nota> {
     }
 
     @Override
+    public long insert(Nota objeto) {
+        return this.insert(ContratoBaseDatos.TablaNota.TABLA, objeto.getContentValues());
+    }
+
+    @Override
+    public long insert(ContentValues objeto) {
+        return this.insert(ContratoBaseDatos.TablaNota.TABLA, objeto);
+    }
+
+    @Override
     public int deleteAll() {
         return this.deleteAll(ContratoBaseDatos.TablaNota.TABLA);
     }
@@ -31,18 +41,6 @@ public class GestionNota extends Gestion<Nota> {
 
     public int delete(String condicion, String[] argumentos) {
         return this.delete(ContratoBaseDatos.TablaNota.TABLA, condicion, argumentos);
-    }
-
-    public Nota get(long id) {
-        String where = ContratoBaseDatos.TablaNota._ID + " = ? ";
-        String[] parametros = {id + ""};
-        Cursor c = this.getCursor(ContratoBaseDatos.TablaNota.PROJECTION_ALL, where, parametros,
-                null, null, ContratoBaseDatos.TablaNota.SORT_ORDER_DEFAULT);
-        if (c.getCount() > 0) {
-            c.moveToFirst();
-            return Nota.getNota(c);
-        }
-        return null;
     }
 
     @Override
@@ -61,21 +59,6 @@ public class GestionNota extends Gestion<Nota> {
     }
 
     @Override
-    public long insert(ContentValues objeto) {
-        return this.insert(ContratoBaseDatos.TablaNota.TABLA, objeto);
-    }
-
-    @Override
-    public long insert(Nota objeto) {
-        return this.insert(ContratoBaseDatos.TablaNota.TABLA, objeto.getContentValues());
-    }
-
-    @Override
-    public int update(ContentValues values, String condicion, String[] argumentos) {
-        return this.update(ContratoBaseDatos.TablaNota.TABLA, values, condicion, argumentos);
-    }
-
-    @Override
     public int update(Nota objeto) {
         ContentValues valores = objeto.getContentValues();
         String condicion = ContratoBaseDatos.TablaNota._ID + " = ?";
@@ -83,4 +66,20 @@ public class GestionNota extends Gestion<Nota> {
         return this.update(ContratoBaseDatos.TablaNota.TABLA, valores, condicion, argumentos);
     }
 
+    @Override
+    public int update(ContentValues values, String condicion, String[] argumentos) {
+        return this.update(ContratoBaseDatos.TablaNota.TABLA, values, condicion, argumentos);
+    }
+
+    public Nota get(long id) {
+        String where = ContratoBaseDatos.TablaNota._ID + " = ? ";
+        String[] parametros = {id + ""};
+        Cursor c = this.getCursor(ContratoBaseDatos.TablaNota.PROJECTION_ALL, where, parametros,
+                null, null, ContratoBaseDatos.TablaNota.SORT_ORDER_DEFAULT);
+        if (c.getCount() > 0) {
+            c.moveToFirst();
+            return Nota.getNota(c);
+        }
+        return null;
+    }
 }
