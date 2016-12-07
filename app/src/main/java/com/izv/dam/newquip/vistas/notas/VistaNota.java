@@ -227,7 +227,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                 return true;
             case R.id.bottom_sheet_item:
                 if (bsb.getState() == BottomSheetBehavior.STATE_HIDDEN || bsb.getState() == BottomSheetBehavior.STATE_EXPANDED)
-                    bsb.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    bsb.setState(BottomSheetBehavior.STATE_EXPANDED);
                 else if (bsb.getState() == BottomSheetBehavior.STATE_COLLAPSED || bsb.getState() == BottomSheetBehavior.STATE_EXPANDED)
                     bsb.setState(BottomSheetBehavior.STATE_HIDDEN);
                 return true;

@@ -2,15 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/bottom_sheet"
-    android:background="@color/primary"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
-    app:layout_behavior="@string/bottom_sheet_behavior"
+    android:layout_height="wrap_content"
+    android:background="@color/primary"
+    android:orientation="horizontal"
+    android:weightSum="4"
+
     app:behavior_hideable="true"
-    app:behavior_peekHeight="64dp"
-
-
-    android:weightSum="4">
+    app:layout_behavior="@string/bottom_sheet_behavior">
 
     <ImageButton
         android:id="@+id/anadir_imagen"
