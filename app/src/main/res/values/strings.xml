@@ -158,6 +158,8 @@
     <string name="opcion">Elige una opcion</string>
     <string name="recordatorio">Recordatorio</string>
     <string name="todo">Todo</string>
+    <string name="listas">Listas</string>
+    <string name="title_activity_maps">Mapa</string>
 
 
 </resources>

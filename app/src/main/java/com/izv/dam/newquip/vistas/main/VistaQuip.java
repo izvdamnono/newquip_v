@@ -31,6 +31,7 @@ import com.izv.dam.newquip.contrato.ContratoMain;
 import com.izv.dam.newquip.dialogo.OnBorrarDialogListener;
 import com.izv.dam.newquip.pojo.Nota;
 import com.izv.dam.newquip.dialogo.DialogoBorrar;
+import com.izv.dam.newquip.vistas.MapsActivity;
 import com.izv.dam.newquip.vistas.notas.VistaNota;
 
 public class VistaQuip extends AppCompatActivity implements ContratoMain.InterfaceVista, ClickListener, ClickListenerLong,
@@ -239,7 +240,9 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
                 System.out.println("Ordenado por videos");
                 onResume();
                 break;
-            case 0:
+            case R.id.nav_map:
+                Intent intent = new Intent(this, MapsActivity.class);
+                startActivity(intent);
                 break;
             default:
                 Log.v("MenuItem", "default");
