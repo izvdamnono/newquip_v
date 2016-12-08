@@ -16,12 +16,16 @@
             android:title="@string/recordatorio" />
     </group>
 
-    <item android:title="item_menu">
+    <item android:title="@string/location">
         <menu>
             <item
                 android:id="@+id/nav_map"
                 android:icon="@mipmap/ic_map_"
-                android:title="Share" />
+                android:title="@string/mapa" />
+            <item
+                android:id="@+id/nav_map_last_location"
+                android:icon="@mipmap/ic_map_"
+                android:title="@string/last_location" />
         </menu>
     </item>
 </menu>

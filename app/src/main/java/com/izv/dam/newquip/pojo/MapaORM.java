@@ -7,7 +7,7 @@ import com.j256.ormlite.table.DatabaseTable;
  * Created by Unchicodelavida on 07/12/2016.
  */
 
-@DatabaseTable(tableName = "accounts")
+@DatabaseTable(tableName = "MapaORM")
 public class MapaORM {
     @DatabaseField(generatedId = true)
     int id;

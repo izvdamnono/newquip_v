@@ -32,6 +32,7 @@ import com.izv.dam.newquip.dialogo.OnBorrarDialogListener;
 import com.izv.dam.newquip.pojo.Nota;
 import com.izv.dam.newquip.dialogo.DialogoBorrar;
 import com.izv.dam.newquip.vistas.MapsActivity;
+import com.izv.dam.newquip.vistas.MapsLocation;
 import com.izv.dam.newquip.vistas.notas.VistaNota;
 
 public class VistaQuip extends AppCompatActivity implements ContratoMain.InterfaceVista, ClickListener, ClickListenerLong,
@@ -241,8 +242,12 @@ public class VistaQuip extends AppCompatActivity implements ContratoMain.Interfa
                 onResume();
                 break;
             case R.id.nav_map:
-                Intent intent = new Intent(this, MapsActivity.class);
-                startActivity(intent);
+                Intent intent_map = new Intent(this, MapsActivity.class);
+                startActivity(intent_map);
+                break;
+            case R.id.nav_map_last_location:
+                Intent intent_last_location = new Intent(this, MapsLocation.class);
+                startActivity(intent_last_location);
                 break;
             default:
                 Log.v("MenuItem", "default");
