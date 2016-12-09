@@ -9,21 +9,21 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "MapaORM")
 public class MapaORM {
-    @DatabaseField(generatedId = true)
-    int id;
-    @DatabaseField(id = true)
+    @DatabaseField(columnName = "id_nota")
+    int id_nota;
+    @DatabaseField(columnName = "historia")
     private String historia;
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = false, columnName = "latitud")
     private String latitud;
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = false, columnName = "longitud")
     private String longitud;
 
     MapaORM() {
         // all persisted classes must define a no-arg constructor with at least package visibility
     }
 
-    public MapaORM(int id, String historia, String latitud, String longitud) {
-        this.id = id;
+    public MapaORM(int id_nota, String historia, String latitud, String longitud) {
+        this.id_nota = id_nota;
         this.historia = historia;
         this.latitud = latitud;
         this.longitud = longitud;
@@ -31,11 +31,10 @@ public class MapaORM {
 
     @Override
     public String toString() {
-        String sb = "id=" + id +
+        return "id_nota=" + id_nota +
                 ", " + "str=" + historia +
                 ", " + "str=" + latitud +
                 ", " + "str=" + longitud;
-        return sb;
     }
 
 

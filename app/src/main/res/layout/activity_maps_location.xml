@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     android:orientation="vertical"
-    tools:context="com.izv.dam.newquip.vistas.MapsLocation">
+    tools:context="com.izv.dam.newquip.vistas.ubicacion.MapsLocation">
 
 
     <Button

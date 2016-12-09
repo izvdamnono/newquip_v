@@ -1,10 +1,13 @@
-package com.izv.dam.newquip.vistas;
+package com.izv.dam.newquip.vistas.ubicacion;
 
-import android.content.Intent;
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +31,10 @@ public class MapsLocation extends AppCompatActivity implements GoogleApiClient.C
         setContentView(R.layout.activity_maps_location);
         textLastLocation = (TextView) findViewById(R.id.lastlocation);
         btnGetLastLocation = (Button) findViewById(R.id.getlastlocation);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+            btnGetLastLocation.setEnabled(false);
+        }
         btnGetLastLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -44,15 +51,34 @@ public class MapsLocation extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private void getMyLocation() {
+
+        textLastLocation.setText(String.valueOf(getLatitud()) + "\n" + String.valueOf(getLongitud()));
+        Toast.makeText(this, String.valueOf(getLatitud()) + "\n" + String.valueOf(getLongitud()), Toast.LENGTH_LONG).show();
+
+    }
+
+    private double getLatitud() {
         try {
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             if (mLastLocation != null) {
-                textLastLocation.setText(String.valueOf(mLastLocation.getLatitude()) + "\n" + String.valueOf(mLastLocation.getLongitude()));
-                Toast.makeText(this, String.valueOf(mLastLocation.getLatitude()) + "\n" + String.valueOf(mLastLocation.getLongitude()), Toast.LENGTH_LONG).show();
-            } else Toast.makeText(this, "Señal no encontrada", Toast.LENGTH_LONG).show();
+                return mLastLocation.getLatitude();
+            }
         } catch (SecurityException e) {
-            Toast.makeText(this, "SecurityException:\n" + e.toString(), Toast.LENGTH_LONG).show();
+            e.printStackTrace();
         }
+        return 0;
+    }
+
+    private double getLongitud() {
+        try {
+            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            if (mLastLocation != null) {
+                return mLastLocation.getLongitude();
+            }
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     @Override
@@ -80,5 +106,18 @@ public class MapsLocation extends AppCompatActivity implements GoogleApiClient.C
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Toast.makeText(this, "onConnectionFailed: \n" + connectionResult.toString(), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == 0) {
+            if (permissions.length > 0 &&
+                    permissions[0] == Manifest.permission.ACCESS_FINE_LOCATION &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            } else {
+                // Permission was denied. Display an error message.
+            }
+        }
     }
 }

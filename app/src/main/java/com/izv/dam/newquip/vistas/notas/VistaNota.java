@@ -44,6 +44,7 @@ import android.widget.TextView;
 
 import com.izv.dam.newquip.R;
 import com.izv.dam.newquip.adaptadores.AdaptadorLista;
+import com.izv.dam.newquip.basedatos.AyudanteORM;
 import com.izv.dam.newquip.broadcast.AlarmReceiver;
 import com.izv.dam.newquip.contrato.ContratoNota;
 import com.izv.dam.newquip.dialogo.ComunicarActividadFragmentoFechaHora;
@@ -51,16 +52,21 @@ import com.izv.dam.newquip.dialogo.DialogoFecha;
 import com.izv.dam.newquip.dialogo.DialogoHora;
 import com.izv.dam.newquip.gestion.GestionLista;
 import com.izv.dam.newquip.pojo.Lista;
+import com.izv.dam.newquip.pojo.MapaORM;
 import com.izv.dam.newquip.pojo.Nota;
 import com.izv.dam.newquip.util.CompartirPDFFile;
 import com.izv.dam.newquip.util.GeneratePDFFile;
 import com.izv.dam.newquip.util.UtilFecha;
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.RuntimeExceptionDao;
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.squareup.picasso.Picasso;
 
 import org.xdty.preference.colorpicker.ColorPickerDialog;
 import org.xdty.preference.colorpicker.ColorPickerSwatch;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -124,6 +130,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 //        if(getResources().getBoolean(R.bool.landscape_only)){
 //            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 //        }
+        mostrarMapa();
     }
 
     private void init() {
@@ -164,7 +171,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         tvFechaRecordatorioHora.setText(UtilFecha.fechaHoyHora());
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             add_delete_imagen.setEnabled(false);
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION}, 0);
         }
         /*------ RECYCLER VIEW ------*/
         add_list.setOnClickListener(new View.OnClickListener() {
@@ -193,6 +200,44 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             menu.getItem(1).setIcon(R.mipmap.ic_ok_alert);
         else menu.getItem(1).setIcon(R.mipmap.ic_delete_alert);
         return true;
+    }
+
+    public void guardarMapa() {
+
+        AyudanteORM ayu = new AyudanteORM(VistaNota.this);
+        ayu.getWritableDatabase();
+
+        Dao<MapaORM, Integer> dao = ayu.getDataDao();
+
+        MapaORM mapaORM = new MapaORM((int) nota.getId(), nota.getFecha_modificacion(), "-12", "13");
+        try {
+            dao.create(mapaORM);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void mostrarMapa() {
+//        simpleDao.create(a);
+
+//        List<Alumno> alumnoList = simpleDao.queryForAll();
+        AyudanteORM ayudanteORM = new AyudanteORM(this);
+        RuntimeExceptionDao<MapaORM, Integer> simpleDao = ayudanteORM.getDataDao();
+        List<MapaORM> mapaORMs = null;
+
+        try {
+            QueryBuilder<MapaORM, Integer> queryBuilder = simpleDao.queryBuilder();
+            queryBuilder.where().eq("id_nota",nota.getId());
+            mapaORMs = simpleDao.query(queryBuilder.prepare());
+
+            for (MapaORM orm : mapaORMs) {
+                System.out.println(orm.toString());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -226,7 +271,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
                 snackBarEdit("Nota guardada");
                 return true;
             case R.id.bottom_sheet_item:
-                if (bsb.getState() == BottomSheetBehavior.STATE_HIDDEN || bsb.getState() == BottomSheetBehavior.STATE_EXPANDED)
+                if (bsb.getState() == BottomSheetBehavior.STATE_HIDDEN || bsb.getState() == BottomSheetBehavior.STATE_COLLAPSED)
                     bsb.setState(BottomSheetBehavior.STATE_EXPANDED);
                 else if (bsb.getState() == BottomSheetBehavior.STATE_COLLAPSED || bsb.getState() == BottomSheetBehavior.STATE_EXPANDED)
                     bsb.setState(BottomSheetBehavior.STATE_HIDDEN);
@@ -328,6 +373,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         if (r > 0 & nota.getId() == 0)
             nota.setId(r);
         saveLista();
+        guardarMapa();
     }
 
     private void saveLista() {
@@ -489,7 +535,10 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == 0)
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED)
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    && grantResults[1] == PackageManager.PERMISSION_GRANTED
+                    && grantResults[2] == PackageManager.PERMISSION_GRANTED)
                 add_delete_imagen.setEnabled(true);
     }
 

@@ -1,4 +1,4 @@
-package com.izv.dam.newquip.vistas;
+package com.izv.dam.newquip.vistas.ubicacion;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;

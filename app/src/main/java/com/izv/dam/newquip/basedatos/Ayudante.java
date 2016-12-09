@@ -78,8 +78,9 @@ public class Ayudante extends SQLiteOpenHelper {
         String TablaNota = "drop table if exists " + ContratoBaseDatos.TablaNota.TABLA;
         String TablaLista = "drop table if exists " + ContratoBaseDatos.TablaLista.TABLA;
         String TablaMapa = "drop table if exists " + ContratoBaseDatos.TablaMapa.TABLA;
-        Log.v("TablaNota", TablaNota);
-        Log.v("TablaLista", TablaLista);
+//        Log.v("TablaNota", TablaNota);
+//        Log.v("TablaLista", TablaLista);
+//        Log.v("TablaMapa", TablaMapa);
         db.execSQL(TablaNota);
         db.execSQL(TablaLista);
         db.execSQL(TablaMapa);

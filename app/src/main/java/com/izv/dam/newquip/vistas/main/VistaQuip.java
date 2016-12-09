@@ -31,8 +31,8 @@ import com.izv.dam.newquip.contrato.ContratoMain;
 import com.izv.dam.newquip.dialogo.OnBorrarDialogListener;
 import com.izv.dam.newquip.pojo.Nota;
 import com.izv.dam.newquip.dialogo.DialogoBorrar;
-import com.izv.dam.newquip.vistas.MapsActivity;
-import com.izv.dam.newquip.vistas.MapsLocation;
+import com.izv.dam.newquip.vistas.ubicacion.MapsActivity;
+import com.izv.dam.newquip.vistas.ubicacion.MapsLocation;
 import com.izv.dam.newquip.vistas.notas.VistaNota;
 
 public class VistaQuip extends AppCompatActivity implements ContratoMain.InterfaceVista, ClickListener, ClickListenerLong,
