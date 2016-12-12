@@ -10,6 +10,14 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.izv.dam.newquip.R;
+import com.izv.dam.newquip.basedatos.AyudanteORM;
+import com.izv.dam.newquip.pojo.MapaORM;
+import com.j256.ormlite.dao.RuntimeExceptionDao;
+import com.j256.ormlite.field.types.DoubleObjectType;
+import com.j256.ormlite.stmt.QueryBuilder;
+
+import java.sql.SQLException;
+import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -23,6 +31,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
     }
 
 
@@ -39,9 +48,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        mostrarMapa();
+
         // Add a marker in Sydney and move the camera
-        LatLng madrid = new LatLng(40.35911159201925, -3.5864961836914455);
-        mMap.addMarker(new MarkerOptions().position(madrid).title("Marker in Madrid"));
+//        LatLng madrid = new LatLng(40.35911159201925, -3.5864961836914455);
+//        mMap.addMarker(new MarkerOptions().position(madrid).title("Marker in Madrid"));
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(madrid));
+    }
+
+    public void mostrarMapa() {
+        AyudanteORM ayudanteORM = new AyudanteORM(this);
+        RuntimeExceptionDao<MapaORM, Integer> simpleDao = ayudanteORM.getDataDao();
+        List<MapaORM> mapaORMs = null;
+        try {
+            QueryBuilder<MapaORM, Integer> queryBuilder = simpleDao.queryBuilder();
+            mapaORMs = simpleDao.query(queryBuilder.prepare());
+
+            for (MapaORM orm : mapaORMs) {
+                System.out.println(orm.toString());
+                marcar(Double.valueOf(orm.getLatitud()), Double.valueOf(orm.getLongitud()), String.valueOf(orm.getHistoria()));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void marcar(double latitud, double longitud, String titulo) {
+        LatLng madrid = new LatLng(latitud, longitud);
+        mMap.addMarker(new MarkerOptions().position(madrid).title(titulo));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(madrid));
     }
 }

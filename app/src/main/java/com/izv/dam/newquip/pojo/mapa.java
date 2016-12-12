@@ -10,12 +10,12 @@ import com.izv.dam.newquip.contrato.ContratoBaseDatos;
 /**
  * Created by dam on 2/12/16.
  */
-public class Mapa implements Parcelable {
+public class mapa implements Parcelable {
     private long id_mapa;
     private long id_nota;
     private String historia, latitud, longitud;
 
-    public Mapa(long id_mapa, long id_nota, String historia, String latitud, String longitud) {
+    public mapa(long id_mapa, long id_nota, String historia, String latitud, String longitud) {
         this.id_mapa = id_mapa;
         this.id_nota = id_nota;
         this.historia = historia;
@@ -23,7 +23,7 @@ public class Mapa implements Parcelable {
         this.longitud = longitud;
     }
 
-    public Mapa() {
+    public mapa() {
         this(0, 0, null, null, null);
     }
 
@@ -67,11 +67,11 @@ public class Mapa implements Parcelable {
         this.longitud = longitud;
     }
 
-    public static Creator<Mapa> getCREATOR() {
+    public static Creator<mapa> getCREATOR() {
         return CREATOR;
     }
 
-    protected Mapa(Parcel in) {
+    protected mapa(Parcel in) {
         id_mapa = in.readLong();
         id_nota = in.readLong();
         historia = in.readString();
@@ -93,15 +93,15 @@ public class Mapa implements Parcelable {
         return 0;
     }
 
-    public static final Creator<Mapa> CREATOR = new Creator<Mapa>() {
+    public static final Creator<mapa> CREATOR = new Creator<mapa>() {
         @Override
-        public Mapa createFromParcel(Parcel in) {
-            return new Mapa(in);
+        public mapa createFromParcel(Parcel in) {
+            return new mapa(in);
         }
 
         @Override
-        public Mapa[] newArray(int size) {
-            return new Mapa[size];
+        public mapa[] newArray(int size) {
+            return new mapa[size];
         }
     };
 
@@ -120,8 +120,8 @@ public class Mapa implements Parcelable {
         return valores;
     } /* Metodo del cursor */
 
-    public static Mapa getMapa(Cursor c) {
-        Mapa objeto = new Mapa();
+    public static mapa getMapa(Cursor c) {
+        mapa objeto = new mapa();
         objeto.setId_mapa(c.getLong(c.getColumnIndex(ContratoBaseDatos.TablaMapa._ID)));
         objeto.setId_nota(c.getLong(c.getColumnIndex(ContratoBaseDatos.TablaMapa.ID_NOTA)));
         objeto.setHistoria(c.getString(c.getColumnIndex(ContratoBaseDatos.TablaMapa.HISTORIA)));

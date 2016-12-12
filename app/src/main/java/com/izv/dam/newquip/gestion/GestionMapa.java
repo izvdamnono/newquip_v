@@ -5,14 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.izv.dam.newquip.contrato.ContratoBaseDatos;
-import com.izv.dam.newquip.contrato.ContratoBaseDatos.TablaMapa;
-import com.izv.dam.newquip.pojo.Mapa;
+import com.izv.dam.newquip.pojo.mapa;
 
 /**
  * Created by dam on 2/12/16.
  */
 
-public class GestionMapa extends Gestion<Mapa> {
+public class GestionMapa extends Gestion<mapa> {
     public GestionMapa(Context c) {
         super(c);
     }
@@ -22,7 +21,7 @@ public class GestionMapa extends Gestion<Mapa> {
     }
 
     @Override
-    public long insert(Mapa objeto) {
+    public long insert(mapa objeto) {
         return this.insert(ContratoBaseDatos.TablaMapa.TABLA, objeto.getContentValues());
     }
 
@@ -37,7 +36,7 @@ public class GestionMapa extends Gestion<Mapa> {
     }
 
     @Override
-    public int delete(Mapa objeto) {
+    public int delete(mapa objeto) {
         String condicion = ContratoBaseDatos.TablaMapa._ID + " = ?";
         String[] argumentos = {objeto.getId_mapa() + ""};
         return this.delete(ContratoBaseDatos.TablaMapa.TABLA, condicion, argumentos);
@@ -48,7 +47,7 @@ public class GestionMapa extends Gestion<Mapa> {
     }
 
     @Override
-    public int update(Mapa objeto) {
+    public int update(mapa objeto) {
         ContentValues valores = objeto.getContentValues();
         String condicion = ContratoBaseDatos.TablaMapa._ID + " = ?";
         String[] argumentos = {objeto.getId_mapa() + ""};
@@ -74,14 +73,14 @@ public class GestionMapa extends Gestion<Mapa> {
                 groupBy, having, orderBy);
     }
 
-    public Mapa get(long id) {
+    public mapa get(long id) {
         String where = ContratoBaseDatos.TablaMapa._ID + " = ? ";
         String[] parametros = {id + ""};
         Cursor c = this.getCursor(ContratoBaseDatos.TablaMapa.PROJECTION_ALL, where, parametros,
                 null, null, ContratoBaseDatos.TablaMapa.SORT_ORDER_DEFAULT);
         if (c.getCount() > 0) {
             c.moveToFirst();
-            return Mapa.getMapa(c);
+            return mapa.getMapa(c);
         }
         return null;
     }

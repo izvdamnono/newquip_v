@@ -165,6 +165,8 @@
     <string name="last_location">Última localización</string>
     <string name="mapa">Mapa</string>
     <string name="location">Localización</string>
+    <string name="longitud">Longitud</string>
+    <string name="latitud">Latitud</string>
 
 
 </resources>

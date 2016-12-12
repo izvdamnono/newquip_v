@@ -48,6 +48,7 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.vision.text.Text;
 import com.izv.dam.newquip.R;
 import com.izv.dam.newquip.adaptadores.AdaptadorLista;
 import com.izv.dam.newquip.basedatos.AyudanteORM;
@@ -122,6 +123,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     /*------ LOCATION ------*/
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
+    private TextView tvLatitud, tvLongitud;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,10 +171,11 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         /*-----------*/
         tvFechaRecordatorioFecha = (TextView) findViewById(R.id.tvFechaRecordatorioDia);
         tvFechaRecordatorioHora = (TextView) findViewById(R.id.tvFechaRecordatorioHora);
-
         relativeLayout = (RelativeLayout) findViewById(R.id.id_include_layout);
         presentadorNota = new PresentadorNota(this);
         /*--LOCATION--*/
+        tvLatitud = (TextView) findViewById(R.id.tvLatitud);
+        tvLongitud = (TextView) findViewById(R.id.tvLongitud);
         if (mGoogleApiClient != null) {
             if (mGoogleApiClient.isConnected()) {
                 getMyLocation();
@@ -221,8 +224,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;
         getMenuInflater().inflate(R.menu.menu_nota, menu);
-        if (nota.getFecha_recordatorio() == null)
-            menu.getItem(1).setIcon(R.mipmap.ic_ok_alert);
+        if (nota.getFecha_recordatorio() == null) menu.getItem(1).setIcon(R.mipmap.ic_ok_alert);
         else menu.getItem(1).setIcon(R.mipmap.ic_delete_alert);
         return true;
     }
@@ -239,18 +241,55 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         super.onStop();
     }
 
+    public void mostrarMapa() {
+        AyudanteORM ayudanteORM = new AyudanteORM(this);
+        RuntimeExceptionDao<MapaORM, Integer> simpleDao = ayudanteORM.getDataDao();
+        List<MapaORM> mapaORMs = null;
+        try {
+            QueryBuilder<MapaORM, Integer> queryBuilder = simpleDao.queryBuilder();
+            queryBuilder.where().eq("id_nota", nota.getId());
+            mapaORMs = simpleDao.query(queryBuilder.prepare());
+
+            for (MapaORM orm : mapaORMs) {
+                System.out.println(orm.toString());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean tieneMapa() {
+        AyudanteORM ayudanteORM = new AyudanteORM(this);
+        RuntimeExceptionDao<MapaORM, Integer> simpleDao = ayudanteORM.getDataDao();
+        List<MapaORM> mapaORMs = null;
+        try {
+            QueryBuilder<MapaORM, Integer> queryBuilder = simpleDao.queryBuilder();
+            queryBuilder.where().eq("id_nota", nota.getId());
+            mapaORMs = simpleDao.query(queryBuilder.prepare());
+            System.out.println(mapaORMs.size());
+            for (MapaORM orm : mapaORMs) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public void guardarMapa() {
 
         AyudanteORM ayu = new AyudanteORM(VistaNota.this);
         ayu.getWritableDatabase();
 
         Dao<MapaORM, Integer> dao = ayu.getDataDao();
-        //Id nota, historia (getFecha_modificacion), latitud y longitud
-        MapaORM mapaORM = new MapaORM((int) nota.getId(), nota.getFecha_modificacion(), "-12", "13");
-        try {
-            dao.create(mapaORM);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (!tieneMapa()) {
+            //Id nota, historia (getFecha_modificacion), latitud y longitud
+            MapaORM mapaORM = new MapaORM((int) nota.getId(), nota.toString(), String.valueOf(getLatitud()), String.valueOf(getLongitud()));
+            try {
+                dao.create(mapaORM);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
     }
@@ -258,8 +297,9 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     private void getMyLocation() {
 
 //        textLastLocation.setText(String.valueOf(getLatitud()) + "\n" + String.valueOf(getLongitud()));
-        snackBarEdit(String.valueOf(getLatitud()) + "\n" + String.valueOf(getLongitud()));
-
+//        snackBarEdit(String.valueOf(getLatitud()) + "\n" + String.valueOf(getLongitud()));
+        tvLatitud.setText(String.valueOf(getLatitud()));
+        tvLongitud.setText(String.valueOf(getLongitud()));
     }
 
     private double getLatitud() {
@@ -286,27 +326,6 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         return 0;
     }
 
-    public void mostrarMapa() {
-//        simpleDao.create(a);
-
-//        List<Alumno> alumnoList = simpleDao.queryForAll();
-        AyudanteORM ayudanteORM = new AyudanteORM(this);
-        RuntimeExceptionDao<MapaORM, Integer> simpleDao = ayudanteORM.getDataDao();
-        List<MapaORM> mapaORMs = null;
-
-        try {
-            QueryBuilder<MapaORM, Integer> queryBuilder = simpleDao.queryBuilder();
-            queryBuilder.where().eq("id_nota", nota.getId());
-            mapaORMs = simpleDao.query(queryBuilder.prepare());
-
-            for (MapaORM orm : mapaORMs) {
-                System.out.println(orm.toString());
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     public boolean onOptionsItemSelected(MenuItem item) {
         String fecha_recordatorio, nuevo_formato;
@@ -519,7 +538,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             case SELECT_FILE:
                 if (resultCode == RESULT_OK) {
                     Uri selectedImage = data.getData();
-                    System.out.println(selectedImage);
+//                    System.out.println(selectedImage);
                     temp_file_path = getRealPath(selectedImage);
                     setPic(temp_file_path);
                     saveImagen(temp_file_path);
