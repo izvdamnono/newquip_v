@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.Snackbar;
@@ -41,7 +43,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.izv.dam.newquip.R;
 import com.izv.dam.newquip.adaptadores.AdaptadorLista;
 import com.izv.dam.newquip.basedatos.AyudanteORM;
@@ -76,7 +82,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class VistaNota extends AppCompatActivity implements ContratoNota.InterfaceVista, ComunicarActividadFragmentoFechaHora {
+public class VistaNota extends AppCompatActivity implements ContratoNota.InterfaceVista, ComunicarActividadFragmentoFechaHora, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private ActionBar actionBar;
     private Menu menu;
     private EditText editTextTitulo, editTextNota;
@@ -112,6 +118,10 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
     private static final int widthImg = 600, heightImg = 600;
     /*------ COLOR PICKER DIALOG ------*/
     private int mSelectedColor;
+
+    /*------ LOCATION ------*/
+    private GoogleApiClient mGoogleApiClient;
+    private Location mLastLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,6 +172,21 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
         relativeLayout = (RelativeLayout) findViewById(R.id.id_include_layout);
         presentadorNota = new PresentadorNota(this);
+        /*--LOCATION--*/
+        if (mGoogleApiClient != null) {
+            if (mGoogleApiClient.isConnected()) {
+                getMyLocation();
+            } else {
+                snackBarEdit("No se ha podido localizar");
+            }
+        }
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
     }
 
     private void ejecutar() {
@@ -202,13 +227,25 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         return true;
     }
 
+    @Override
+    protected void onStart() {
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
     public void guardarMapa() {
 
         AyudanteORM ayu = new AyudanteORM(VistaNota.this);
         ayu.getWritableDatabase();
 
         Dao<MapaORM, Integer> dao = ayu.getDataDao();
-
+        //Id nota, historia (getFecha_modificacion), latitud y longitud
         MapaORM mapaORM = new MapaORM((int) nota.getId(), nota.getFecha_modificacion(), "-12", "13");
         try {
             dao.create(mapaORM);
@@ -216,6 +253,37 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
             e.printStackTrace();
         }
 
+    }
+
+    private void getMyLocation() {
+
+//        textLastLocation.setText(String.valueOf(getLatitud()) + "\n" + String.valueOf(getLongitud()));
+        snackBarEdit(String.valueOf(getLatitud()) + "\n" + String.valueOf(getLongitud()));
+
+    }
+
+    private double getLatitud() {
+        try {
+            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            if (mLastLocation != null) {
+                return mLastLocation.getLatitude();
+            }
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    private double getLongitud() {
+        try {
+            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            if (mLastLocation != null) {
+                return mLastLocation.getLongitude();
+            }
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     public void mostrarMapa() {
@@ -228,7 +296,7 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
 
         try {
             QueryBuilder<MapaORM, Integer> queryBuilder = simpleDao.queryBuilder();
-            queryBuilder.where().eq("id_nota",nota.getId());
+            queryBuilder.where().eq("id_nota", nota.getId());
             mapaORMs = simpleDao.query(queryBuilder.prepare());
 
             for (MapaORM orm : mapaORMs) {
@@ -700,5 +768,24 @@ public class VistaNota extends AppCompatActivity implements ContratoNota.Interfa
         }
     }
 
+    /*----- LOCATION -----*/
 
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        getMyLocation();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+        snackBarEdit("onConnectionSuspended: " + String.valueOf(i));
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+        snackBarEdit("onConnectionFailed: \n" + connectionResult.toString());
+
+    }
 }
