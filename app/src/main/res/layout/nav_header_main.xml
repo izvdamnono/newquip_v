@@ -19,18 +19,11 @@
         app:srcCompat="@mipmap/ic_smile" />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="Android Studio"
-        android:textColor="@color/accent" />
-
-    <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="com.izv.dam@android.com"
-        android:textColor="@color/accent"
+        android:textColor="@color/white"
         android:textStyle="normal|bold" />
 
 </LinearLayout>
